@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title> {{ event.libelle}} du {{ event.date}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <button class="list-item"  (tap)="interaction(participant)" ion-item *ngFor="let participant of participants">
+      <ion-row align-items-center no-padding class="content-row one-line">
+        <!-- You can limit the rows of the description by using the class one-line. If you remove it, all the content from the row will be shown -->
+        <ion-col no-padding col-3 class="item-avatar">
+          <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.REP_IMAGE+"user/"+participant.urlAvatar'></preload-image>
+        </ion-col>
+        <ion-col no-padding col-5 class="item-content">
+          <h3 class="item-title"> {{participant.nom}} {{participant.prenom}}</h3>
+          <p class="item-description"> {{participant.email}}</p>
+        </ion-col>
+        <ion-col no-padding  col-4 class="item-icon" style="text-align: end;">
+          <h3 class="item-title"> A payer xxx €</h3>
+          <h3 class="item-title"> Doit xxx €</h3>
+        </ion-col>
+      </ion-row>
+    </button>
+  </ion-list>
+
+  <ion-fab right bottom>
+    <button (tap)="addNewParticipant()" ion-fab color="danger"><ion-icon name="person-add"></ion-icon></button>
+  </ion-fab>
+</ion-content>
+
+
+<ion-footer>
+  <ion-segment [(ngModel)]="icons" color="primary">
+    <ion-segment-button (tap)="createNewEvent()" value="camera">
+      <ion-icon name="camera"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="bookmark">
+      <ion-icon name="bookmark"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="bookmark">
+      <ion-icon name="bookmark"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+</ion-footer>

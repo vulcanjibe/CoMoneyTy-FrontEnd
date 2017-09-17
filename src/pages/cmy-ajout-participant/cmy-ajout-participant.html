@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Participants de {{event.libelle}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row   *ngFor="let relation of relations">
+      <ion-col no-padding col-3 class="item-avatar"  [ngClass]="{'row-opaque' : !relation.present}">
+        <preload-image class="avatar-image rounded-image" [ratio]="{w:1, h:1}" [src]='constante.REP_IMAGE+"user/"+relation.participant.urlAvatar'></preload-image>
+      </ion-col>
+      <ion-col no-padding col-7 class="item-content"  [ngClass]="{'row-opaque' : !relation.present}">
+        <h3 class="item-title"> {{relation.participant.nom}} {{ relation.participant.prenom}}</h3>
+        <p class="item-description"> {{relation.participant.email}}</p>
+      </ion-col>
+      <ion-col no-padding col-2 justify-content-end>
+        <ion-toggle [(ngModel)]="relation.present"></ion-toggle>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-fab right bottom>
+    <button (tap)="close()" ion-fab color="danger"><ion-icon name="done-all"></ion-icon></button>
+  </ion-fab>
+</ion-content>
+
