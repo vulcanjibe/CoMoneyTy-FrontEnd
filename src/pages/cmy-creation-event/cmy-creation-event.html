@@ -39,6 +39,7 @@
   </form>
     </div>
   </div>
+
 </ion-content>
 
 <ion-footer>
@@ -50,7 +51,7 @@
       <ion-icon name="bookmark"></ion-icon>
     </ion-segment-button>
     <ion-segment-button value="bookmark">
-      <ion-icon name="bookmark"></ion-icon>
+      <ion-icon name="bookmark" (tap)="uploadImage()"></ion-icon>
     </ion-segment-button>
   </ion-segment>
 </ion-footer>

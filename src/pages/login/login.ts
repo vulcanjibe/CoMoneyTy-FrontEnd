@@ -2,7 +2,7 @@ import { Component,Inject } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import {Validators, FormGroup, FormControl, EmailValidator} from '@angular/forms';
 
-import { TabsNavigationPage } from '../tabs-navigation/tabs-navigation';
+import  {List2EventPage} from "../cmy-liste-event/cmy-liste-event";
 import { SignupPage } from '../signup/signup';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password';
 
@@ -32,7 +32,7 @@ export class LoginPage {
     private restangular: Restangular,
     public constante: Constante
   ) {
-    this.main_page = { component: TabsNavigationPage };
+    this.main_page = { component: List2EventPage };
     this.user = new User();
     this.login = new FormGroup({
       email: new FormControl('Herve', Validators.compose([

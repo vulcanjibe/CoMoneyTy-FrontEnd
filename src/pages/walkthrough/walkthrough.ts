@@ -5,7 +5,7 @@ import { LoginPage } from '../login/login';
 import { SignupPage } from '../signup/signup';
 import {Restangular} from 'ngx-restangular';
 import { User,Constante} from '../cmy-model/cmy.model'
-import { TabsNavigationPage } from '../tabs-navigation/tabs-navigation';
+import { List2EventPage } from '../cmy-liste-event/cmy-liste-event';
 @Component({
   selector: 'walkthrough-page',
   templateUrl: 'walkthrough.html'
@@ -39,7 +39,7 @@ export class WalkthroughPage {
       localStorage.setItem('id_token', resp.id);
       localStorage.setItem('user', JSON.stringify(resp.user));
       this.constante.user=resp.user;
-      this.nav.setRoot(TabsNavigationPage);
+      this.nav.setRoot(List2EventPage);
     }, errorResponse => {
       console.log("Error with status code", errorResponse.status);
     });
@@ -55,5 +55,18 @@ export class WalkthroughPage {
 
   goToSignup() {
     this.nav.push(SignupPage);
+  }
+
+  fileChange(event) {
+    let fileList: FileList = event.target.files;
+
+      let file: File = fileList[0];
+      var fd = new FormData();
+      fd.append('file', file);
+      this.restangular.one('event').post('upload',fd).subscribe(resp => {
+        console.log(resp);
+      },error => {
+        console.log(error);
+      })
   }
 }

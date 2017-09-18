@@ -2,13 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, MenuController, Nav, App } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-
-import { TabsNavigationPage } from '../pages/tabs-navigation/tabs-navigation';
-import { FormsPage } from '../pages/forms/forms';
-import { LayoutsPage } from '../pages/layouts/layouts';
 import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
-import { SettingsPage } from '../pages/settings/settings';
-import { FunctionalitiesPage } from '../pages/functionalities/functionalities';
 import {List2EventPage} from '../pages/cmy-liste-event/cmy-liste-event';
 
 @Component({
@@ -42,15 +36,15 @@ export class MyApp {
     });
 
     this.pages = [
-      { title: 'Home', icon: 'home', component: TabsNavigationPage },
-      { title: 'Event', icon: 'home', component: List2EventPage },
-      { title: 'Forms', icon: 'create', component: FormsPage },
-      { title: 'Functionalities', icon: 'code', component: FunctionalitiesPage }
+      { title: 'Home', icon: 'home', component: List2EventPage },
+      { title: 'Event', icon: 'people', component: List2EventPage },
+      { title: 'Forms', icon: 'create', component: List2EventPage },
+      { title: 'Functionalities', icon: 'code', component: List2EventPage }
     ];
 
     this.pushPages = [
-      { title: 'Layouts', icon: 'grid', component: LayoutsPage },
-      { title: 'Settings', icon: 'settings', component: SettingsPage }
+      { title: 'Layouts', icon: 'grid', component: List2EventPage },
+      { title: 'Settings', icon: 'settings', component: List2EventPage }
     ];
   }
 

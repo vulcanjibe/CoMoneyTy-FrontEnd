@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ModalController, LoadingController } from 'ionic-angular';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 
-import { TermsOfServicePage } from '../terms-of-service/terms-of-service';
-import { PrivacyPolicyPage } from '../privacy-policy/privacy-policy';
-
-import { TabsNavigationPage } from '../tabs-navigation/tabs-navigation';
+import  {List2EventPage} from "../cmy-liste-event/cmy-liste-event";
 
 import { FacebookLoginService } from '../facebook-login/facebook-login.service';
 import { GoogleLoginService } from '../google-login/google-login.service';
@@ -26,7 +23,7 @@ export class SignupPage {
     public googleLoginService: GoogleLoginService,
     public loadingCtrl: LoadingController
   ) {
-    this.main_page = { component: TabsNavigationPage };
+    this.main_page = { component: List2EventPage };
 
     this.signup = new FormGroup({
       email: new FormControl('', Validators.required),
@@ -86,12 +83,12 @@ export class SignupPage {
   }
 
   showTermsModal() {
-    let modal = this.modal.create(TermsOfServicePage);
+    let modal = this.modal.create(List2EventPage);
     modal.present();
   }
 
   showPrivacyModal() {
-    let modal = this.modal.create(PrivacyPolicyPage);
+    let modal = this.modal.create(List2EventPage);
     modal.present();
   }
 
