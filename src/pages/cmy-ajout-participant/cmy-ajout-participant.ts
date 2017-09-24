@@ -3,9 +3,8 @@ import { NavController, LoadingController,NavParams } from 'ionic-angular';
 
 import 'rxjs/Rx';
 
-import {Event,  Constante,User,LienEventUser} from '../cmy-model/cmy.model';
-import {DetailEventPage} from '../cmy-detail-event/cmy-detail-event';
-import {CreationEventPage} from '../cmy-creation-event/cmy-creation-event';
+import {Event, Constante, User, LienEventUser, UserAvecDepense} from '../cmy-model/cmy.model';
+
 import {Restangular} from 'ngx-restangular';
 @Component({
   selector: 'ajout-participant-page',
@@ -18,7 +17,7 @@ export class AjoutParticipantPage {
   relations: Array<ParticipantPresent>;
   loading: any;
   event: Event;
-  participantsEvent: Array<User>;
+  participantsEvent: Array<UserAvecDepense>;
   constructor(public nav: NavController,public constante:Constante,
     public loadingCtrl: LoadingController,private restangular: Restangular,public params: NavParams) {
     this.loading = this.loadingCtrl.create();
@@ -34,8 +33,8 @@ export class AjoutParticipantPage {
       for(let relation of relations) {
         // Est-ce qu'il est déjà ajouté
         let trouve:boolean=false;
-        for(let user of this.participantsEvent) {
-            if(user.id==relation.id)
+        for(let userAvecDepense of this.participantsEvent) {
+            if(userAvecDepense.user.id==relation.id)
               trouve=true;
         }
         let relationPresent = new ParticipantPresent(relation,trouve);
@@ -51,8 +50,8 @@ export class AjoutParticipantPage {
     for(let participantPresent of this.relations) {
       // Est-ce qu'il était là avant?
       let present = false;
-      for(let user of this.participantsEvent) {
-        if(user.id==participantPresent.user.id) {
+      for(let userAvecDepense of this.participantsEvent) {
+        if(userAvecDepense.user.id==participantPresent.user.id) {
           present = true;
           break;
         }
@@ -63,7 +62,8 @@ export class AjoutParticipantPage {
         let lien = new LienEventUser(participantPresent.user.id,this.event.id);
         this.restangular.one("lienEventUser").post("save",lien).subscribe(resp => {
           console.log("Ajout du participant : "+participantPresent.user.prenom);
-          this.participantsEvent.push(participantPresent.user);
+
+          this.participantsEvent.push(new UserAvecDepense(participantPresent.user));
         }, errorResponse => {
           console.log("Error with status code", errorResponse.status);
         });
@@ -74,7 +74,7 @@ export class AjoutParticipantPage {
           console.log("Ajout du participant : "+participantPresent.user.prenom);
           let idx = 0;
           for(let particp of this.participantsEvent) {
-            if(particp.id==participantPresent.user.id) {
+            if(particp.user.id==participantPresent.user.id) {
               break;
             }
             idx++;

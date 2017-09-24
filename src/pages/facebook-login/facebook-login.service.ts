@@ -26,9 +26,11 @@ export class FacebookLoginService {
       //["public_profile"] is the array of permissions, you can add more if you need
       this.fb.login(["public_profile"]).then(function(response){
         //Getting name and gender properties
-        env.fb.api("/me?fields=name,gender", [])
+        let request:string = "/me?fields=name,gender,email";
+        env.fb.api(request, [])
         .then(function(user) {
           //now we have the users info, let's save it in the NativeStorage
+          console.log(user);
           env.setFacebookUser(user)
           .then(function(res){
             resolve(res);
@@ -71,6 +73,7 @@ export class FacebookLoginService {
         resolve(env.nativeStorage.setItem('facebook_user',
           {
             userId: user.id,
+            email:user.email,
             name: user.name,
             gender: user.gender,
             image: "https://graph.facebook.com/" + user.id + "/picture?type=large",

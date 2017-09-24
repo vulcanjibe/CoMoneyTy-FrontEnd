@@ -3,6 +3,9 @@
     <ion-buttons start>
       <button ion-button class="skip-button" (tap)="skipDevIntro()" [hidden]="lastSlide">Dev!</button>
     </ion-buttons>
+    <ion-buttons start>
+      <button ion-button class="skip-button" (tap)="facebookTest()" [hidden]="lastSlide">FB!</button>
+    </ion-buttons>
     <ion-buttons end>
       <button ion-button class="skip-button" (tap)="skipIntro()" [hidden]="lastSlide">Skip</button>
     </ion-buttons>
@@ -21,7 +24,7 @@
       <p class="intro-text">
         This is the new <b>Ionic 2</b> Full App template
       </p>
-      <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".pdf,.doc,.docx">
+
     </ion-slide>
     <ion-slide class="slide-2">
       <ion-row class="intro-image-row">

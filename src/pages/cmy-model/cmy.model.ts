@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+
 
 
 
 export class Constante {
   readonly BASE_URL_REST:string = 'http://vulcanjibe.ddns.net:8080/CoMoneyTy-0.0.1-SNAPSHOT/rest';
+  readonly BASE_URL_IMAGE:string = 'http://vulcanjibe.ddns.net:8080/Image';
   readonly REP_IMAGE:string = 'assets/images/';
   user:User;
 }
@@ -18,10 +19,22 @@ export class User {
    urlAvatar: string;
 }
 
+export class UserAvecDepense {
+  user:User;
+  aPaye:number;
+  doit:number;
+  constructor(user1:User) {
+    this.user=user1;
+    this.aPaye=0;
+    this.doit=0;
+  }
+}
+
+
 export class Event {
   id: string;
   libelle: string;
-  date: string
+  date: string;
   montant: number;
   urlPhoto: string;
 }
@@ -37,3 +50,31 @@ export class LienEventUser {
   }
 }
 
+export class Mouvement {
+  id:string;
+  idEmetteur:string;
+  idDestinataire:string;
+  idEvent:string;
+  commentaire:string;
+  montant:number;
+  date:string;
+  constructor(idEmet:string,idEv:string) {
+    this.idEmetteur=idEmet;
+    this.idEvent=idEv
+  }
+}
+
+export class Depense {
+  id:string;
+  idPayeur:string;
+  idEvent:string;
+  commentaire:string;
+  montant:number;
+  typeRepartition:string;
+  urlPhoto:string;
+  date:string;
+  constructor(idPay:string,idEv:string) {
+    this.idPayeur=idPay;
+    this.idEvent=idEv
+  }
+}

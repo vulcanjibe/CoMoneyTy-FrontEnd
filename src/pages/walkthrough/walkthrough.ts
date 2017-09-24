@@ -6,18 +6,19 @@ import { SignupPage } from '../signup/signup';
 import {Restangular} from 'ngx-restangular';
 import { User,Constante} from '../cmy-model/cmy.model'
 import { List2EventPage } from '../cmy-liste-event/cmy-liste-event';
+import { Facebook } from '@ionic-native/facebook';
 @Component({
   selector: 'walkthrough-page',
   templateUrl: 'walkthrough.html'
 })
 export class WalkthroughPage {
-
+  FB_APP_ID: number = 826720427470540;
   lastSlide = false;
   userDev : User;
   @ViewChild('slider') slider: Slides;
 
-  constructor(public nav: NavController, private restangular: Restangular,public constante: Constante) {
-
+  constructor(public nav: NavController, private restangular: Restangular,public constante: Constante,public fb: Facebook) {
+    this.fb.browserInit(this.FB_APP_ID, "v2.8");
   }
 
   skipIntro() {
@@ -28,7 +29,43 @@ export class WalkthroughPage {
     this.lastSlide = true;
     this.slider.slideTo(this.slider.length());
   }
+  facebookTest()
+  {
+    let env = this;
 
+      //["public_profile"] is the array of permissions, you can add more if you need
+      this.fb.login(["public_profile"]).then(function(response){
+        //Getting name and gender properties
+        let request:string = "/me?fields=name,gender,email";
+        env.fb.api(request, [])
+          .then(function(user) {
+            //now we have the users info, let's save it in the NativeStorage
+            console.log(user);
+          }, function(error){
+            console.log(error);
+          });
+        request="/me/friendlists"
+        env.fb.api(request, [])
+          .then(function(user) {
+            //now we have the users info, let's save it in the NativeStorage
+            console.log(user);
+          }, function(error){
+            console.log(error);
+          });
+        request="/me/friends"
+        env.fb.api(request, [])
+          .then(function(user) {
+            //now we have the users info, let's save it in the NativeStorage
+            console.log(user);
+          }, function(error){
+            console.log(error);
+          });
+
+      }, function(error){
+        console.log(error);
+      });
+
+  }
   skipDevIntro() {
     localStorage.removeItem('id_token');
     localStorage.removeItem('user');

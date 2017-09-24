@@ -4,8 +4,10 @@ import { MyApp } from './app.component';
 
 import { List2EventPage } from '../pages/cmy-liste-event/cmy-liste-event';
 import { CreationEventPage } from '../pages/cmy-creation-event/cmy-creation-event';
+import { CreationMouvementPage } from '../pages/cmy-creation-mouvement/cmy-creation-mouvement';
 import { DetailEventPage } from '../pages/cmy-detail-event/cmy-detail-event';
 import { AjoutParticipantPage } from '../pages/cmy-ajout-participant/cmy-ajout-participant';
+
 import {ModalPhoto} from  '../pages/cmy-modal/modal-photo'
 import {Constante} from '../pages/cmy-model/cmy.model';
 import { LoginPage } from '../pages/login/login';
@@ -51,6 +53,7 @@ import { RestangularModule } from 'ngx-restangular';
 
 
 import { Transfer } from '@ionic-native/transfer';
+
 // Function for setting the default restangular configuration
 
 export function RestangularConfigFactory (RestangularProvider) {
@@ -73,6 +76,7 @@ export function RestangularConfigFactory (RestangularProvider) {
   declarations: [
     MyApp,
     DetailEventPage,
+    CreationMouvementPage,
     AjoutParticipantPage,
     ModalPhoto,
     CreationEventPage,
@@ -100,6 +104,7 @@ export function RestangularConfigFactory (RestangularProvider) {
     MyApp,
     List2EventPage,
     CreationEventPage,
+    CreationMouvementPage,
     DetailEventPage,
     AjoutParticipantPage,
     ModalPhoto,

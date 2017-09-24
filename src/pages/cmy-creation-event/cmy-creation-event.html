@@ -17,7 +17,7 @@
       </ion-item>
       <button ion-button block large  type="button"  class="upload-image-button" (tap)="choosePhoto()">
         <ion-icon name="camera"></ion-icon>
-        <img [src]="base64Image" *ngIf="base64Image" />
+        <img [src]="imageCamera" *ngIf="imageCamera" />
         <h3 class="button-title">Prenez une photo</h3>
       </button>
     </section>
@@ -30,7 +30,7 @@
     <section class="form-section">
       <ion-item class="multi-input time-item">
         <ion-label floating>Date</ion-label>
-        <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" pickerFormat="DD-MM-YYYY"></ion-datetime>
+        <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY"></ion-datetime>
       </ion-item>
     </section>
     <section class="form-section">
@@ -50,8 +50,8 @@
     <ion-segment-button value="bookmark">
       <ion-icon name="bookmark"></ion-icon>
     </ion-segment-button>
-    <ion-segment-button value="bookmark">
-      <ion-icon name="bookmark" (tap)="uploadImage()"></ion-icon>
+    <ion-segment-button value="bookmark2">
+      <ion-icon name="bookmark" ></ion-icon>
     </ion-segment-button>
   </ion-segment>
 </ion-footer>

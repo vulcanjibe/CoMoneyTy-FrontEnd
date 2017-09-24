@@ -13,15 +13,15 @@
       <ion-row align-items-center no-padding class="content-row one-line">
         <!-- You can limit the rows of the description by using the class one-line. If you remove it, all the content from the row will be shown -->
         <ion-col no-padding col-3 class="item-avatar">
-          <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.REP_IMAGE+"user/"+participant.urlAvatar'></preload-image>
+          <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='participant.user.urlAvatar'></preload-image>
         </ion-col>
         <ion-col no-padding col-5 class="item-content">
-          <h3 class="item-title"> {{participant.nom}} {{participant.prenom}}</h3>
-          <p class="item-description"> {{participant.email}}</p>
+          <h3 class="item-title"> {{participant.user.nom}} {{participant.user.prenom}}</h3>
+          <p class="item-description"> {{participant.user.email}}</p>
         </ion-col>
         <ion-col no-padding  col-4 class="item-icon" style="text-align: end;">
-          <h3 class="item-title"> A payer xxx €</h3>
-          <h3 class="item-title"> Doit xxx €</h3>
+          <h3 class="item-title"> A payer {{participant.aPaye}} €</h3>
+          <h3 class="item-title"> Doit {{participant.doit}} €</h3>
         </ion-col>
       </ion-row>
     </button>
@@ -35,8 +35,8 @@
 
 <ion-footer>
   <ion-segment [(ngModel)]="icons" color="primary">
-    <ion-segment-button (tap)="createNewEvent()" value="camera">
-      <ion-icon name="camera"></ion-icon>
+    <ion-segment-button (tap)="ajouteDepense()" value="cash">
+      <ion-icon name="cash"></ion-icon>
     </ion-segment-button>
     <ion-segment-button value="bookmark">
       <ion-icon name="bookmark"></ion-icon>

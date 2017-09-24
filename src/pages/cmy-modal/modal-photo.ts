@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 
-import { ModalController, Platform, NavParams, ViewController } from 'ionic-angular';
+import {  Platform, NavParams, ViewController } from 'ionic-angular';
 
-import {Event,  Constante} from '../cmy-model/cmy.model';
-import {DetailEventPage} from '../cmy-detail-event/cmy-detail-event';
-import {CreationEventPage} from '../cmy-creation-event/cmy-creation-event';
-import {Restangular} from 'ngx-restangular';
+import {  Constante} from '../cmy-model/cmy.model';
+
 @Component({
   templateUrl: 'modal-photo.html'
 })

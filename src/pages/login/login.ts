@@ -1,6 +1,6 @@
-import { Component,Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
-import {Validators, FormGroup, FormControl, EmailValidator} from '@angular/forms';
+import {Validators, FormGroup, FormControl} from '@angular/forms';
 
 import  {List2EventPage} from "../cmy-liste-event/cmy-liste-event";
 import { SignupPage } from '../signup/signup';
@@ -68,13 +68,53 @@ export class LoginPage {
     this.facebookLoginService.getFacebookUser()
     .then(function(data) {
        // user is previously logged with FB and we have his data we will let him access the app
-      env.nav.setRoot(env.main_page.component);
+      // data : name, image,userID
+      let user:User = new User();
+      user.id=data.userId;
+      user.email=data.email;
+      user.urlAvatar=data.image;
+      if(data.name.indexOf(" ")!=-1) {
+        user.nom = data.name.split(" ")[0];
+        user.prenom = data.name.split(" ")[1];
+      } else {
+        user.nom = data.name;
+        user.prenom="--";
+      }
+      // Connexion réel à l'application
+      env.restangular.one("user").post("login-facebook",user).subscribe(resp => {
+        localStorage.setItem('id_token', resp.id);
+        localStorage.setItem('user', JSON.stringify(resp.user));
+        env.constante.user=resp.user;
+        env.nav.setRoot(env.main_page.component);
+      }, errorResponse => {
+        console.log("Error with status code", errorResponse.status);
+      });
+
     }, function(error){
       //we don't have the user data so we will ask him to log in
       env.facebookLoginService.doFacebookLogin()
-      .then(function(res){
+      .then(function(data){
         env.loading.dismiss();
-        env.nav.setRoot(env.main_page.component);
+        let user:User = new User();
+        user.id=data.userId;
+        user.email=data.email;
+        if(data.name.indexOf(" ")!=-1) {
+          user.nom = data.name.split(" ")[0];
+          user.prenom = data.name.split(" ")[1];
+        } else {
+          user.nom = data.name;
+          user.prenom="--";
+        }
+        user.urlAvatar=data.image;
+        env.restangular.one("user").post("login-facebook",user).subscribe(resp => {
+          localStorage.setItem('id_token', resp.id);
+          localStorage.setItem('user', JSON.stringify(resp.user));
+          env.constante.user=resp.user;
+          env.nav.setRoot(env.main_page.component);
+        }, errorResponse => {
+          console.log("Error with status code", errorResponse.status);
+        });
+
       }, function(err){
         console.log("Facebook Login error", err);
       });
