@@ -118,7 +118,11 @@ export class CreationMouvementPage {
       let sourceType = this.options.sourceType;
 
       let imagePath = this.imageCamera;
-      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+      if(imagePath==null)
+      {
+        this.nav.pop();
+      }
+      else if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
         this.filePath.resolveNativePath(imagePath)
           .then(filePath => {
             let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
