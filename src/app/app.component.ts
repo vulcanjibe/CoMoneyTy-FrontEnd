@@ -4,6 +4,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
 import {List2EventPage} from '../pages/cmy-liste-event/cmy-liste-event';
+import { ListeOperation } from '../pages/cmy-liste-operation/cmy-liste-operation';
 
 @Component({
   selector: 'app-root',
@@ -38,7 +39,7 @@ export class MyApp {
     this.pages = [
       { title: 'Home', icon: 'home', component: List2EventPage },
       { title: 'Event', icon: 'people', component: List2EventPage },
-      { title: 'Forms', icon: 'create', component: List2EventPage },
+      { title: 'Operation', icon: 'create', component: ListeOperation },
       { title: 'Functionalities', icon: 'code', component: List2EventPage }
     ];
 

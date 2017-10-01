@@ -1,11 +1,8 @@
 
-
-
-
 export class Constante {
   readonly BASE_URL_REST:string = 'http://vulcanjibe.ddns.net:8080/CoMoneyTy-0.0.1-SNAPSHOT/rest';
   readonly BASE_URL_IMAGE:string = 'http://vulcanjibe.ddns.net:8080/Image';
-  readonly REP_IMAGE:string = 'assets/images/';
+ // readonly REP_IMAGE:string = 'assets/images/';
   user:User;
 }
 
@@ -73,8 +70,29 @@ export class Depense {
   typeRepartition:string;
   urlPhoto:string;
   date:string;
+  idOperation;string;
   constructor(idPay:string,idEv:string) {
     this.idPayeur=idPay;
     this.idEvent=idEv
   }
+}
+export class TypeOperation {
+  id:number;
+  libelle:string;
+}
+export class Operation {
+  id:string;
+  userId:string;
+  date:string;
+  description:string;
+  montant:number;
+  ibanEmetteur:string;
+  ibanDestinataire:string;
+  typeOperation:TypeOperation;
+}
+
+
+export class OperationAvecDepense {
+  operation:Operation;
+  depense:Depense;
 }

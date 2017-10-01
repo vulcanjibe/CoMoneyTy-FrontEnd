@@ -3,12 +3,14 @@ import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { List2EventPage } from '../pages/cmy-liste-event/cmy-liste-event';
+import { ListeOperation } from '../pages/cmy-liste-operation/cmy-liste-operation';
 import { CreationEventPage } from '../pages/cmy-creation-event/cmy-creation-event';
 import { CreationMouvementPage } from '../pages/cmy-creation-mouvement/cmy-creation-mouvement';
 import { DetailEventPage } from '../pages/cmy-detail-event/cmy-detail-event';
 import { AjoutParticipantPage } from '../pages/cmy-ajout-participant/cmy-ajout-participant';
 
-import {ModalPhoto} from  '../pages/cmy-modal/modal-photo'
+import {ModalPhoto} from  '../pages/cmy-modal/modal-photo';
+import {ModalChoixEvent} from  '../pages/cmy-modal/modal-choix-event';
 import {Constante} from '../pages/cmy-model/cmy.model';
 import { LoginPage } from '../pages/login/login';
 
@@ -32,11 +34,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { CallNumber } from '@ionic-native/call-number';
 import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Keyboard } from '@ionic-native/keyboard';
-import { EmailComposer } from '@ionic-native/email-composer';
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
@@ -50,10 +50,10 @@ import { FacebookLoginService } from '../pages/facebook-login/facebook-login.ser
 import { GoogleLoginService } from '../pages/google-login/google-login.service';
 
 import { RestangularModule } from 'ngx-restangular';
-
-
+import {DetailOperation} from "../pages/cmy-detail-operation/cmy-detail-operation";
+import {ModalChoixOperation} from "../pages/cmy-modal/modal-choix-operation";
 import { Transfer } from '@ionic-native/transfer';
-
+import { SMS } from '@ionic-native/sms';
 // Function for setting the default restangular configuration
 
 export function RestangularConfigFactory (RestangularProvider) {
@@ -77,10 +77,14 @@ export function RestangularConfigFactory (RestangularProvider) {
     MyApp,
     DetailEventPage,
     CreationMouvementPage,
+    DetailOperation,
     AjoutParticipantPage,
     ModalPhoto,
+    ModalChoixEvent,
+    ModalChoixOperation,
     CreationEventPage,
     List2EventPage,
+    ListeOperation,
     LoginPage,
     SignupPage,
     ForgotPasswordPage,
@@ -103,11 +107,15 @@ export function RestangularConfigFactory (RestangularProvider) {
   entryComponents: [
     MyApp,
     List2EventPage,
+    DetailOperation,
+    ListeOperation,
     CreationEventPage,
     CreationMouvementPage,
     DetailEventPage,
     AjoutParticipantPage,
     ModalPhoto,
+    ModalChoixEvent,
+    ModalChoixOperation,
     LoginPage,
     WalkthroughPage,
     ForgotPasswordPage,
@@ -116,6 +124,7 @@ export function RestangularConfigFactory (RestangularProvider) {
     GoogleLoginPage,
   ],
   providers: [
+    SMS,
     Constante,
     FacebookLoginService,
     GoogleLoginService,
@@ -128,11 +137,9 @@ export function RestangularConfigFactory (RestangularProvider) {
     SocialSharing,
     NativeStorage,
     InAppBrowser,
-    CallNumber,
     Facebook,
     GooglePlus,
-    Keyboard,
-    EmailComposer
+    Keyboard
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

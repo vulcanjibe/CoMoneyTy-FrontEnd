@@ -22,7 +22,7 @@ export class CreationMouvementPage {
   depense:Depense;
   creationMouvementForm: FormGroup;
   lastImage: string = null;
-  loading: any;
+//  loading: any;
   imageCamera: string = null;
   valid:boolean =false;
   options: CameraOptions = {
@@ -48,7 +48,7 @@ export class CreationMouvementPage {
              public toastCtrl: ToastController,
               private file: File,
               private filePath: FilePath) {
-    this.loading = this.loadingCtrl.create();
+
     this.creationMouvementForm = new FormGroup({
       commentaire: new FormControl('', Validators.compose([
         Validators.required])),
@@ -74,7 +74,7 @@ export class CreationMouvementPage {
   saveMouvement(){
     this.depense.commentaire = this.creationMouvementForm.get('commentaire').value;
     this.depense.date = this.creationMouvementForm.get('date').value;
-    this.depense.montant = this.creationMouvementForm.get('montant').value;
+    this.depense.montant = parseFloat(this.creationMouvementForm.get('montant').value);
     this.depense.typeRepartition="equitable";
 
     if (this.platform.is('mobileweb') || this.platform.is('core')) {
@@ -84,14 +84,14 @@ export class CreationMouvementPage {
     } else {
       this.lastImage = this.createFileName();
     }
-    this.depense.urlPhoto = this.lastImage;
-    this.loading = this.loadingCtrl.create({
+    this.depense.urlPhoto = "mouvement/"+this.lastImage;
+   /* this.loading = this.loadingCtrl.create({
       content: 'Enregistrement...',
     });
-    this.loading.present();
+    this.loading.present(); */
     this.restangular.one("depense").post("save",this.depense).subscribe(resp => {
       // Ajout à la liste
-      this.loading.dismissAll();
+      //this.loading.dismissAll();
       // il faut revoir toute la répartition...
       // On eclate le montant à part egal avec tout le montant
       let montant =  this.depense.montant/this.participants.length;
@@ -108,6 +108,7 @@ export class CreationMouvementPage {
 
     }, errorResponse => {
       console.log("Error with status code", errorResponse.status);
+
     });
 
     if (this.platform.is('mobileweb') || this.platform.is('core')) {
@@ -227,7 +228,7 @@ export class CreationMouvementPage {
       //this.event.type = this.creationMouvementForm.get('type').value;
 
     }, err => {
-      this.loading.dismissAll();
+
       this.presentToast('Error while uploading file.');
     });
   }

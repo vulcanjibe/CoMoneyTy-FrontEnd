@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle >
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Operation {{operationAvecDepense.operation.description}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-4>Description :</ion-col>
+      <ion-col col-8>{{operationAvecDepense.operation.description}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>Date :</ion-col>
+      <ion-col col-8>{{operationAvecDepense.operation.date}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>Montant :</ion-col>
+      <ion-col col-8>{{operationAvecDepense.operation.montant}} €</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>Type :</ion-col>
+      <ion-col col-8><ion-chip color="secondary" class="toto"> {{operationAvecDepense.operation.typeOperation.libelle}}</ion-chip></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>Iban Emetteur :</ion-col>
+      <ion-col col-8>{{operationAvecDepense.operation.ibanEmetteur}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>Iban Destinataire :</ion-col>
+      <ion-col col-8>{{operationAvecDepense.operation.ibanDestinataire}}</ion-col>
+    </ion-row>
+
+  </ion-grid>
+  <div  *ngIf="event!=null">
+    <p >Opération liée à l'event {{ event.libelle}} du {{ event.date}} </p>
+    <button ion-button color="danger" (tap)="supprimeLien()">Supprimer la dépense</button>
+
+
+  </div>
+
+  <p *ngIf="event==null">Opération non liée à un event</p>
+
+</ion-content>

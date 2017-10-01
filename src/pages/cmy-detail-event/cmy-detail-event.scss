@@ -8,9 +8,11 @@ cmy-detail-event {
 	{
 		background-color: color($colors, background, base);
 
+
 		.list-mini
 		{
 			@include layout-list-styles($theme-color-2, $white-d);
+
 
 			ion-list {
 				.list-item

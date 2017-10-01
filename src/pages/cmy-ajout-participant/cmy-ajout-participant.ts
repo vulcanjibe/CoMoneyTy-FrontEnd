@@ -47,6 +47,7 @@ export class AjoutParticipantPage {
 
   }
   close() {
+    let tab:Array<any>=[];
     for(let participantPresent of this.relations) {
       // Est-ce qu'il était là avant?
       let present = false;
@@ -60,31 +61,31 @@ export class AjoutParticipantPage {
       if(participantPresent.present &&!present){
         // Il est présnet mais n'était pas là avant
         let lien = new LienEventUser(participantPresent.user.id,this.event.id);
-        this.restangular.one("lienEventUser").post("save",lien).subscribe(resp => {
-          console.log("Ajout du participant : "+participantPresent.user.prenom);
+        tab.push(this.restangular.one("lienEventUser").post("save",lien).toPromise());
 
-          this.participantsEvent.push(new UserAvecDepense(participantPresent.user));
-        }, errorResponse => {
-          console.log("Error with status code", errorResponse.status);
-        });
       } else if(!participantPresent.present &&present){
         // Il a été enlevé
         let lien = new LienEventUser(participantPresent.user.id,this.event.id);
-        this.restangular.one("event").post("supprimeUser",lien).subscribe(resp => {
-          console.log("Ajout du participant : "+participantPresent.user.prenom);
-          let idx = 0;
-          for(let particp of this.participantsEvent) {
-            if(particp.user.id==participantPresent.user.id) {
-              break;
-            }
-            idx++;
-          }
-          this.participantsEvent.splice(idx,1);
-        }, errorResponse => {
-          console.log("Error with status code", errorResponse.status);
-        });
-
+        tab.push(this.restangular.one("event").post("supprimeUser",lien).toPromise());
       }
+
+
+    }
+    if(tab.length>0) {
+      // dans les 2 cas, je refresh la liste pour ne pas refaire les répartitions en local
+      Promise.all(tab).then(values=>{
+      this.restangular.all('event/' + this.event.id + '/users').getList().subscribe(particpants => {
+        //this.participantsEvent = particpants;
+        this.participantsEvent.splice(0,this.participantsEvent.length);
+        for(let part of particpants)
+          this.participantsEvent.push(part);
+        this.loading.dismiss();
+      }, errorResponse => {
+        console.log("Error with status code", errorResponse.status);
+      });
+      },err=>{
+        console.log("Error");
+      });
     }
     this.nav.pop();
   }

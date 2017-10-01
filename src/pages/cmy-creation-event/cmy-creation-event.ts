@@ -21,11 +21,12 @@ export class CreationEventPage {
   events: Array<Event>;
   creationEventForm: FormGroup;
   lastImage: string = null;
-  loading: any;
+//  loading: any;
   categories_checkbox_open: boolean;
   categories_checkbox_result;
   valid:boolean = false;
   imageCamera: string = null;
+
   options: CameraOptions = {
     quality: 100,
     sourceType:  this.camera.PictureSourceType.CAMERA,
@@ -50,7 +51,7 @@ export class CreationEventPage {
              public toastCtrl: ToastController,
               private file: File,
               private filePath: FilePath) {
-    this.loading = this.loadingCtrl.create();
+
     this.creationEventForm = new FormGroup({
       titre: new FormControl('', Validators.compose([
         Validators.required])),
@@ -78,15 +79,15 @@ export class CreationEventPage {
     } else {
       this.lastImage = this.createFileName();
     }
-    this.event.urlPhoto = this.lastImage;
-    this.loading = this.loadingCtrl.create({
+    this.event.urlPhoto = "event/"+this.lastImage;
+  /*  this.loading = this.loadingCtrl.create({
       content: 'Enregistrement...',
     });
-    this.loading.present();
+    this.loading.present(); */
 
     this.restangular.one("event").post("save",this.event).subscribe(resp => {
       // Ajout à la liste
-      this.loading.dismissAll();
+    //  this.loading.dismissAll();
       this.events.push(resp);
       if (this.platform.is('mobileweb') || this.platform.is('core')) {
         this.nav.pop();
@@ -240,7 +241,7 @@ export class CreationEventPage {
       //this.event.type = this.creationEventForm.get('type').value;
 
     }, err => {
-      this.loading.dismissAll();
+
       this.presentToast('Error while uploading file.');
     });
   }
