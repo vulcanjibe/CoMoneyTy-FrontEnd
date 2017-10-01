@@ -41,10 +41,13 @@ export class DetailEventPage {
   addNewParticipant() {
     console.log("Creation Event!");
    this.nav.push(AjoutParticipantPage,{theEvent:this.event,participantsEvent: this.participants});
+
   }
   rechercheOperation() {
     let modal = this.modalController.create(ModalChoixOperation,{'theEvent':this.event});
     modal.onDidDismiss(operationAvecDepense => {
+      if(operationAvecDepense==null)
+        return;
       this.loading = this.loadingCtrl.create({
         content: 'Enregistrement...',
       });

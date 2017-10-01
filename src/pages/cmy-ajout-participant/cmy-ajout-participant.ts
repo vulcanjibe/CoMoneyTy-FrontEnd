@@ -80,14 +80,17 @@ export class AjoutParticipantPage {
         for(let part of particpants)
           this.participantsEvent.push(part);
         this.loading.dismiss();
+        this.nav.pop();
       }, errorResponse => {
         console.log("Error with status code", errorResponse.status);
       });
       },err=>{
         console.log("Error");
       });
+    } else {
+      this.nav.pop();
     }
-    this.nav.pop();
+
   }
 
   toogle(relation:ParticipantPresent)
