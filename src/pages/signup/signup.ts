@@ -66,7 +66,9 @@ export class SignupPage {
     });
     this.loading.present();
 
-    this.restangular.one("user").post("save",user).subscribe(resp => {
+
+
+    this.restangular.one("user").post("create",user).subscribe(resp => {
       // Ajout à la liste
       this.loading.dismissAll();
       localStorage.removeItem('id_token');

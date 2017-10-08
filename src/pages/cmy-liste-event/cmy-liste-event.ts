@@ -19,6 +19,19 @@ export class List2EventPage {
   constructor(public nav: NavController,public constante:Constante,
     public loadingCtrl: LoadingController,private restangular: Restangular) {
     this.loading = this.loadingCtrl.create();
+    this.constante.eventChange.subscribe(event => {
+      console.log("Event modifié!!!");
+      if(this.events==null)
+        return;
+      for(let ev of this.events)
+      {
+        if(ev.id==event.id)
+        {
+          ev.montantTotal=event.montantTotal;
+          break;
+        }
+      }
+    });
   }
 
   ionViewDidLoad() {

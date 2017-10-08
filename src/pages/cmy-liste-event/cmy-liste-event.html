@@ -19,10 +19,10 @@
           <ion-col no-padding col-6 class="item-content">
             <h3 class="item-title"> {{event.libelle}}</h3>
             <p class="item-description"> Date : {{event.date}}</p>
-            <p class="item-description"> Solde : {{event.montant}} €</p>
+            <p class="item-description"> Montant Total : {{event.montantTotal.toFixed(2)}} €</p>
           </ion-col>
           <ion-col no-padding col-2 class="item-icon" >
-            <ion-icon name="warning"  style="  color : red;" *ngIf="event.montant>50"></ion-icon>
+            <ion-icon name="warning"  style="  color : red;" *ngIf="event.montantDu>0"></ion-icon>
           </ion-col>
           <ion-col no-padding  col-1 class="item-icon" style="text-align: end;">
               <ion-icon name="arrow-forward"></ion-icon>

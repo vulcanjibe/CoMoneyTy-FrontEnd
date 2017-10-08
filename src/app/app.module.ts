@@ -1,17 +1,17 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
-
+import {Contacts} from "@ionic-native/contacts";
 import { List2EventPage } from '../pages/cmy-liste-event/cmy-liste-event';
 import { ListeOperation } from '../pages/cmy-liste-operation/cmy-liste-operation';
 import { CreationEventPage } from '../pages/cmy-creation-event/cmy-creation-event';
 import { CreationMouvementPage } from '../pages/cmy-creation-mouvement/cmy-creation-mouvement';
 import { DetailEventPage } from '../pages/cmy-detail-event/cmy-detail-event';
 import { AjoutParticipantPage } from '../pages/cmy-ajout-participant/cmy-ajout-participant';
-
+import { ListeDepense} from "../pages/cmy-liste-depense/cmy-liste-depense";
 import {ModalPhoto} from  '../pages/cmy-modal/modal-photo';
 import {ModalChoixEvent} from  '../pages/cmy-modal/modal-choix-event';
-import {Constante} from '../pages/cmy-model/cmy.model';
+import {Constante, Message} from '../pages/cmy-model/cmy.model';
 import { LoginPage } from '../pages/login/login';
 
 import { SignupPage } from '../pages/signup/signup';
@@ -31,7 +31,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { SocialSharing } from '@ionic-native/social-sharing';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Facebook } from '@ionic-native/facebook';
@@ -54,6 +53,11 @@ import {DetailOperation} from "../pages/cmy-detail-operation/cmy-detail-operatio
 import {ModalChoixOperation} from "../pages/cmy-modal/modal-choix-operation";
 import { Transfer } from '@ionic-native/transfer';
 import { SMS } from '@ionic-native/sms';
+import {GestionAmi} from "../pages/cmy-gestion-ami/cmy-gestion-ami";
+import {InvitationAmi} from "../pages/cmy-invitation-ami/cmy-invitation-ami";
+import {ListeMessage} from "../pages/cmy-list-message/cmy-liste-message";
+import {GestionProfile} from "../pages/cmy-gestion-profile/cmy-gestion-profile";
+
 // Function for setting the default restangular configuration
 
 export function RestangularConfigFactory (RestangularProvider) {
@@ -76,8 +80,13 @@ export function RestangularConfigFactory (RestangularProvider) {
   declarations: [
     MyApp,
     DetailEventPage,
+    GestionProfile,
     CreationMouvementPage,
     DetailOperation,
+    ListeDepense,
+    GestionAmi,
+    InvitationAmi,
+    ListeMessage,
     AjoutParticipantPage,
     ModalPhoto,
     ModalChoixEvent,
@@ -106,12 +115,18 @@ export function RestangularConfigFactory (RestangularProvider) {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    GestionProfile,
+    ListeMessage,
     List2EventPage,
     DetailOperation,
+    ListeDepense,
+    GestionAmi,
     ListeOperation,
+    ListeMessage,
     CreationEventPage,
     CreationMouvementPage,
     DetailEventPage,
+    InvitationAmi,
     AjoutParticipantPage,
     ModalPhoto,
     ModalChoixEvent,
@@ -129,12 +144,12 @@ export function RestangularConfigFactory (RestangularProvider) {
     FacebookLoginService,
     GoogleLoginService,
     Camera,
+    Contacts,
     File,
     FilePath,
     Transfer,
 	  SplashScreen,
 	  StatusBar,
-    SocialSharing,
     NativeStorage,
     InAppBrowser,
     Facebook,

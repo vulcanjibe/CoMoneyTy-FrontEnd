@@ -98,8 +98,11 @@ export class CreationMouvementPage {
       for(let participant of this.participants)
         if(participant.user.id!=this.depense.idPayeur)
           participant.doit+=montant;
-        else participant.aPaye+=this.depense.montant;
-
+        else {
+          participant.aPaye += this.depense.montant;
+          participant.doit -= this.depense.montant - montant;
+        }
+      this.event.montantTotal+=this.depense.montant;
       // let component_page : any = { component: List2EventPage };
       //this.nav.setRoot( component_page.component);
       if (this.platform.is('mobileweb') || this.platform.is('core')) {

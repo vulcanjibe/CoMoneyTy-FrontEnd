@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Inviter un contact</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="list-mini-content">
+  <ion-searchbar (ionInput)="filtreContact($event)"></ion-searchbar>
+  <ion-list >
+    <button  (press)="envoiInvitation(contact)" ion-item *ngFor="let contact of contacts">
+      <ion-row align-items-center justifiy-content-end no-padding [ngClass]="{ 'DejaInvite':contact.dejaInvite}">
+        <ion-col no-padding col-3 class="item-avatar">
+          <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='contact.photo' *ngIf="!contact.photo.startsWith('user')"></preload-image>
+          <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.BASE_URL_IMAGE+"/"+contact.photo' *ngIf="contact.photo.startsWith('user')"></preload-image>
+        </ion-col>
+        <ion-col class="libelle" col-9>
+          <h3>{{contact.displayName}}</h3>
+          <p><span *ngIf="contact.phoneNumber">{{contact.phoneNumber}}</span> - <span *ngIf="contact.email">{{contact.email}}</span></p>
+        </ion-col>
+      </ion-row>
+    </button>
+  </ion-list>
+
+
+</ion-content>

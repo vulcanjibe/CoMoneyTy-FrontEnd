@@ -80,7 +80,7 @@ export class ListeOperation {
 
           let depense = new Depense(this.constante.user.id,event.id);
           depense.idOperation=operation.id;
-          depense.montant=operation.montant;
+          depense.montant=-operation.montant;
           depense.commentaire=operation.description;
           depense.date=operation.date;
           this.restangular.one("depense").post("save",depense).subscribe(resp => {

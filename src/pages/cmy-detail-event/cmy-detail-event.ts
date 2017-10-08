@@ -9,6 +9,7 @@ import { AjoutParticipantPage } from '../cmy-ajout-participant/cmy-ajout-partici
 import {Restangular} from 'ngx-restangular';
 import {CreationMouvementPage} from "../cmy-creation-mouvement/cmy-creation-mouvement";
 import {ModalChoixOperation} from "../cmy-modal/modal-choix-operation";
+import {ListeDepense} from "../cmy-liste-depense/cmy-liste-depense";
 @Component({
   selector: 'detail-event-page',
   templateUrl: 'cmy-detail-event.html',
@@ -40,7 +41,9 @@ export class DetailEventPage {
 
   addNewParticipant() {
     console.log("Creation Event!");
-   this.nav.push(AjoutParticipantPage,{theEvent:this.event,participantsEvent: this.participants});
+   this.nav.push(AjoutParticipantPage,{theEvent:this.event,participantsEvent: this.participants}).then(end=>{
+     console.log("eeeeeee");
+   });
 
   }
   rechercheOperation() {
@@ -55,7 +58,7 @@ export class DetailEventPage {
       let operation = operationAvecDepense.operation;
       let depense = new Depense(this.constante.user.id,this.event.id);
       depense.idOperation=operation.id;
-      depense.montant=operation.montant;
+      depense.montant=-operation.montant;
       depense.commentaire=operation.description;
       depense.date=operation.date;
       this.restangular.one("depense").post("save",depense).subscribe(resp => {
@@ -67,8 +70,11 @@ export class DetailEventPage {
         for(let participant of this.participants)
           if(participant.user.id!=depense.idPayeur)
             participant.doit+=montant;
-          else participant.aPaye+=depense.montant;
-
+          else {
+            participant.aPaye += depense.montant;
+            participant.doit -= depense.montant - montant;
+          }
+        this.event.montantTotal+=depense.montant;
       }, errorResponse => {
         console.log("Error with status code", errorResponse.status);
 
@@ -103,13 +109,17 @@ export class DetailEventPage {
     let options = {
       replaceLineBreaks: false,
       android : {
-        intent: 'INTENT'
+        intent: ''
       }
     }
-    this.smsProvider.send("0682667921",'Ca roule?',options).then(rep=>{
+    this.smsProvider.send("0682667921",'Ca roulegggg?',options).then(rep=>{
 
     },err=> {
 
     })
   };
+
+  showDepense() {
+    this.nav.push(ListeDepense,{theEvent:this.event, theParticipants:this.participants});
+  }
 }

@@ -12,11 +12,11 @@
     <ion-list >
       <button  (tap)="detail(operationAvecDepense); false" (press)="transfert(operationAvecDepense); false" ion-item *ngFor="let operationAvecDepense of operations">
         <ion-row align-items-center justifiy-content-end no-padding [ngClass]="{ 'AvecDepense':operationAvecDepense.depense!=null}">
-          <ion-col col-2> {{operationAvecDepense.operation.date}}</ion-col>
-          <ion-col class="libelle" col-6> {{operationAvecDepense.operation.description}}</ion-col>
-          <ion-col col-2> {{operationAvecDepense.operation.montant}} €</ion-col>
-          <ion-col col-2 *ngIf="operationAvecDepense.operation.montant>0"> <ion-chip  color="secondary" class="toto"> {{operationAvecDepense.operation.typeOperation.libelle}}</ion-chip></ion-col>
-          <ion-col col-2 *ngIf="operationAvecDepense.operation.montant<0"> <ion-chip  color="danger" class="toto"> {{operationAvecDepense.operation.typeOperation.libelle}}</ion-chip></ion-col>
+          <ion-col no-padding style="font-size:0.8em" col-2> {{operationAvecDepense.operation.date}}</ion-col>
+          <ion-col no-padding  class="libelle" col-6> {{operationAvecDepense.operation.description}}</ion-col>
+          <ion-col no-padding style="font-size:0.8em" col-2> {{operationAvecDepense.operation.montant}} €</ion-col>
+          <ion-col no-padding col-2 *ngIf="operationAvecDepense.operation.montant>0"> <ion-chip  color="secondary" class="toto"> {{operationAvecDepense.operation.typeOperation.libelle}}</ion-chip></ion-col>
+          <ion-col no-padding col-2 *ngIf="operationAvecDepense.operation.montant<0"> <ion-chip  color="danger" class="toto"> {{operationAvecDepense.operation.typeOperation.libelle}}</ion-chip></ion-col>
         </ion-row>
       </button>
     </ion-list>

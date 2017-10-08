@@ -1,8 +1,12 @@
 // Common list styles can be found in "./common.styles/layouts/lists"
-modal-choix-operation {
+liste-depense {
+	ion-header {
+		@include header-styles(color($colors, header-alt, base), color($colors, header-alt, contrast));
+
+	}
 
   ion-chip.toto {
-    font-size: 0.6em;
+    font-size: xx-small;
     padding-right: 2px;
     padding-left: 2px;
     width: 100%;
@@ -10,7 +14,6 @@ modal-choix-operation {
 
   ion-col.libelle {
     font-weight: bold;
-    font-size: 0.8em;
   }
 
   .AvecDepense {

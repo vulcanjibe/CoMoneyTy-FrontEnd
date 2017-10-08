@@ -50,7 +50,7 @@ export class LoginPage {
     this.restangular.one("user").post("login",this.user).subscribe(resp => {
       localStorage.setItem('id_token', resp.id);
       localStorage.setItem('user', JSON.stringify(resp.user));
-      this.constante.user=resp.user;
+      this.constante.login(resp.user);
       this.nav.setRoot(this.main_page.component);
     }, errorResponse => {
       console.log("Error with status code", errorResponse.status);

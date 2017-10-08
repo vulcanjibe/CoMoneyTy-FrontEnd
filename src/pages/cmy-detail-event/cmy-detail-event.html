@@ -26,7 +26,8 @@
         </ion-col>
         <ion-col no-padding  col-4 style="text-align: end;"  class="item-content">
           <h3 class="item-title"> A payé {{participant.aPaye}} €</h3>
-          <h3 class="item-title"> Doit {{participant.doit.toFixed(2)}} €</h3>
+          <h3 class="item-title" *ngIf="participant.doit.toFixed(2)>0"> Doit payer {{participant.doit.toFixed(2)}} €</h3>
+          <h3 class="item-title" *ngIf="participant.doit.toFixed(2)<0"> Doit récupérer {{-participant.doit.toFixed(2)}} €</h3>
         </ion-col>
       </ion-row>
     </div>
@@ -47,7 +48,7 @@
     <ion-segment-button value="search" (tap)="rechercheOperation()">
       <ion-icon name="search"></ion-icon>
     </ion-segment-button>
-    <ion-segment-button value="bookmark">
+    <ion-segment-button value="bookmark" (tap)="showDepense()">
       <ion-icon name="bookmark"></ion-icon>
     </ion-segment-button>
   </ion-segment>

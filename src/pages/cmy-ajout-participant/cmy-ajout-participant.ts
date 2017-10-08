@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController,NavParams } from 'ionic-angular';
-
 import 'rxjs/Rx';
 
 import {Event, Constante, User, LienEventUser, UserAvecDepense} from '../cmy-model/cmy.model';
@@ -28,7 +27,7 @@ export class AjoutParticipantPage {
   ionViewDidLoad() {
     this.loading.present();
     // récupération de toutes les relations
-    this.restangular.all('user/relations').getList().subscribe(relations => {
+    this.restangular.all('user/'+this.constante.user.id+'/relations').getList().subscribe(relations => {
       this.relations = new Array();
       for(let relation of relations) {
         // Est-ce qu'il est déjà ajouté
@@ -52,7 +51,7 @@ export class AjoutParticipantPage {
       // Est-ce qu'il était là avant?
       let present = false;
       for(let userAvecDepense of this.participantsEvent) {
-        if(userAvecDepense.user.id==participantPresent.user.id) {
+        if(userAvecDepense.user.id==participantPresent.participant.id) {
           present = true;
           break;
         }
@@ -60,12 +59,12 @@ export class AjoutParticipantPage {
 
       if(participantPresent.present &&!present){
         // Il est présnet mais n'était pas là avant
-        let lien = new LienEventUser(participantPresent.user.id,this.event.id);
+        let lien = new LienEventUser(participantPresent.participant.id,this.event.id);
         tab.push(this.restangular.one("lienEventUser").post("save",lien).toPromise());
 
       } else if(!participantPresent.present &&present){
         // Il a été enlevé
-        let lien = new LienEventUser(participantPresent.user.id,this.event.id);
+        let lien = new LienEventUser(participantPresent.participant.id,this.event.id);
         tab.push(this.restangular.one("event").post("supprimeUser",lien).toPromise());
       }
 
@@ -74,16 +73,7 @@ export class AjoutParticipantPage {
     if(tab.length>0) {
       // dans les 2 cas, je refresh la liste pour ne pas refaire les répartitions en local
       Promise.all(tab).then(values=>{
-      this.restangular.all('event/' + this.event.id + '/users').getList().subscribe(particpants => {
-        //this.participantsEvent = particpants;
-        this.participantsEvent.splice(0,this.participantsEvent.length);
-        for(let part of particpants)
-          this.participantsEvent.push(part);
-        this.loading.dismiss();
-        this.nav.pop();
-      }, errorResponse => {
-        console.log("Error with status code", errorResponse.status);
-      });
+        this.refresh();
       },err=>{
         console.log("Error");
       });
@@ -97,11 +87,26 @@ export class AjoutParticipantPage {
   {
     relation.present=!relation.present;
   }
+
+  refresh() {
+    // Essai par recalcule complet
+
+    this.restangular.all('event/' + this.event.id + '/users').getList().subscribe(particpants => {
+      //this.participantsEvent = particpants;
+      this.participantsEvent.splice(0,this.participantsEvent.length);
+      for(let part of particpants)
+        this.participantsEvent.push(part);
+      this.loading.dismiss();
+      this.nav.pop();
+    }, errorResponse => {
+      console.log("Error with status code", errorResponse.status);
+    });
+  }
 }
 class ParticipantPresent {
   participant: User;
   present: boolean;
-  constructor(public user: User,public pres:boolean) {
+  constructor(private user: User,private pres:boolean) {
     this.participant=user;
     this.present = pres;
   }
