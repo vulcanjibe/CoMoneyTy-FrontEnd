@@ -16,6 +16,7 @@ export class AjoutParticipantPage {
   relations: Array<ParticipantPresent>;
   loading: any;
   event: Event;
+  encours:boolean = false;
   participantsEvent: Array<UserAvecDepense>;
   constructor(public nav: NavController,public constante:Constante,
     public loadingCtrl: LoadingController,private restangular: Restangular,public params: NavParams) {
@@ -41,11 +42,12 @@ export class AjoutParticipantPage {
       }
       this.loading.dismiss();
     },errorResponse => {
-      console.log("Error with status code", errorResponse.status);
+      this.constante.traiteErreur(errorResponse,this);
     });
 
   }
   close() {
+    this.encours=true;
     let tab:Array<any>=[];
     for(let participantPresent of this.relations) {
       // Est-ce qu'il était là avant?
@@ -59,13 +61,17 @@ export class AjoutParticipantPage {
 
       if(participantPresent.present &&!present){
         // Il est présnet mais n'était pas là avant
-        let lien = new LienEventUser(participantPresent.participant.id,this.event.id);
-        tab.push(this.restangular.one("lienEventUser").post("save",lien).toPromise());
-
+        let lien = this.restangular.copy(new LienEventUser(participantPresent.participant.id,this.event.id));
+        lien.route='lienEventUser';
+       // tab.push(this.restangular.one("lienEventUser").post("save",lien).toPromise());
+        tab.push(lien.save().toPromise());
       } else if(!participantPresent.present &&present){
         // Il a été enlevé
+      /*  let lien = this.restangular.copy(new LienEventUser(participantPresent.participant.id,this.event.id));
+        lien.route='lienEventUser'; */
         let lien = new LienEventUser(participantPresent.participant.id,this.event.id);
         tab.push(this.restangular.one("event").post("supprimeUser",lien).toPromise());
+        //tab.push(lien.remove().toPromise());
       }
 
 
@@ -75,9 +81,11 @@ export class AjoutParticipantPage {
       Promise.all(tab).then(values=>{
         this.refresh();
       },err=>{
-        console.log("Error");
+        this.encours=false;
+        this.constante.traiteErreur(err,this);
       });
     } else {
+      this.encours=false;
       this.nav.pop();
     }
 
@@ -93,13 +101,16 @@ export class AjoutParticipantPage {
 
     this.restangular.all('event/' + this.event.id + '/users').getList().subscribe(particpants => {
       //this.participantsEvent = particpants;
+      console.log("REFRESH : "+this.participantsEvent.length+" -> "+particpants.length);
       this.participantsEvent.splice(0,this.participantsEvent.length);
       for(let part of particpants)
         this.participantsEvent.push(part);
       this.loading.dismiss();
+      this.encours=false;
       this.nav.pop();
     }, errorResponse => {
-      console.log("Error with status code", errorResponse.status);
+      this.encours=false;
+      this.constante.traiteErreur(errorResponse,this);
     });
   }
 }

@@ -13,8 +13,7 @@
     <button  (press)="envoiInvitation(contact)" ion-item *ngFor="let contact of contacts">
       <ion-row align-items-center justifiy-content-end no-padding [ngClass]="{ 'DejaInvite':contact.dejaInvite}">
         <ion-col no-padding col-3 class="item-avatar">
-          <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='contact.photo' *ngIf="!contact.photo.startsWith('user')"></preload-image>
-          <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.BASE_URL_IMAGE+"/"+contact.photo' *ngIf="contact.photo.startsWith('user')"></preload-image>
+          <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(contact.photo)'></preload-image>
         </ion-col>
         <ion-col class="libelle" col-9>
           <h3>{{contact.displayName}}</h3>

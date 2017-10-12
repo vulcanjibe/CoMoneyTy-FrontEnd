@@ -18,10 +18,11 @@ declare var cordova: any;
 })
 export class CreationEventPage {
   event: Event;
+  encours:boolean = false;
   events: Array<Event>;
   creationEventForm: FormGroup;
   lastImage: string = null;
-//  loading: any;
+  loading: any;
   categories_checkbox_open: boolean;
   categories_checkbox_result;
   valid:boolean = false;
@@ -77,32 +78,52 @@ export class CreationEventPage {
       // Pas de photo
       this.lastImage = "standard.png";
     } else {
-      this.lastImage = this.createFileName();
+      if(this.imageCamera==null) {
+        // Pas de photo prise
+        this.lastImage = "standard.png";
+      } else
+        this.lastImage = this.createFileName();
     }
+
     this.event.urlPhoto = "event/"+this.lastImage;
   /*  this.loading = this.loadingCtrl.create({
       content: 'Enregistrement...',
     });
     this.loading.present(); */
-
+    this.encours = true;
     this.restangular.one("event").post("save",this.event).subscribe(resp => {
       // Ajout à la liste
     //  this.loading.dismissAll();
       this.events.push(resp);
       if (this.platform.is('mobileweb') || this.platform.is('core')) {
+        this.encours = false;
+        this.nav.pop();
+      } else if(this.lastImage=="standard.png") {
+        //Pas de photo à envoyer
+        this.encours = false;
         this.nav.pop();
       }
       // let component_page : any = { component: List2EventPage };
       //this.nav.setRoot( component_page.component);
     }, errorResponse => {
-      console.log("Error with status code", errorResponse.status);
+      this.constante.traiteErreur(errorResponse,this);
     });
 
     if (this.platform.is('mobileweb') || this.platform.is('core')) {
       // This will only print when running on desktop
       // Pas de photo
-    }
-    else {
+    } else if(this.lastImage=="standard.png") {
+      //Pas de photo
+    } else {
+      if(imagePath==null)
+      {
+        this.nav.pop();
+        return;
+      }
+      this.loading = this.loadingCtrl.create({
+        content: 'Enregistrement...',
+      });
+      this.loading.present();
       if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
         this.filePath.resolveNativePath(imagePath)
           .then(filePath => {
@@ -124,24 +145,29 @@ export class CreationEventPage {
     let alert = this.alertCtrl.create({
       cssClass: 'category-prompt'
     });
-    alert.setTitle('Category');
+    alert.setTitle('Categorie');
 
     alert.addInput({
       type: 'checkbox',
-      label: 'Alderaan',
-      value: 'value1',
+      label: 'Sortie',
+      value: 'sortie',
       checked: true
     });
 
     alert.addInput({
       type: 'checkbox',
-      label: 'Bespin',
-      value: 'value2'
+      label: 'Soirée',
+      value: 'soirée'
+    });
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Coloc',
+      value: 'coloc'
     });
 
-    alert.addButton('Cancel');
+    alert.addButton('Annule');
     alert.addButton({
-      text: 'Confirm',
+      text: 'OK',
       handler: data => {
         console.log('Checkbox data:', data);
         this.categories_checkbox_open = false;
@@ -165,7 +191,7 @@ export class CreationEventPage {
         this.valid=true;
         this.imageCamera = imagePath;
       }, (err) => {
-        console.log(err);
+        this.constante.traiteErreur(err,this);
       });
     }
   }
@@ -198,7 +224,7 @@ export class CreationEventPage {
       this.uploadImage();
 
     }, error => {
-      this.presentToast('Error while storing file.');
+      this.constante.traiteErreur(error,this);
     });
   }
 
@@ -236,13 +262,14 @@ export class CreationEventPage {
 
     // Use the FileTransfer to upload the image
     fileTransfer.upload(targetPath, url, options).then(data => {
+      this.loading.dismissAll();
       this.nav.pop();
       this.presentToast('Image succesful uploaded.');
       //this.event.type = this.creationEventForm.get('type').value;
-
+      this.encours = false;
     }, err => {
-
-      this.presentToast('Error while uploading file.');
+      this.encours = false;
+      this.constante.traiteErreur(err,this);
     });
   }
 

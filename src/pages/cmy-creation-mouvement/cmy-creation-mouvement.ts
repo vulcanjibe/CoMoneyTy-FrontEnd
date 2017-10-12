@@ -110,7 +110,7 @@ export class CreationMouvementPage {
       }
 
     }, errorResponse => {
-      console.log("Error with status code", errorResponse.status);
+      this.constante.traiteErreur(errorResponse,this);
 
     });
 
@@ -157,7 +157,7 @@ export class CreationMouvementPage {
         this.valid=true;
         this.imageCamera = imagePath;
       }, (err) => {
-        console.log(err);
+        this.constante.traiteErreur(err,this);
       });
     }
   }
@@ -190,7 +190,7 @@ export class CreationMouvementPage {
       this.uploadImage();
 
     }, error => {
-      this.presentToast('Error while storing file.');
+      this.constante.traiteErreur(error,this);
     });
   }
 
@@ -229,10 +229,8 @@ export class CreationMouvementPage {
       this.nav.pop();
       this.presentToast('Image succesful uploaded.');
       //this.event.type = this.creationMouvementForm.get('type').value;
-
     }, err => {
-
-      this.presentToast('Error while uploading file.');
+      this.constante.traiteErreur(err,this);
     });
   }
 

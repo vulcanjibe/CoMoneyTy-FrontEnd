@@ -14,26 +14,27 @@ import {Restangular} from 'ngx-restangular';
 })
 export class List2EventPage {
   events: Array<Event>;
+  eventsComplet: Array<Event>;
   loading: any;
-
+  depenseTotale: number;
   constructor(public nav: NavController,public constante:Constante,
     public loadingCtrl: LoadingController,private restangular: Restangular) {
     this.loading = this.loadingCtrl.create();
     this.constante.eventChange.subscribe(event => {
-      console.log("Event modifié!!!");
-      if(this.events==null)
-        return;
-      for(let ev of this.events)
-      {
-        if(ev.id==event.id)
-        {
-          ev.montantTotal=event.montantTotal;
-          break;
-        }
-      }
+      console.log("TouchEvent!");
+
+      this.calculResume();
     });
   }
-
+  calculResume() {
+    this.depenseTotale = 0;
+    if(this.eventsComplet==null)
+      return;
+    for(let event of this.eventsComplet)
+    {
+      this.depenseTotale+=event.montantDepense;
+    }
+  }
   ionViewDidLoad() {
     this.loading.present();
 
@@ -41,9 +42,11 @@ export class List2EventPage {
     // This will query /accounts and return a observable.
     this.restangular.all('user/'+this.constante.user.id+'/events').getList().subscribe(events => {
       this.events = events;
+      this.eventsComplet = events;
+      this.calculResume();
       this.loading.dismiss();
     },errorResponse => {
-      console.log("Error with status code", errorResponse.status);
+      this.constante.traiteErreur(errorResponse,this);
     });
 
   }
@@ -55,4 +58,19 @@ export class List2EventPage {
     console.log("Ouverture de "+eventSelectionne.id);
     this.nav.push(DetailEventPage,{theEvent:eventSelectionne});
   };
+
+  filtreEvent(ev) {
+    console.log('Filtre');
+    let val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.events = this.eventsComplet.filter((item) => {
+        return (JSON.stringify(item).toLocaleLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    } else {
+      this.events = this.eventsComplet;
+    }
+  }
+
 }

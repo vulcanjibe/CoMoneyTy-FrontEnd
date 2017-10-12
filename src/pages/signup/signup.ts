@@ -79,7 +79,7 @@ export class SignupPage {
       // let component_page : any = { component: List2EventPage };
       this.nav.setRoot(  List2EventPage );
     }, errorResponse => {
-      console.log("Error with status code", errorResponse.status);
+      this.constante.traiteErreur(errorResponse,this);
     });
 
   }
@@ -112,7 +112,7 @@ export class SignupPage {
           env.constante.user=resp.user;
           env.nav.setRoot(env.main_page.component);
         }, errorResponse => {
-          console.log("Error with status code", errorResponse.status);
+          this.constante.traiteErreur(errorResponse,this);
         });
 
       }, function(error){
@@ -137,11 +137,11 @@ export class SignupPage {
               env.constante.user=resp.user;
               env.nav.setRoot(env.main_page.component);
             }, errorResponse => {
-              console.log("Error with status code", errorResponse.status);
+              this.constante.traiteErreur(errorResponse,this);
             });
 
           }, function(err){
-            console.log("Facebook Login error", err);
+            this.constante.traiteErreur(err,this);
           });
       });
   }
@@ -163,7 +163,7 @@ export class SignupPage {
         env.loading.dismiss();
         env.nav.setRoot(env.main_page.component);
       }, function(err){
-        console.log("Google Login error", err);
+        this.constante.traiteErreur(err,this);
         env.loading.dismiss();
       });
     });

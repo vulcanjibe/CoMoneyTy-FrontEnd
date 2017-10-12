@@ -17,4 +17,11 @@ modal-choix-operation {
     opacity: 0.6;
     text-decoration:line-through;
   }
+
+  .negatif {
+    color : darkred;
+  }
+  .positif {
+    color : darkgreen;
+  }
 }

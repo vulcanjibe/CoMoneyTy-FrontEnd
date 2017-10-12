@@ -43,7 +43,7 @@ export class InvitationAmi {
         this.loading.dismiss();
       },errorResponse => {
         this.loading.dismiss();
-        console.log("Error with status code", errorResponse.status);
+        this.constante.traiteErreur(errorResponse,this);
       });
     } else {
       // récupération de toutes les relations
@@ -97,7 +97,7 @@ export class InvitationAmi {
        this.initContacts();
        this.loading.dismissAll();
       },err=>{
-        console.log("ERROR="+err);
+        this.constante.traiteErreur(err,this);
       });
     }
 
@@ -164,8 +164,7 @@ export class InvitationAmi {
       contact.dejaInvite=true;
       this.invitations.push(resp);
     }, errorResponse => {
-      console.log("Error with status code", errorResponse.status);
-
+      this.constante.traiteErreur(errorResponse,this);
     });
 
   }
@@ -179,6 +178,8 @@ export class InvitationAmi {
       this.contacts = this.contactsComplet.filter((item) => {
         return (JSON.stringify(item).toLocaleLowerCase().indexOf(val.toLowerCase()) > -1);
       })
+    } else {
+      this.contacts = this.contactsComplet;
     }
   }
 }

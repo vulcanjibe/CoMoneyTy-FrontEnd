@@ -14,16 +14,16 @@
         <ion-row align-items-center no-padding class="content-row one-line">
           <!-- You can limit the rows of the description by using the class one-line. If you remove it, all the content from the row will be shown -->
           <ion-col no-padding col-3 class="item-avatar">
-            <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.BASE_URL_IMAGE+"/"+depense.user.urlAvatar'></preload-image>
+            <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(depense.user.urlAvatar)'></preload-image>
           </ion-col>
-          <ion-col no-padding col-6 class="item-content">
+          <ion-col col-6 class="item-content">
             <h3 class="item-title"> Dépense : {{depense.depense.commentaire}}</h3>
             <p class="item-description"> Date : {{depense.depense.date}}</p>
             <p class="item-description"> Montant : {{depense.depense.montant.toFixed(2)}} €</p>
             <p class="item-description"> Payé par : {{depense.user.prenom}}</p>
           </ion-col>
-          <ion-col no-padding col-3 class="item-avatar">
-            <preload-image class="avatar-image" *ngIf="depense.depense.urlPhoto" [ratio]="{w:1, h:1}" [src]='constante.BASE_URL_IMAGE+"/"+depense.depense.urlPhoto'></preload-image>
+          <ion-col col-3 class="item-avatar">
+            <preload-image class="avatar-image" *ngIf="depense.depense.urlPhoto" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(depense.depense.urlPhoto)'></preload-image>
           </ion-col>
         </ion-row>
       </button>

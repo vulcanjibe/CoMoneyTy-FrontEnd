@@ -44,7 +44,7 @@ export class WalkthroughPage {
           }, function(error){
             console.log(error);
           });
-        request="/me/friendlists"
+        request="/me/friendlists";
         env.fb.api(request, [])
           .then(function(user) {
             //now we have the users info, let's save it in the NativeStorage
@@ -52,7 +52,7 @@ export class WalkthroughPage {
           }, function(error){
             console.log(error);
           });
-        request="/me/friends"
+        request="/me/friends";
         env.fb.api(request, [])
           .then(function(user) {
             //now we have the users info, let's save it in the NativeStorage

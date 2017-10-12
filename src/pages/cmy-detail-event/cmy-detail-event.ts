@@ -10,6 +10,7 @@ import {Restangular} from 'ngx-restangular';
 import {CreationMouvementPage} from "../cmy-creation-mouvement/cmy-creation-mouvement";
 import {ModalChoixOperation} from "../cmy-modal/modal-choix-operation";
 import {ListeDepense} from "../cmy-liste-depense/cmy-liste-depense";
+import {BilanEvent} from "../cmy-bilan-event/cmy-bilan-event";
 @Component({
   selector: 'detail-event-page',
   templateUrl: 'cmy-detail-event.html',
@@ -34,7 +35,7 @@ export class DetailEventPage {
       this.participants = particpants;
       this.loading.dismiss();
     }, errorResponse => {
-      console.log("Error with status code", errorResponse.status);
+      this.constante.traiteErreur(errorResponse,this);
     });
 
   }
@@ -42,7 +43,7 @@ export class DetailEventPage {
   addNewParticipant() {
     console.log("Creation Event!");
    this.nav.push(AjoutParticipantPage,{theEvent:this.event,participantsEvent: this.participants}).then(end=>{
-     console.log("eeeeeee");
+
    });
 
   }
@@ -75,10 +76,10 @@ export class DetailEventPage {
             participant.doit -= depense.montant - montant;
           }
         this.event.montantTotal+=depense.montant;
+        this.event.montantDepense+=depense.montant;
+        this.constante.touchEvent(this.event);
       }, errorResponse => {
-        console.log("Error with status code", errorResponse.status);
-
-
+        this.constante.traiteErreur(errorResponse,this);
       });
     });
     modal.present();
@@ -94,11 +95,11 @@ export class DetailEventPage {
       android : {
         intent: 'INTENT'
       }
-    }
+    };
     this.smsProvider.send("0682667921",'Ca roule?',options).then(rep=>{
 
     },err=> {
-
+      this.constante.traiteErreur(err,this);
     })
   };
   interaction(participant) {
@@ -111,15 +112,19 @@ export class DetailEventPage {
       android : {
         intent: ''
       }
-    }
+    };
     this.smsProvider.send("0682667921",'Ca roulegggg?',options).then(rep=>{
 
     },err=> {
-
+      this.constante.traiteErreur(err,this);
     })
   };
 
   showDepense() {
     this.nav.push(ListeDepense,{theEvent:this.event, theParticipants:this.participants});
+  }
+
+  bilan() {
+    this.nav.push(BilanEvent,{theEvent:this.event, theParticipants:this.participants});
   }
 }

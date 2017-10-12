@@ -1,6 +1,9 @@
 
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {ToastController} from "ionic-angular";
+import {Injectable} from "@angular/core";
 
+@Injectable()
 export class Constante {
   readonly BASE_URL_REST:string = 'http://vulcanjibe.ddns.net:8080/CoMoneyTy-0.0.1-SNAPSHOT/rest';
   readonly BASE_URL_IMAGE:string = 'http://vulcanjibe.ddns.net:8080/Image';
@@ -9,6 +12,9 @@ export class Constante {
   event:Event;
   userChange : BehaviorSubject<User> = new BehaviorSubject(this.user);
   eventChange: BehaviorSubject<Event> = new BehaviorSubject(this.event);
+  constructor(private toastCtrl:ToastController) {
+
+  }
   touchEvent(newEvent:Event)
   {
     this.event = newEvent;
@@ -25,6 +31,28 @@ export class Constante {
     this.user.nom="....";
     this.userChange.next(this.user);
   }
+
+  getUrlImage(url:string)
+  {
+    if(url.startsWith("http"))
+      return url;
+    if(url.startsWith("content:"))
+      return url;
+    return this.BASE_URL_IMAGE+"/"+url;
+  }
+
+  traiteErreur(error,component:any) {
+    console.log("ERREUR=>",error);
+    if(component.loading!=null)
+      component.loading.dismissAll();
+    let toast = this.toastCtrl.create({
+      message: "Une erreur technique est survenue!!!",
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
+
 }
 
 export class User {
@@ -36,6 +64,7 @@ export class User {
    email: string;
    phone: string;
    urlAvatar: string;
+   iban:string;
 }
 
 export class UserAvecDepense {
@@ -63,6 +92,7 @@ export class Event {
   date: string;
   montantTotal: number;
   montantDu: number;
+  montantDepense: number;
   urlPhoto: string;
 }
 
@@ -119,6 +149,8 @@ export class Operation {
   ibanEmetteur:string;
   ibanDestinataire:string;
   typeOperation:TypeOperation;
+  urlPhotoEmetteur:string;
+  urlPhotoDestinataire:string;
 }
 
 
@@ -152,3 +184,9 @@ export class Message {
  date: Date;
   dejaLu:boolean;
 }
+
+export class TableauOperation {
+  titre: string;
+  tableau:Array<OperationAvecDepense>;
+}
+

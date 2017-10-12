@@ -27,12 +27,15 @@
     </ion-row>
     <ion-row>
       <ion-col col-4>Iban Emetteur :</ion-col>
-      <ion-col col-8>{{operationAvecDepense.operation.ibanEmetteur}}</ion-col>
+      <ion-col col-6>{{operationAvecDepense.operation.ibanEmetteur}}</ion-col>
+      <ion-col col-2 *ngIf="operationAvecDepense.operation.urlPhotoEmetteur"><preload-image style="border-radius: 50%" class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(operationAvecDepense.operation.urlPhotoEmetteur)'></preload-image></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col col-4>Iban Destinataire :</ion-col>
-      <ion-col col-8>{{operationAvecDepense.operation.ibanDestinataire}}</ion-col>
+      <ion-col col-4>Iban Dest :</ion-col>
+      <ion-col col-6>{{operationAvecDepense.operation.ibanDestinataire}}</ion-col>
+      <ion-col col-2 *ngIf="operationAvecDepense.operation.urlPhotoDestinataire"><preload-image style="border-radius: 50%" class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(operationAvecDepense.operation.urlPhotoDestinataire)'></preload-image></ion-col>
     </ion-row>
+
 
   </ion-grid>
   <div  *ngIf="event!=null">

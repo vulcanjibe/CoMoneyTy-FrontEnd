@@ -34,7 +34,7 @@ export class DetailOperation {
         this.event = event;
         this.loading.dismiss();
       }, errorResponse => {
-        console.log("Error with status code", errorResponse.status);
+        this.constante.traiteErreur(errorResponse,this);
       });
     }
   }
@@ -74,9 +74,7 @@ export class DetailOperation {
               this.operationAvecDepense.depense=null;
               this.event=null;
             }, errorResponse => {
-              console.log("Error with status code", errorResponse.status);
-
-
+              this.constante.traiteErreur(errorResponse,this);
             });
 
           }

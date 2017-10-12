@@ -5,20 +5,17 @@ liste-operation {
 
 	}
 
-  ion-chip.toto {
-    font-size: 0.6em;
-    padding-right: 2px;
-    padding-left: 2px;
-    width: 100%;
-  }
-
-  ion-col.libelle {
-    font-weight: bold;
-    font-size: 0.8em;
-  }
 
   .AvecDepense {
     opacity: 0.6;
     text-decoration:line-through;
   }
+
+  .negatif {
+    color : darkred;
+  }
+  .positif {
+    color : darkgreen;
+  }
+
 }

@@ -57,6 +57,7 @@ import {GestionAmi} from "../pages/cmy-gestion-ami/cmy-gestion-ami";
 import {InvitationAmi} from "../pages/cmy-invitation-ami/cmy-invitation-ami";
 import {ListeMessage} from "../pages/cmy-list-message/cmy-liste-message";
 import {GestionProfile} from "../pages/cmy-gestion-profile/cmy-gestion-profile";
+import {BilanEvent} from "../pages/cmy-bilan-event/cmy-bilan-event";
 
 // Function for setting the default restangular configuration
 
@@ -80,6 +81,7 @@ export function RestangularConfigFactory (RestangularProvider) {
   declarations: [
     MyApp,
     DetailEventPage,
+    BilanEvent,
     GestionProfile,
     CreationMouvementPage,
     DetailOperation,
@@ -117,6 +119,7 @@ export function RestangularConfigFactory (RestangularProvider) {
     MyApp,
     GestionProfile,
     ListeMessage,
+    BilanEvent,
     List2EventPage,
     DetailOperation,
     ListeDepense,

@@ -26,7 +26,7 @@ export class ModalChoixEvent {
       this.loading.dismiss();
     },errorResponse => {
       this.loading.dismiss();
-      console.log("Error with status code", errorResponse.status);
+      this.constante.traiteErreur(errorResponse,this);
     });
   }
   choose(event: Event) {

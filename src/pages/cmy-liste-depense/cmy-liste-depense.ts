@@ -46,9 +46,8 @@ export class ListeDepense {
 
       this.loading.dismiss();
     },errorResponse => {
-      console.log("Error with status code", errorResponse.status);
       this.loading.dismiss();
-
+      this.constante.traiteErreur(errorResponse,this);
     });
 
   };
@@ -82,7 +81,8 @@ export class ListeDepense {
               this.loading.dismissAll();
               console.log("dépense supprimée");
               this.event.montantTotal-=newDepense.montant;
-             // this.constante.touchEvent(this.event); Ne sert à rien c'est bien l'event initial qui est là
+              this.event.montantDepense-=newDepense.montant;
+              this.constante.touchEvent(this.event);
               // suppression de la ligne
               for(let i=0;i<this.depenses.length;i++) {
                 let dep = this.depenses[i];
@@ -102,7 +102,7 @@ export class ListeDepense {
                   participant.doit += newDepense.montant - montant;
                 }
             }, errorResponse => {
-              console.log("Error with status code", errorResponse.status);
+              this.constante.traiteErreur(errorResponse,this);
             });
           }
         },
@@ -124,7 +124,7 @@ export class ListeDepense {
   };
 
 
-};
+}
 
 class DepenseAvecUser {
   depense: Depense;

@@ -29,8 +29,8 @@ export class FacebookLoginPage {
       env.user = user;
       env.loading.dismiss();
     }, function(error){
-      console.log(error);
       env.loading.dismiss();
+      this.constante.traiteErreur(error,this);
     });
   }
 
@@ -41,7 +41,7 @@ export class FacebookLoginPage {
     .then(function(res) {
       env.user = new FacebookUserModel();
     }, function(error){
-      console.log("Facebook logout error", error);
+      this.constante.traiteErreur(error,this);
     });
   }
 
@@ -52,7 +52,7 @@ export class FacebookLoginPage {
     .then(function(user){
       env.user = user;
     }, function(err){
-      console.log("Facebook Login error", err);
+      this.constante.traiteErreur(err,this);
     });
   }
 }
