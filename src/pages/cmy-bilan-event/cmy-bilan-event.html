@@ -13,11 +13,14 @@
       <ion-avatar item-left>
         <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(mouvement.userSource.urlAvatar)'></preload-image>
       </ion-avatar>
-
       <ion-avatar item-right>
         <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(mouvement.userCible.urlAvatar)'></preload-image>
       </ion-avatar>
-      <h2 class="item-title">{{mouvement.userSource.prenom}} doit {{mouvement.mouvement.montant}} € à {{mouvement.userCible.prenom}}</h2>
+      <h2 class="item-title" text-wrap>{{mouvement.userSource.prenom}} doit {{mouvement.mouvement.montant}} € à {{mouvement.userCible.prenom}}</h2>
     </ion-item>
   </ion-item-group>
+
+  <section>
+    <button ion-button block class="form-action-button create-post-button" (tap)="EnvoyerSms()" type="button" [disabled]="false">Envoyer les messages!</button>
+  </section>
 </ion-content>

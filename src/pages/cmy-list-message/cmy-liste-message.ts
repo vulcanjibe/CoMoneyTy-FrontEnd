@@ -7,6 +7,7 @@ import 'rxjs/Rx';
 import {Message} from "../cmy-model/cmy.model";
 import {Restangular} from 'ngx-restangular';
 import {  Constante} from '../cmy-model/cmy.model';
+import {DetailMessage} from "../cmy-detail-message/cmy-detail-message";
 
 @Component({
   selector: 'liste-message',
@@ -18,7 +19,7 @@ export class ListeMessage {
 
   constructor(
     public constante:Constante,
-    public loadingCtrl: LoadingController,private restangular: Restangular,private alertController:AlertController
+    public loadingCtrl: LoadingController,private nav:NavController,private restangular: Restangular,private alertController:AlertController
   ) {
     this.loading = this.loadingCtrl.create();
   }
@@ -35,9 +36,9 @@ export class ListeMessage {
   }
 
   traite(message:Message) {
-    if(!message.dejaLu)
-    {
-      if(message.message.startsWith("Invitation de") && message.message.endsWith("attente..."))
+
+
+      if(message.message.startsWith("Invitation de") && message.message.endsWith("attente...") && !message.dejaLu)
       {
         // C'est une invitation
         const alert = this.alertController.create({
@@ -70,8 +71,9 @@ export class ListeMessage {
           ]
         });
         alert.present();
-
+      } else {
+        this.nav.push(DetailMessage,{theMessage:message});
       }
     }
-  }
+
 }

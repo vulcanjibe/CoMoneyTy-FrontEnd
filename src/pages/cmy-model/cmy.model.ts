@@ -179,9 +179,11 @@ export class Contact {
 export class Message {
   id:string;
   message: string;
+  titre: string;
   emetteur: User;
+  destinataire: User;
   messageCache: string;
- date: Date;
+  date: Date;
   dejaLu:boolean;
 }
 

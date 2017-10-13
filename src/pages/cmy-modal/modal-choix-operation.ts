@@ -48,6 +48,16 @@ export class ModalChoixOperation {
       toast.present();
       return;
     }
+    if(operationAvecDepense.depense!=null)
+    {
+      let toast = this.toastCtrl.create({
+        message: "Opération déjà utilisée!",
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }
     this.viewCtrl.dismiss(operationAvecDepense);
   }
   dismiss() {

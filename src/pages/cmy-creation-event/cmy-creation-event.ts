@@ -117,6 +117,7 @@ export class CreationEventPage {
     } else {
       if(imagePath==null)
       {
+        this.encours=false;
         this.nav.pop();
         return;
       }
@@ -224,6 +225,7 @@ export class CreationEventPage {
       this.uploadImage();
 
     }, error => {
+      this.encours = false;
       this.constante.traiteErreur(error,this);
     });
   }
@@ -263,10 +265,9 @@ export class CreationEventPage {
     // Use the FileTransfer to upload the image
     fileTransfer.upload(targetPath, url, options).then(data => {
       this.loading.dismissAll();
-      this.nav.pop();
-      this.presentToast('Image succesful uploaded.');
-      //this.event.type = this.creationEventForm.get('type').value;
       this.encours = false;
+      this.presentToast('Image succesful uploaded.');
+      this.nav.pop();
     }, err => {
       this.encours = false;
       this.constante.traiteErreur(err,this);

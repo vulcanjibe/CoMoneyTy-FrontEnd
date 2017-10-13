@@ -20,7 +20,9 @@ export class CreationMouvementPage {
   event: Event;
   participants: Array<UserAvecDepense>;
   depense:Depense;
+  encours:boolean = false;
   creationMouvementForm: FormGroup;
+  loading: any;
   lastImage: string = null;
 //  loading: any;
   imageCamera: string = null;
@@ -72,6 +74,7 @@ export class CreationMouvementPage {
   }
 
   saveMouvement(){
+    this.encours=true;
     this.depense.commentaire = this.creationMouvementForm.get('commentaire').value;
     this.depense.date = this.creationMouvementForm.get('date').value;
     this.depense.montant = parseFloat(this.creationMouvementForm.get('montant').value);
@@ -106,10 +109,12 @@ export class CreationMouvementPage {
       // let component_page : any = { component: List2EventPage };
       //this.nav.setRoot( component_page.component);
       if (this.platform.is('mobileweb') || this.platform.is('core')) {
+        this.encours=false;
         this.nav.pop();
       }
 
     }, errorResponse => {
+      this.encours=false;
       this.constante.traiteErreur(errorResponse,this);
 
     });
@@ -124,9 +129,15 @@ export class CreationMouvementPage {
       let imagePath = this.imageCamera;
       if(imagePath==null)
       {
+        this.encours=false;
         this.nav.pop();
+        return;
       }
-      else if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+      this.loading = this.loadingCtrl.create({
+        content: 'Enregistrement...',
+      });
+      this.loading.present();
+      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
         this.filePath.resolveNativePath(imagePath)
           .then(filePath => {
             let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
@@ -157,6 +168,7 @@ export class CreationMouvementPage {
         this.valid=true;
         this.imageCamera = imagePath;
       }, (err) => {
+        this.encours=false;
         this.constante.traiteErreur(err,this);
       });
     }
@@ -190,6 +202,7 @@ export class CreationMouvementPage {
       this.uploadImage();
 
     }, error => {
+      this.encours=false;
       this.constante.traiteErreur(error,this);
     });
   }
@@ -226,10 +239,14 @@ export class CreationMouvementPage {
 
     // Use the FileTransfer to upload the image
     fileTransfer.upload(targetPath, url, options).then(data => {
+      this.encours=false;
+      this.loading.dismissAll();
+      this.presentToast('Image succesful uploaded.');
       this.nav.pop();
       this.presentToast('Image succesful uploaded.');
       //this.event.type = this.creationMouvementForm.get('type').value;
     }, err => {
+      this.encours=false;
       this.constante.traiteErreur(err,this);
     });
   }

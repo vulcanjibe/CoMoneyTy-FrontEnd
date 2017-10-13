@@ -58,6 +58,7 @@ import {InvitationAmi} from "../pages/cmy-invitation-ami/cmy-invitation-ami";
 import {ListeMessage} from "../pages/cmy-list-message/cmy-liste-message";
 import {GestionProfile} from "../pages/cmy-gestion-profile/cmy-gestion-profile";
 import {BilanEvent} from "../pages/cmy-bilan-event/cmy-bilan-event";
+import {DetailMessage} from "../pages/cmy-detail-message/cmy-detail-message";
 
 // Function for setting the default restangular configuration
 
@@ -92,6 +93,7 @@ export function RestangularConfigFactory (RestangularProvider) {
     AjoutParticipantPage,
     ModalPhoto,
     ModalChoixEvent,
+    DetailMessage,
     ModalChoixOperation,
     CreationEventPage,
     List2EventPage,
@@ -120,6 +122,7 @@ export function RestangularConfigFactory (RestangularProvider) {
     GestionProfile,
     ListeMessage,
     BilanEvent,
+    DetailMessage,
     List2EventPage,
     DetailOperation,
     ListeDepense,
