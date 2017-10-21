@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Nouvelle dépense</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="forms-examples-content">
+  <div  class="forms-wrapper">
+    <div  class="post-example-view">
+     <form class="sample-form post-form" [formGroup]="creationMouvementForm" (ngSubmit)="saveMouvement()">
+    <section class="form-section">
+      <ion-item>
+        <ion-input type="text" placeholder="Description" formControlName="commentaire"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="number" placeholder="Montant" formControlName="montant"></ion-input>
+      </ion-item>
+      <ion-item>
+        Payé par
+        <button ion-button  type="button" outline item-end (tap)="popupPayePar()">Vous</button>
+      </ion-item>
+      <ion-item>
+        Partagé
+        <button ion-button  type="button" outline item-end (tap)="popupPartage()">Equitablement</button>
+      </ion-item>
+
+      <ion-item class="multi-input time-item">
+        <ion-label floating>Date</ion-label>
+        <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" pickerFormat="DD-MM-YYYY"></ion-datetime>
+      </ion-item>
+      <button ion-button block large  type="button"  class="upload-image-button" >
+        <ion-icon name="camera" (tap)="takePhoto()"></ion-icon><ion-icon name="folder" (tap)="choosePhoto()"></ion-icon><ion-icon name="folder" (tap)="chooseGallery()"></ion-icon>
+        <img [src]="imageDataCamera" *ngIf="imageDataCamera" />
+        <img [src]="constante.getUrlImage(imageUrl)" *ngIf="imageUrl" />
+        <h3 class="button-title">Prenez une photo</h3>
+      </button>
+    </section>
+
+    <section class="form-section">
+      <button ion-button block class="form-action-button create-post-button" type="submit" [disabled]="!creationMouvementForm.valid">Enregistrer!</button>
+    </section>
+  </form>
+    </div>
+  </div>
+
+</ion-content>
+
+

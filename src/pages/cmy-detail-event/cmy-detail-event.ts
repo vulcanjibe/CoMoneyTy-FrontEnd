@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController,NavParams,ModalController } from 'ionic-angular';
+import {
+  NavController, LoadingController, NavParams, ModalController, AlertController,
+  ToastController
+} from 'ionic-angular';
 import { SMS} from '@ionic-native/sms';
 
 import 'rxjs/Rx';
 
-import { Event,UserAvecDepense,Constante ,Depense} from '../cmy-model/cmy.model';
+import {Event, UserAvecDepense, Constante, Depense, Mouvement} from '../cmy-model/cmy.model';
 import { AjoutParticipantPage } from '../cmy-ajout-participant/cmy-ajout-participant'
 import {Restangular} from 'ngx-restangular';
-import {CreationMouvementPage} from "../cmy-creation-mouvement/cmy-creation-mouvement";
+import {CreationDepensePage} from "../cmy-creation-depense/cmy-creation-depense";
 import {ModalChoixOperation} from "../cmy-modal/modal-choix-operation";
 import {ListeDepense} from "../cmy-liste-depense/cmy-liste-depense";
 import {BilanEvent} from "../cmy-bilan-event/cmy-bilan-event";
@@ -21,8 +24,8 @@ export class DetailEventPage {
   participants: Array<UserAvecDepense>;
   loading: any;
 
-  constructor(public nav: NavController,
-    public loadingCtrl: LoadingController,public constante:Constante,private restangular: Restangular,public navParams: NavParams,private modalController:ModalController,private smsProvider:SMS) {
+  constructor(private nav: NavController,
+              private loadingCtrl: LoadingController,private toastCtrl:ToastController,private alertCtrl:AlertController,private constante:Constante,private restangular: Restangular,private navParams: NavParams,private modalController:ModalController,private smsProvider:SMS) {
     this.loading = this.loadingCtrl.create();
     this.event = navParams.get("theEvent");
   }
@@ -85,8 +88,74 @@ export class DetailEventPage {
     modal.present();
   };
   ajouteDepense() {
-    this.nav.push(CreationMouvementPage,{theEvent:this.event,theParticipants:this.participants});
+    this.nav.push(CreationDepensePage,{theEvent:this.event,theParticipants:this.participants});
   };
+  private presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
+
+  donneArgent(participant:UserAvecDepense) {
+    const alert = this.alertCtrl.create({
+      title: 'Payer '+participant.user.prenom,
+      message: 'Quel montant avez-vous donner à '+participant.user.prenom+'?',
+      inputs: [
+        {
+          name: 'montant',
+          placeholder: 'Montant en €'
+        }],
+      buttons: [
+        {
+          text: 'Annuler',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Confirmer',
+          handler: data => {
+            this.loading = this.loadingCtrl.create();
+            this.loading.present();
+            // On va créer un mouvement
+            let mvt = new Mouvement(this.constante.user.id,this.event.id);
+            mvt.commentaire="Argent donné";
+            mvt.date=new Date();
+            mvt.idDestinataire = participant.user.id;
+            mvt.etat="Réalisé";
+            mvt.montant=data.montant;
+            let mvtRest = this.restangular.copy(mvt);
+            mvtRest.route="mouvement";
+            mvtRest.save().toPromise().then(rep => {
+                this.loading.dismissAll();
+                this.presentToast("Argent envoyé!");
+                // Recalcul des montatns par particpant
+              for(let participant of this.participants) {
+                if (participant.user.id == rep.idDestinataire) {
+                  participant.doit += rep.montant;
+                  participant.aPaye -= rep.montant;
+                }
+                if (participant.user.id == rep.idEmetteur) {
+                  participant.doit -= rep.montant;
+                  participant.aPaye += rep.montant;
+                }
+
+              }
+            },errorResponse=>{
+              this.constante.traiteErreur(errorResponse,this);
+            });
+
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
 
   sms(participant) {
     console.log("SMS!");

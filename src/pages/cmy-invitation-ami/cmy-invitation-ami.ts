@@ -89,8 +89,8 @@ export class InvitationAmi {
            if (aContact.photo == "" && cont.photos.length > 0)
              aContact.photo = cont.photos[0].value;
          }
-         if (aContact.photo == "")
-          aContact.photo = "user/inconnu.png";
+     //    if (aContact.photo == "")
+     //     aContact.photo = "user/inconnu.png";
          this.contactsComplet.push(aContact);
 
        }

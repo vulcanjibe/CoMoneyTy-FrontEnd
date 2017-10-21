@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 
-import  {List2EventPage} from "../cmy-liste-event/cmy-liste-event";
+import  {ListeEvent} from "../cmy-liste-event/cmy-liste-event";
 
 @Component({
   selector: 'forgot-password-page',
@@ -13,7 +13,7 @@ export class ForgotPasswordPage {
   main_page: { component: any };
 
   constructor(public nav: NavController) {
-    this.main_page = { component: List2EventPage };
+    this.main_page = { component: ListeEvent };
 
     this.forgot_password = new FormGroup({
       email: new FormControl('', Validators.required)

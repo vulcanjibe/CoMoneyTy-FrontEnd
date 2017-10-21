@@ -18,7 +18,7 @@
         <ion-row align-items-center no-padding class="content-row one-line">
           <!-- You can limit the rows of the description by using the class one-line. If you remove it, all the content from the row will be shown -->
           <ion-col no-padding col-3 class="item-avatar">
-            <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.REP_IMAGE+"events/"+photo'></preload-image>
+            <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(photo)'></preload-image>
           </ion-col>
         </ion-row>
       </button>

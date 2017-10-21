@@ -19,7 +19,7 @@ export class ModalPhoto {
     this.photos=new Array;
     for(let i=0;i<4;i++)
     {
-      this.photos[i]='photoEvent'+(i+1)+'.png';
+      this.photos[i]='event/photoEvent'+(i+1)+'.png';
     }
   }
   choose(photo: string) {

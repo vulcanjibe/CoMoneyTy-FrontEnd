@@ -3,11 +3,13 @@ import { Platform, MenuController, Nav, App } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { WalkthroughPage } from '../pages/walkthrough/walkthrough';
-import {List2EventPage} from '../pages/cmy-liste-event/cmy-liste-event';
+import {ListeEvent} from '../pages/cmy-liste-event/cmy-liste-event';
 import { ListeOperation } from '../pages/cmy-liste-operation/cmy-liste-operation';
 import {GestionAmi} from "../pages/cmy-gestion-ami/cmy-gestion-ami";
 import {ListeMessage} from "../pages/cmy-list-message/cmy-liste-message";
 import {GestionProfile} from "../pages/cmy-gestion-profile/cmy-gestion-profile";
+import {PageTest} from "../pages/cmy-page-test/cmy-page-test";
+import {ListeOrdre} from "../pages/cmy-liste-ordre/cmy-liste-ordre";
 
 @Component({
   selector: 'app-root',
@@ -40,15 +42,17 @@ export class MyApp {
     });
 
     this.pages = [
-      { title: 'Home', icon: 'home', component: List2EventPage },
-      { title: 'Event', icon: 'people', component: List2EventPage },
-      { title: 'Operation', icon: 'cash', component: ListeOperation },
+      { title: 'Home', icon: 'home', component: ListeEvent },
+      { title: 'Event', icon: 'people', component: ListeEvent },
+      { title: 'Operation', icon: 'swap', component: ListeOperation },
+      { title: 'Ordres', icon: 'cash', component: ListeOrdre },
       { title: 'Message', icon: 'mail', component: ListeMessage },
       { title: 'Amis', icon: 'people', component: GestionAmi }
     ];
 
     this.pushPages = [
-      { title: 'Profile', icon: 'settings', component: GestionProfile }
+      { title: 'Profile', icon: 'settings', component: GestionProfile },
+      { title: 'Dev Only!', icon: 'bug', component: PageTest }
     ];
   }
 

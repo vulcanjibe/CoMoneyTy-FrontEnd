@@ -15,9 +15,10 @@
       <ion-item>
         <ion-input type="text" placeholder="Titre de l'event" formControlName="titre"></ion-input>
       </ion-item>
-      <button ion-button block large  type="button"  class="upload-image-button" (tap)="choosePhoto()">
-        <ion-icon name="camera"></ion-icon>
-        <img [src]="imageCamera" *ngIf="imageCamera" />
+      <button ion-button block large  type="button"  class="upload-image-button" >
+        <ion-icon name="camera" (tap)="takePhoto()"></ion-icon><ion-icon name="folder" (tap)="choosePhoto()"></ion-icon><ion-icon name="folder" (tap)="chooseGallery()"></ion-icon>
+        <img [src]="imageDataCamera" *ngIf="imageDataCamera" />
+        <img [src]="constante.getUrlImage(imageUrl)" *ngIf="imageUrl" />
         <h3 class="button-title">Prenez une photo</h3>
       </button>
     </section>
@@ -34,7 +35,7 @@
       </ion-item>
     </section>
     <section class="form-section">
-      <button ion-button block class="form-action-button create-post-button" type="submit" [disabled]="!creationEventForm.valid && !encours">Enregistrer!</button>
+      <button ion-button block class="form-action-button create-post-button" type="submit" [disabled]="!creationEventForm.valid">Enregistrer!</button>
     </section>
   </form>
     </div>

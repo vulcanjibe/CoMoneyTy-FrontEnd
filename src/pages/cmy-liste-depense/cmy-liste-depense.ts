@@ -3,7 +3,10 @@ import {NavController, LoadingController, ToastController,ModalController, NavPa
 
 import 'rxjs/Rx';
 
-import {Constante, Depense, Event, OperationAvecDepense,UserAvecDepense,User} from "../cmy-model/cmy.model";
+import {
+  Constante, Depense, Event, OperationAvecDepense, UserAvecDepense, User,
+  Mouvement
+} from "../cmy-model/cmy.model";
 
 import  {DetailOperation} from "../cmy-detail-operation/cmy-detail-operation";
 import {ModalChoixEvent} from '../cmy-modal/modal-choix-event';
@@ -16,6 +19,7 @@ import {Restangular} from 'ngx-restangular';
 export class ListeDepense {
   participants: Array<UserAvecDepense>;
   depenses : Array<DepenseAvecUser>;
+  paiements : Array<MouvementAvecUser>;
   event: Event;
   loading: any;
   action:any;
@@ -49,9 +53,40 @@ export class ListeDepense {
       this.loading.dismiss();
       this.constante.traiteErreur(errorResponse,this);
     });
+    this.restangular.all('event/'+this.event.id+'/mouvements').getList().subscribe(mouvements   => {
+      this.paiements = new Array<MouvementAvecUser>();
+      for(let mouvement of mouvements) {
+        let mvt: MouvementAvecUser = new MouvementAvecUser();
+        mvt.mouvement = mouvement;
+        this.paiements.push(mvt);
+      }
 
+      for(let mouvement of this.paiements) {
+        for(let particpant of this.participants)
+        {
+          if(particpant.user.id==mouvement.mouvement.idEmetteur)
+          {
+            mouvement.emetteur=particpant.user;
+            break;
+          }
+        }
+      }
+      for(let mouvement of this.paiements) {
+        for(let particpant of this.participants)
+        {
+          if(particpant.user.id==mouvement.mouvement.idDestinataire)
+          {
+            mouvement.destinataire=particpant.user;
+            break;
+          }
+        }
+      }
+    },errorResponse => {
+      this.loading.dismiss();
+      this.constante.traiteErreur(errorResponse,this);
+    });
   };
-  detail(operation:OperationAvecDepense) {
+  detailDepense(operation:OperationAvecDepense) {
     if(operation.depense.idPayeur!=this.constante.user.id)
     {
       let toast = this.toastCtrl.create({
@@ -109,7 +144,12 @@ export class ListeDepense {
         {
           text: 'Modifier cette dépense',
           handler: () => {
-
+            let toast = this.toastCtrl.create({
+              message: 'Pas encore implémenté petit scarabée!!!',
+              duration: 3000,
+              position: 'top'
+            });
+            toast.present();
           }
         },
         {
@@ -129,4 +169,10 @@ export class ListeDepense {
 class DepenseAvecUser {
   depense: Depense;
   user: User;
+}
+
+class MouvementAvecUser {
+  mouvement: Mouvement;
+  emetteur:User;
+  destinataire:User;
 }

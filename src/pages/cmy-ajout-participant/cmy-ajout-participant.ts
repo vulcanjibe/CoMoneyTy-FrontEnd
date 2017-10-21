@@ -47,8 +47,11 @@ export class AjoutParticipantPage {
 
   }
   close() {
+    this.loading = this.loadingCtrl.create();
+    this.loading.present();
     this.encours=true;
     let tab:Array<any>=[];
+    let commandes:Array<CommandeAddDelParticipant> = new Array();
     for(let participantPresent of this.relations) {
       // Est-ce qu'il était là avant?
       let present = false;
@@ -58,28 +61,34 @@ export class AjoutParticipantPage {
           break;
         }
       }
+      let commande:CommandeAddDelParticipant = new CommandeAddDelParticipant();
+      commande.lienEventUser=new LienEventUser(participantPresent.participant.id,this.event.id);
 
       if(participantPresent.present &&!present){
         // Il est présnet mais n'était pas là avant
-        let lien = this.restangular.copy(new LienEventUser(participantPresent.participant.id,this.event.id));
-        lien.route='lienEventUser';
-       // tab.push(this.restangular.one("lienEventUser").post("save",lien).toPromise());
-        tab.push(lien.save().toPromise());
+        //let lien = this.restangular.copy(new LienEventUser(participantPresent.participant.id,this.event.id));
+        //lien.route='lienEventUser';
+        //tab.push(lien.save().toPromise());
+        commande.commande="ADD";
       } else if(!participantPresent.present &&present){
         // Il a été enlevé
-      /*  let lien = this.restangular.copy(new LienEventUser(participantPresent.participant.id,this.event.id));
-        lien.route='lienEventUser'; */
-        let lien = new LienEventUser(participantPresent.participant.id,this.event.id);
-        tab.push(this.restangular.one("event").post("supprimeUser",lien).toPromise());
-        //tab.push(lien.remove().toPromise());
+        //let lien = new LienEventUser(participantPresent.participant.id,this.event.id);
+        //tab.push(this.restangular.one("event").post("supprimeUser",lien).toPromise());
+        commande.commande="DEL";
       }
-
-
+      if(commande.commande!=null)
+        commandes.push(commande);
     }
-    if(tab.length>0) {
+    if(commandes.length>0) {
       // dans les 2 cas, je refresh la liste pour ne pas refaire les répartitions en local
-      Promise.all(tab).then(values=>{
-        this.refresh();
+      this.restangular.one("event").post("ajoutSuppressionUser",commandes).subscribe(rep=>{
+        //this.refresh();
+        this.participantsEvent.splice(0,this.participantsEvent.length);
+        for(let part of rep)
+          this.participantsEvent.push(part);
+        this.loading.dismiss();
+        this.encours=false;
+        this.nav.pop();
       },err=>{
         this.encours=false;
         this.constante.traiteErreur(err,this);
@@ -96,23 +105,7 @@ export class AjoutParticipantPage {
     relation.present=!relation.present;
   }
 
-  refresh() {
-    // Essai par recalcule complet
 
-    this.restangular.all('event/' + this.event.id + '/users').getList().subscribe(particpants => {
-      //this.participantsEvent = particpants;
-      console.log("REFRESH : "+this.participantsEvent.length+" -> "+particpants.length);
-      this.participantsEvent.splice(0,this.participantsEvent.length);
-      for(let part of particpants)
-        this.participantsEvent.push(part);
-      this.loading.dismiss();
-      this.encours=false;
-      this.nav.pop();
-    }, errorResponse => {
-      this.encours=false;
-      this.constante.traiteErreur(errorResponse,this);
-    });
-  }
 }
 class ParticipantPresent {
   participant: User;
@@ -121,4 +114,9 @@ class ParticipantPresent {
     this.participant=user;
     this.present = pres;
   }
+}
+
+class CommandeAddDelParticipant {
+  commande:string;
+  lienEventUser:LienEventUser;
 }

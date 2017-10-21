@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ModalController, LoadingController,ToastController } from 'ionic-angular';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 
-import  {List2EventPage} from "../cmy-liste-event/cmy-liste-event";
+import  {ListeEvent} from "../cmy-liste-event/cmy-liste-event";
 import {Restangular} from 'ngx-restangular';
 import { FacebookLoginService } from '../facebook-login/facebook-login.service';
 import { GoogleLoginService } from '../google-login/google-login.service';
@@ -28,7 +28,7 @@ export class SignupPage {
     public loadingCtrl: LoadingController,
     public constante: Constante
   ) {
-    this.main_page = { component: List2EventPage };
+    this.main_page = { component: ListeEvent };
 
     this.signup = new FormGroup({
       email: new FormControl('', Validators.required),
@@ -76,8 +76,8 @@ export class SignupPage {
       localStorage.setItem('id_token', resp.id);
       localStorage.setItem('user', JSON.stringify(resp.user));
       this.constante.user=resp.user;
-      // let component_page : any = { component: List2EventPage };
-      this.nav.setRoot(  List2EventPage );
+      // let component_page : any = { component: ListeEvent };
+      this.nav.setRoot(  ListeEvent );
     }, errorResponse => {
       this.constante.traiteErreur(errorResponse,this);
     });
@@ -170,12 +170,12 @@ export class SignupPage {
   }
 
   showTermsModal() {
-    let modal = this.modal.create(List2EventPage);
+    let modal = this.modal.create(ListeEvent);
     modal.present();
   }
 
   showPrivacyModal() {
-    let modal = this.modal.create(List2EventPage);
+    let modal = this.modal.create(ListeEvent);
     modal.present();
   }
 

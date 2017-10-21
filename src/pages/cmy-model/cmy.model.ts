@@ -89,6 +89,7 @@ export class Invitation {
 export class Event {
   id: string;
   libelle: string;
+  etat:string;
   date: string;
   montantTotal: number;
   montantDu: number;
@@ -114,7 +115,8 @@ export class Mouvement {
   idEvent:string;
   commentaire:string;
   montant:number;
-  date:string;
+  date:Date;
+  etat:string;
   constructor(idEmet:string,idEv:string) {
     this.idEmetteur=idEmet;
     this.idEvent=idEv
@@ -192,3 +194,8 @@ export class TableauOperation {
   tableau:Array<OperationAvecDepense>;
 }
 
+export class Ordre {
+  mouvement:Mouvement;
+  emetteur:User;
+  event:Event;
+}

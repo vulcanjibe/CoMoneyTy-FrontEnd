@@ -11,7 +11,7 @@
   <div class="list-mini">
     <ion-list>
       <div class="list-item"  ion-item  *ngFor="let participant of participants">
-        <ion-row align-items-center no-padding class="content-row one-line">
+        <ion-row align-items-center no-padding class="content-row one-line" (press)="donneArgent(participant)">
         <!-- You can limit the rows of the description by using the class one-line. If you remove it, all the content from the row will be shown -->
         <ion-col no-padding col-3 class="item-avatar">
           <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(participant.user.urlAvatar)'></preload-image>

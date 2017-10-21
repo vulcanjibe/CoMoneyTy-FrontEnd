@@ -61,6 +61,23 @@ export class BilanEvent {
     }
   }
 
+  solderEvent() {
+    this.restangular.one('event/'+this.event.id+'/validebilan').get().subscribe(mouvements => {
+
+    },errorResponse => {
+      this.loading.dismissAll();
+      this.constante.traiteErreur(errorResponse,this);
+    });
+
+    }
+  private presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
 
   EnvoyerSms() {
     this.chooseCategory();
@@ -115,6 +132,7 @@ export class BilanEvent {
         this.loading.present();
         Promise.all(tab).then(rep=>{
           this.loading.dismissAll();
+          this.presentToast("Messages envoyés!");
         },errorResponse=>{
           this.loading.dismissAll();
           this.constante.traiteErreur(errorResponse,this);

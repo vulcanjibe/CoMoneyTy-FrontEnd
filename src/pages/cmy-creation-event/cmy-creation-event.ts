@@ -18,19 +18,19 @@ declare var cordova: any;
 })
 export class CreationEventPage {
   event: Event;
-  encours:boolean = false;
   events: Array<Event>;
   creationEventForm: FormGroup;
-  lastImage: string = null;
+  imageUrl: string = null;
   loading: any;
   categories_checkbox_open: boolean;
   categories_checkbox_result;
-  valid:boolean = false;
-  imageCamera: string = null;
+  imageDataCamera: string = null;
 
   options: CameraOptions = {
     quality: 100,
     sourceType:  this.camera.PictureSourceType.CAMERA,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    encodingType: this.camera.EncodingType.PNG,
     saveToPhotoAlbum: false,
     correctOrientation: true,
     targetWidth: 200,
@@ -46,12 +46,9 @@ export class CreationEventPage {
               private restangular: Restangular,
               public alertCtrl: AlertController,
               private camera: Camera,
-              private platform: Platform,
               public params: NavParams,
-              private transfer: Transfer,
              public toastCtrl: ToastController,
-              private file: File,
-              private filePath: FilePath) {
+) {
 
     this.creationEventForm = new FormGroup({
       titre: new FormControl('', Validators.compose([
@@ -64,80 +61,44 @@ export class CreationEventPage {
   };
 
 
-
+  // Create a new name for the image
+  private createFileName() {
+    let d = new Date();
+    let n = d.getTime();
+    let newFileName =  "event/"+this.constante.user.id+"_"+ n + ".png";
+    return newFileName;
+  }
 
   saveEvent(){
     this.event.libelle = this.creationEventForm.get('titre').value;
     this.event.date = this.creationEventForm.get('date').value;
-    let sourceType = this.options.sourceType;
 
-    let imagePath = this.imageCamera;
-
-    if (this.platform.is('mobileweb') || this.platform.is('core')) {
-      // This will only print when running on desktop
-      // Pas de photo
-      this.lastImage = "standard.png";
+    if(this.imageDataCamera==null) {
+      // Pas de nouvelle photo
+      if(this.imageUrl==null) {
+        this.imageUrl='event/standard.png';
+      }
     } else {
-      if(this.imageCamera==null) {
-        // Pas de photo prise
-        this.lastImage = "standard.png";
-      } else
-        this.lastImage = this.createFileName();
+      // Nouvelle photo en envoyer
+      this.imageUrl = this.createFileName();
+      this.imageUrl+="=="+this.imageDataCamera;
     }
 
-    this.event.urlPhoto = "event/"+this.lastImage;
-  /*  this.loading = this.loadingCtrl.create({
+    this.event.urlPhoto = this.imageUrl;
+   this.loading = this.loadingCtrl.create({
       content: 'Enregistrement...',
     });
-    this.loading.present(); */
-    this.encours = true;
-    this.restangular.one("event").post("save",this.event).subscribe(resp => {
-      // Ajout à la liste
-    //  this.loading.dismissAll();
+    this.loading.present();
+    let eventRest = this.restangular.copy(this.event);
+    eventRest.route="event";
+    eventRest.save().toPromise().then(resp => {
+      this.loading.dismissAll();
       this.events.push(resp);
-      if (this.platform.is('mobileweb') || this.platform.is('core')) {
-        this.encours = false;
-        this.nav.pop();
-      } else if(this.lastImage=="standard.png") {
-        //Pas de photo à envoyer
-        this.encours = false;
-        this.nav.pop();
-      }
-      // let component_page : any = { component: List2EventPage };
-      //this.nav.setRoot( component_page.component);
+      this.nav.pop();
     }, errorResponse => {
       this.constante.traiteErreur(errorResponse,this);
     });
 
-    if (this.platform.is('mobileweb') || this.platform.is('core')) {
-      // This will only print when running on desktop
-      // Pas de photo
-    } else if(this.lastImage=="standard.png") {
-      //Pas de photo
-    } else {
-      if(imagePath==null)
-      {
-        this.encours=false;
-        this.nav.pop();
-        return;
-      }
-      this.loading = this.loadingCtrl.create({
-        content: 'Enregistrement...',
-      });
-      this.loading.present();
-      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        this.filePath.resolveNativePath(imagePath)
-          .then(filePath => {
-            let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-            let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-            this.sendandsave(correctPath, currentName, this.lastImage);
-          });
-      } else {
-        var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-        var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        this.sendandsave(correctPath, currentName, this.lastImage);
-      }
-    }
 
   };
 
@@ -180,55 +141,36 @@ export class CreationEventPage {
     });
   }
   choosePhoto(){
-    this.valid=false;
-    if (this.platform.is('mobileweb') || this.platform.is('core')) {
-      // This will only print when running on desktop
-      console.log("I'm a regular browser!");
-      this.openModalChoosePhoto();
-      this.event.urlPhoto="photoEvent1.png";
-    } else {
-
-      this.camera.getPicture(this.options).then((imagePath) => {
-        this.valid=true;
-        this.imageCamera = imagePath;
-      }, (err) => {
-        this.constante.traiteErreur(err,this);
-      });
-    }
-  }
-
-
-  openModalChoosePhoto() {
 
     let modal = this.modalCtrl.create(ModalPhoto);
     modal.onDidDismiss(data => {
       console.log(data);
-      //this.base64Image = this.constante.REP_IMAGE+"events/"+data;
+      this.imageUrl=data;
     });
     modal.present();
   }
 
-
-  // Create a new name for the image
-  private createFileName() {
-    var d = new Date(),
-      n = d.getTime(),
-      newFileName =  n + ".jpg";
-    return newFileName;
-  }
-
-/// Copy the image to a local folder
-  private sendandsave(namePath, currentName, newFileName) {
-    this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
-      this.lastImage = newFileName;
-
-      this.uploadImage();
-
-    }, error => {
-      this.encours = false;
-      this.constante.traiteErreur(error,this);
+  takePhoto() {
+    this.options.sourceType = this.camera.PictureSourceType.CAMERA;
+    this.camera.getPicture(this.options).then((imageData) => {
+      this.imageDataCamera = "data:image/png;base64," + imageData;
+    }, (err) => {
+      this.constante.traiteErreur(err, this);
     });
   }
+
+    chooseGallery() {
+      this.options.sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
+      this.camera.getPicture(this.options).then((imageData) => {
+        this.imageDataCamera = "data:image/png;base64,"+imageData;
+      }, (err) => {
+        this.constante.traiteErreur(err,this);
+      });
+  }
+
+
+
+
 
   private presentToast(text) {
     let toast = this.toastCtrl.create({
@@ -240,46 +182,4 @@ export class CreationEventPage {
   }
 
 
-  public uploadImage() {
-    // Destination URL
-    var url = this.constante.BASE_URL_REST+"/event/upload";
-
-    // File for Upload
-    var targetPath = this.pathForImage(this.lastImage);
-
-    // File name only
-    var filename = this.lastImage;
-
-    var options = {
-      fileKey: "file",
-      fileName: filename,
-      chunkedMode: false,
-      mimeType: "multipart/form-data",
-      params : {'fileName': filename}
-    };
-
-    const fileTransfer: TransferObject = this.transfer.create();
-
-
-
-    // Use the FileTransfer to upload the image
-    fileTransfer.upload(targetPath, url, options).then(data => {
-      this.loading.dismissAll();
-      this.encours = false;
-      this.presentToast('Image succesful uploaded.');
-      this.nav.pop();
-    }, err => {
-      this.encours = false;
-      this.constante.traiteErreur(err,this);
-    });
-  }
-
-  // Always get the accurate path to your apps folder
-  public pathForImage(img) {
-    if (img === null) {
-      return '';
-    } else {
-      return cordova.file.dataDirectory + img;
-    }
-  }
 }

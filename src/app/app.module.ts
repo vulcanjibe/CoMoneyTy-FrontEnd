@@ -2,10 +2,10 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 import {Contacts} from "@ionic-native/contacts";
-import { List2EventPage } from '../pages/cmy-liste-event/cmy-liste-event';
+import { ListeEvent } from '../pages/cmy-liste-event/cmy-liste-event';
 import { ListeOperation } from '../pages/cmy-liste-operation/cmy-liste-operation';
 import { CreationEventPage } from '../pages/cmy-creation-event/cmy-creation-event';
-import { CreationMouvementPage } from '../pages/cmy-creation-mouvement/cmy-creation-mouvement';
+import { CreationDepensePage } from '../pages/cmy-creation-depense/cmy-creation-depense';
 import { DetailEventPage } from '../pages/cmy-detail-event/cmy-detail-event';
 import { AjoutParticipantPage } from '../pages/cmy-ajout-participant/cmy-ajout-participant';
 import { ListeDepense} from "../pages/cmy-liste-depense/cmy-liste-depense";
@@ -59,6 +59,12 @@ import {ListeMessage} from "../pages/cmy-list-message/cmy-liste-message";
 import {GestionProfile} from "../pages/cmy-gestion-profile/cmy-gestion-profile";
 import {BilanEvent} from "../pages/cmy-bilan-event/cmy-bilan-event";
 import {DetailMessage} from "../pages/cmy-detail-message/cmy-detail-message";
+import {PageTest} from "../pages/cmy-page-test/cmy-page-test";
+import {MenuCircular} from "../components/menu-circular/menu-circular";
+import {ListeOrdre} from "../pages/cmy-liste-ordre/cmy-liste-ordre";
+import {PaiementOrdre} from "../pages/cmy-paiement-ordre/cmy-paiement-ordre";
+import {DetailOrdre} from "../pages/cmy-detail-ordre/cmy-detail-ordre";
+import {PayPal} from "@ionic-native/paypal";
 
 // Function for setting the default restangular configuration
 
@@ -84,19 +90,23 @@ export function RestangularConfigFactory (RestangularProvider) {
     DetailEventPage,
     BilanEvent,
     GestionProfile,
-    CreationMouvementPage,
+    CreationDepensePage,
+    PageTest,
     DetailOperation,
     ListeDepense,
+    ListeOrdre,
     GestionAmi,
     InvitationAmi,
     ListeMessage,
     AjoutParticipantPage,
     ModalPhoto,
     ModalChoixEvent,
+    PaiementOrdre,
+    DetailOrdre,
     DetailMessage,
     ModalChoixOperation,
     CreationEventPage,
-    List2EventPage,
+    ListeEvent,
     ListeOperation,
     LoginPage,
     SignupPage,
@@ -105,6 +115,7 @@ export function RestangularConfigFactory (RestangularProvider) {
     FacebookLoginPage,
     GoogleLoginPage,
     PreloadImage,
+    MenuCircular,
     BackgroundImage,
     ShowHideContainer,
     ShowHideInput,
@@ -120,17 +131,21 @@ export function RestangularConfigFactory (RestangularProvider) {
   entryComponents: [
     MyApp,
     GestionProfile,
+    PageTest,
     ListeMessage,
+    ListeOrdre,
+    PaiementOrdre,
+    DetailOrdre,
     BilanEvent,
     DetailMessage,
-    List2EventPage,
+    ListeEvent,
     DetailOperation,
     ListeDepense,
     GestionAmi,
     ListeOperation,
     ListeMessage,
     CreationEventPage,
-    CreationMouvementPage,
+    CreationDepensePage,
     DetailEventPage,
     InvitationAmi,
     AjoutParticipantPage,
@@ -152,6 +167,7 @@ export function RestangularConfigFactory (RestangularProvider) {
     Camera,
     Contacts,
     File,
+    PayPal,
     FilePath,
     Transfer,
 	  SplashScreen,

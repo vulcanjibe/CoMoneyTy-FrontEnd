@@ -5,7 +5,7 @@ import { LoginPage } from '../login/login';
 import { SignupPage } from '../signup/signup';
 import {Restangular} from 'ngx-restangular';
 import { User,Constante} from '../cmy-model/cmy.model'
-import { List2EventPage } from '../cmy-liste-event/cmy-liste-event';
+import { ListeEvent } from '../cmy-liste-event/cmy-liste-event';
 import { Facebook } from '@ionic-native/facebook';
 @Component({
   selector: 'walkthrough-page',
@@ -76,7 +76,7 @@ export class WalkthroughPage {
       localStorage.setItem('id_token', resp.id);
       localStorage.setItem('user', JSON.stringify(resp.user));
       this.constante.user=resp.user;
-      this.nav.setRoot(List2EventPage);
+      this.nav.setRoot(ListeEvent);
     }, errorResponse => {
       console.log("Error with status code", errorResponse.status);
     });
