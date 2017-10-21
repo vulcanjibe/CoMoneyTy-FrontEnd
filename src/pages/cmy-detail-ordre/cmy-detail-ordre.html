@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle >
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Paiment {{ordre.mouvement.montant}}€ pour {{ordre.emetteur.prenom}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <H1>Event :</H1>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>Titre :</ion-col>
+      <ion-col col-8>{{ordre.event.libelle}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>Du :</ion-col>
+      <ion-col col-8>{{ordre.event.date}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>Montant dépensé :</ion-col>
+      <ion-col col-8>{{ordre.event.montantDepense}}€</ion-col>
+    </ion-row>
+
+    <ion-item-divider></ion-item-divider>
+    <ion-row>
+      <H1>Paiement :</H1>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>Pour :</ion-col>
+      <ion-col col-8>{{ordre.emetteur.nom}} {{ordre.emetteur.prenom}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>Montant :</ion-col>
+      <ion-col col-8>{{ordre.mouvement.montant}}€</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>Date :</ion-col>
+      <ion-col col-8>{{ordre.mouvement.date}}</ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>
