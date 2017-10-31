@@ -1,22 +1,19 @@
 menu-circular {
-
+  .sousMenuLabel {
+    position: absolute;
+    top: 15px;
+    font-size: 0.6em;
+  }
   #cover {
-    position:fixed;
-    top:0;
-    left: 0;
+    top:50%;
+    left: 50%;
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.6);
     z-index:899;
     display: none;
   }
-  .circular-menu {
-    width: 250px;
-    height: 250px;
-    margin: 0 auto;
-    position: fixed;
-    z-index: 900;
-  }
+
   .invisible {
     display:none;
   }
@@ -33,7 +30,8 @@ menu-circular {
   .centered {
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    //position: fixed;
+    //transform: translate(-50%,-50%);
   }
   .circleClose {
     width: 250px;

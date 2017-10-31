@@ -6,7 +6,7 @@ import {Constante, Invitation, Contact, User} from '../cmy-model/cmy.model';
 
 
 import {Restangular} from 'ngx-restangular';
-import {ContactFindOptions, Contacts} from "@ionic-native/contacts";
+import {ContactFindOptions, Contacts, IContactProperties} from "@ionic-native/contacts";
 import {SMS} from "@ionic-native/sms";
 @Component({
   selector: 'invitation-ami',
@@ -37,6 +37,7 @@ export class InvitationAmi {
          let user:User = usr;
          let aContact = new Contact(user.nom,user.prenom,user.phone);
          aContact.photo=user.urlAvatar;
+         aContact.email=user.email;
          this.contactsComplet.push(aContact);
        }
         this.initContacts();
@@ -47,12 +48,18 @@ export class InvitationAmi {
       });
     } else {
       // récupération de toutes les relations
-      let options = new ContactFindOptions();
-      options.multiple=true;
+
      // options.desiredFields=[ this.contacts_tel.fieldType.id];
       //options.hasPhoneNumber = true;
+
+      let fields = ['displayName','phoneNumbers','emails','photos'];
+      let options = new ContactFindOptions();
+      options.filter="";
+      options.multiple=true;
+      options.desiredFields=fields;
+
       this.loading.present();
-      this.contacts_tel.find(["*"],options).then(res=>{
+      this.contacts_tel.find(['displayName','phoneNumbers','emails','photos'],options).then(res=>{
         console.log(res.length);
         this.contactsComplet=new Array<Contact>();
        for(let cont of res)
@@ -101,7 +108,7 @@ export class InvitationAmi {
       });
     }
 
-  }
+  };
 
   initContacts() {
     this.contacts = new Array<Contact>();
@@ -116,7 +123,7 @@ export class InvitationAmi {
       }
       this.contacts.push(contact);
     }
-  }
+  };
   envoiInvitation(contact:Contact) {
 
 
@@ -167,7 +174,7 @@ export class InvitationAmi {
       this.constante.traiteErreur(errorResponse,this);
     });
 
-  }
+  };
 
   filtreContact(ev) {
     console.log('Filtre');
@@ -181,5 +188,5 @@ export class InvitationAmi {
     } else {
       this.contacts = this.contactsComplet;
     }
-  }
+  };
 }

@@ -12,8 +12,27 @@
 
 
   <section>
-    <button ion-button block class="form-action-button create-post-button" (press)="resetData()" type="button">Reset des datas!</button>
+    <button ion-button block class="form-action-button create-post-button"  (tap)="alerteur()" (press)="resetData()" >Reset des datas!</button>
   </section>
 
+  <section>
+    <button ion-button block class="form-action-button create-post-button"   (tap)="alerteur()" (press)="checkInfra()">Check infrastructure</button>
+    <ion-item padding-top>
+      <ion-label item-start>Serveur : </ion-label>
+      <ion-icon item-left [color]="colorServeur" [name]="etatServeur"></ion-icon>
+      <ion-label item-end> Tps : {{tpsReponseServeur}} ms</ion-label>
+    </ion-item>
+    <ion-item padding-top>
+      <ion-label item-left>Database : </ion-label>
+      <ion-icon item-left [color]="colorDatabase" [name]="etatDatabase"></ion-icon>
+      <ion-label item-right> Tps : {{tpsReponseCouchbase}} ms</ion-label>
+    </ion-item>
+  </section>
 
+  <section>
+    <button ion-button block class="form-action-button create-post-button"  (tap)="alerteur();" (press)="purgeServeur()" >Test Stateless</button>
+  </section>
+  <section>
+    <button ion-button block class="form-action-button create-post-button" type="button"   (tap)="alerteur()" (press)="swapUser()" >Swap User</button>
+  </section>
 </ion-content>

@@ -7,7 +7,7 @@
 <ion-content class="login-content auth-content">
   <form class="login-form auth-form" [formGroup]="login" (ngSubmit)="doLogin()">
     <ion-item>
-      <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+      <ion-input type="email" placeholder="Email, Téléphone ou login..." formControlName="email"></ion-input>
     </ion-item>
     <div *ngIf="login.hasError('required') && login.touched" class="error-box">Email obligatoire</div>
 
@@ -31,4 +31,7 @@
   </p>
   <button ion-button block class="facebook-auth-button" (tap)="doFacebookLogin()">Log in with Facebook</button>
   <button ion-button block class="google-auth-button" (tap)="doGoogleLogin()">Log in with Google</button>
+  <p class="auth-divider">
+    <button ion-button class="skip-button" (tap)="showPrivacy()" >Règles de confidentialité</button>
+  </p>
 </ion-content>

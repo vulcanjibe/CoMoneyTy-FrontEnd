@@ -62,14 +62,25 @@ export class BilanEvent {
   }
 
   solderEvent() {
+    if(this.event.roles.indexOf("Createur")<0)
+    {
+      this.constante.presentToast("Seul le créateur peut modifier les participants!");
+      return;
+    };
+    this.loading = this.loadingCtrl.create({
+      content: 'Enregistrement...',
+    });
+    this.loading.present();
     this.restangular.one('event/'+this.event.id+'/validebilan').get().subscribe(mouvements => {
-
+        this.loading.dismissAll();
+        this.event.etat="En cours de solde";
+        this.presentToast("Les ordres de paiement ont été envoyés!");
     },errorResponse => {
       this.loading.dismissAll();
       this.constante.traiteErreur(errorResponse,this);
     });
 
-    }
+    };
   private presentToast(text) {
     let toast = this.toastCtrl.create({
       message: text,
@@ -77,11 +88,11 @@ export class BilanEvent {
       position: 'top'
     });
     toast.present();
-  }
+  };
 
   EnvoyerSms() {
     this.chooseCategory();
-  }
+  };
 
 
   chooseCategory(){
@@ -143,7 +154,7 @@ export class BilanEvent {
     alert.present().then(() => {
       this.categories_checkbox_open = true;
     });
-  }
+  };
 
   sms() {
     console.log("SMS!");
@@ -184,7 +195,7 @@ export class BilanEvent {
 
   };
 
-}
+};
 class MouvementAvecUser {
   mouvement:Mouvement;
   userSource:User;

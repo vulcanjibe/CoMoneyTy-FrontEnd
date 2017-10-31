@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Choisir un user</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="list-mini-content">
+  <ion-list >
+    <button  (press)="swapUser(user)" ion-item *ngFor="let user of users">
+      <ion-row align-items-center justifiy-content-end no-padding >
+        <ion-col no-padding col-3 class="item-avatar" >
+          <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(user.urlAvatar)'></preload-image>
+        </ion-col>
+        <ion-col class="libelle" col-9>
+          <h3>{{user.nom}} {{user.prenom}}</h3>
+          <p><span *ngIf="user.phone">{{user.phone}}</span> - <span *ngIf="user.email">{{user.email}}</span></p>
+        </ion-col>
+      </ion-row>
+    </button>
+  </ion-list>
+
+
+</ion-content>

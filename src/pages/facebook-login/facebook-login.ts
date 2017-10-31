@@ -32,7 +32,7 @@ export class FacebookLoginPage {
       env.loading.dismiss();
       this.constante.traiteErreur(error,this);
     });
-  }
+  };
 
   doFacebookLogout(){
     let env = this;
@@ -43,7 +43,7 @@ export class FacebookLoginPage {
     }, function(error){
       this.constante.traiteErreur(error,this);
     });
-  }
+  };
 
   doFacebookLogin() {
     let env = this;
@@ -54,5 +54,5 @@ export class FacebookLoginPage {
     }, function(err){
       this.constante.traiteErreur(err,this);
     });
-  }
+  };
 }

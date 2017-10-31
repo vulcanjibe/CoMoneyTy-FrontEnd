@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Historique de l'event</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="list-mini-content">
+  <ion-item-group>
+      <ion-item  class="notification-item" ion-item *ngFor="let historique of historiques">
+        <ion-avatar item-left>
+          <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(historique.user.urlAvatar)'></preload-image>
+        </ion-avatar>
+        <h2 class="item-title">{{historique.timestamp}} - {{historique.user.nom}} {{historique.user.prenom}}</h2>
+        <p class="item-description" text-wrap>{{historique.action}}</p>
+      </ion-item>
+  </ion-item-group>
+</ion-content>
+
+

@@ -17,7 +17,10 @@
           <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(participant.user.urlAvatar)'></preload-image>
         </ion-col>
         <ion-col no-padding col-5 class="item-content">
-          <h3 class="item-title"> {{participant.user.nom}} {{participant.user.prenom}}</h3>
+          <h3 class="item-title"> {{participant.user.nom}} {{participant.user.prenom}}
+            <ion-icon *ngIf="participant.roles.indexOf('Createur')>=0" style="font-size: 2em;margin-left: 15px;" name="star" (tap)="toggleRole(participant)"></ion-icon>
+            <ion-icon *ngIf="participant.roles.indexOf('Createur')<0" style="font-size: 2em;margin-left: 15px;" name="star-outline" (tap)="toggleRole(participant)"></ion-icon>
+          </h3>
           <p  class="item-description">
             <ion-icon style="font-size: 2.2em;margin-left: 15px;" name="call" (tap)="sms(participant)"></ion-icon>
             <ion-icon style="font-size: 2.2em;margin-left: 15px;" name="send" (tap)="sms(participant)"></ion-icon>
@@ -25,7 +28,7 @@
 
         </ion-col>
         <ion-col no-padding  col-4 style="text-align: end;"  class="item-content">
-          <h3 class="item-title" style="font-size:0.8rem" > A payé {{participant.aPaye.toFixed(2)}} €</h3>
+          <h3 class="item-title" style="font-size:0.8rem" *ngIf="participant.aPaye.toFixed(2)>0"> A payé {{participant.aPaye.toFixed(2)}} €</h3>
           <h3 class="item-title" style="font-size:0.8rem" *ngIf="participant.doit.toFixed(2)>0"> Doit payer {{participant.doit.toFixed(2)}} €</h3>
           <h3 class="item-title" style="font-size:0.8rem" *ngIf="participant.doit.toFixed(2)<0"> Doit récupérer {{-participant.doit.toFixed(2)}} €</h3>
         </ion-col>
@@ -33,7 +36,7 @@
     </div>
   </ion-list>
   </div>
-
+  <ion-row style="height: 150px"></ion-row>
   <ion-fab right bottom>
     <button (tap)="addNewParticipant()" ion-fab color="danger"><ion-icon name="person-add"></ion-icon></button>
   </ion-fab>

@@ -130,7 +130,7 @@ export class ListeOperation {
     } else {
       this.tableauOperations = this.tableauOperationsInitial;
     }
-  }
+  };
 
 };
 

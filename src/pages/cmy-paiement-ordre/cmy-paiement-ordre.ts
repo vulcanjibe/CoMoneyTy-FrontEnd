@@ -3,7 +3,10 @@ import {NavController, NavParams, LoadingController, AlertController, ToastContr
 
 import 'rxjs/Rx';
 
-import {Constante, Event, Depense, Operation, TypeOperation, OperationAvecDepense, Ordre} from "../cmy-model/cmy.model";
+import {
+  Constante, Event, Depense, Operation, TypeOperation, OperationAvecDepense, Ordre,
+  Message
+} from "../cmy-model/cmy.model";
 
 import {ModalChoixEvent} from '../cmy-modal/modal-choix-event';
 import {Restangular} from 'ngx-restangular';
@@ -15,10 +18,12 @@ import {PayPal, PayPalConfiguration, PayPalPayment} from "@ionic-native/paypal";
 })
 export class PaiementOrdre {
   ordre:Ordre;
+  message:Message;
   loading: any;
   constructor(public nav: NavController,public constante:Constante,
     public navParams: NavParams, public loadingCtrl: LoadingController,private alertController:AlertController,private toastCtrl:ToastController,private restangular: Restangular,private payPal:PayPal ) {
     this.ordre = this.navParams.get("theOrdre");
+    this.message = this.navParams.get("theMessage");
     this.loading = this.loadingCtrl.create();
   }
 
@@ -55,10 +60,10 @@ export class PaiementOrdre {
     this.presentToast("Le paiement VISA n'est pas encore disponible!");
   }
 
-  hand() {
+  virement() {
     const alert = this.alertController.create({
-      title: 'Valider le réglèment manuel?',
-      message: "Confirmez-vous que vous avez régler en espèce ce paiment",
+      title: 'Valider le virement?',
+      message: "Confirmez-vous que vous voulez régler par virement?",
       buttons: [
         {
           text: 'Oui',
@@ -66,11 +71,22 @@ export class PaiementOrdre {
           handler: () => {
             // On bascule juste le mouvement en "effectué"
             this.loading.present();
+            let aOrdre = new Ordre();
             this.ordre.mouvement.etat="Réalisé";
-            let mvtRest = this.restangular.copy(this.ordre.mouvement);
-            mvtRest.route="mouvement";
-            mvtRest.save().toPromise().then(rep =>{
+            aOrdre.mouvement=this.ordre.mouvement;
+            aOrdre.emetteur=this.ordre.emetteur;
+            aOrdre.event=this.ordre.event;
+            this.restangular.one("mouvement").post("reglementParVirement",aOrdre).subscribe(rep =>{
               this.loading.dismissAll();
+              this.presentToast("Virement transmis");
+              this.message.actionRealise = true;
+              let msgRest = this.restangular.copy(this.message);
+              msgRest.route="message";
+              msgRest.save().toPromise().then(rep=>{
+                console.log("Message action réalisée!");
+              },error=>{
+                this.constante.traiteErreur(error,this);
+              })
             },error=>{
               this.constante.traiteErreur(error,this);
             })
@@ -88,7 +104,48 @@ export class PaiementOrdre {
     });
     alert.present();
   }
+  hand() {
+    const alert = this.alertController.create({
+      title: 'Valider le réglèment manuel?',
+      message: "Confirmez-vous que vous avez régler en espèce ce paiement?",
+      buttons: [
+        {
+          text: 'Oui',
+          role: 'cancel',
+          handler: () => {
+            // On bascule juste le mouvement en "effectué"
+            this.loading.present();
+            this.ordre.mouvement.etat="Réalisé";
+            let mvtRest = this.restangular.copy(this.ordre.mouvement);
+            mvtRest.route="mouvement";
+            mvtRest.save().toPromise().then(rep =>{
+              this.loading.dismissAll();
+              this.presentToast("Paiement enregistré");
+              this.message.actionRealise = true;
+              let msgRest = this.restangular.copy(this.message);
+              msgRest.route="message";
+              msgRest.save().toPromise().then(rep=>{
+                console.log("Message action réalisée!");
+              },error=>{
+                this.constante.traiteErreur(error,this);
+              })
+            },error=>{
+              this.constante.traiteErreur(error,this);
+            })
 
+          }
+        },
+        {
+          text: 'Non',
+          handler: () => {
+            console.log("Abandon");
+          }
+        }
+
+      ]
+    });
+    alert.present();
+  }
   lydia() {
     this.presentToast("Le paiement Lydia n'est pas encore disponible!");
   }

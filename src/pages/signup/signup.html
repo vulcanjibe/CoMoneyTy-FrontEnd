@@ -11,8 +11,20 @@
       <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input type="text" placeholder="Nom prénom" formControlName="nomprenom"></ion-input>
+      <ion-input type="phone" placeholder="Téléphone" formControlName="phone"></ion-input>
     </ion-item>
+    <ion-row>
+      <ion-col col-6>
+        <ion-item>
+          <ion-input type="text" placeholder="Nom" formControlName="nom"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col  col-6>
+        <ion-item>
+          <ion-input type="text" placeholder="Prénom" formControlName="prenom"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
     <show-hide-container>
       <ion-item>
         <ion-input type="password" placeholder="Password" formControlName="password" show-hide-input></ion-input>

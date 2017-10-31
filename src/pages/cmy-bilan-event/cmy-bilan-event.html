@@ -21,9 +21,9 @@
   </ion-item-group>
 
   <section>
-    <button ion-button block class="form-action-button create-post-button" (tap)="EnvoyerSms()" type="button">Relancer vos amis!</button>
+    <button ion-button block padding class="form-action-button create-post-button" (tap)="EnvoyerSms()" type="button">Relancer vos amis!</button>
   </section>
   <section>
-    <button ion-button block class="form-action-button create-post-button" (tap)="solderEvent()" type="button">Solder l'event!</button>
+    <button ion-button block padding class="form-action-button create-post-button" (tap)="solderEvent()" type="button" [disabled]="event.etat!='Ouvert'">Solder l'event!</button>
   </section>
 </ion-content>

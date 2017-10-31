@@ -5,9 +5,6 @@ import 'rxjs/Rx';
 import { Platform } from 'ionic-angular';
 import { Event,User,UserAvecDepense,Constante,Depense } from '../cmy-model/cmy.model';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { FilePath } from '@ionic-native/file-path';
-import { File } from '@ionic-native/file';
-import { Transfer, TransferObject } from '@ionic-native/transfer';
 import {ModalPhoto} from '../cmy-modal/modal-photo'
 import {Restangular} from 'ngx-restangular';
 declare var cordova: any;
@@ -27,7 +24,7 @@ export class CreationDepensePage {
   imageDataCamera: string = null;
   valid:boolean =false;
   options: CameraOptions = {
-    quality: 100,
+    quality: 80,
     sourceType:  this.camera.PictureSourceType.CAMERA,
     destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.PNG,
@@ -44,14 +41,9 @@ export class CreationDepensePage {
               public modalCtrl: ModalController,
               public constante:Constante,
               private restangular: Restangular,
-              public alertCtrl: AlertController,
               private camera: Camera,
-              private platform: Platform,
               public params: NavParams,
-              private transfer: Transfer,
-             public toastCtrl: ToastController,
-              private file: File,
-              private filePath: FilePath) {
+             public toastCtrl: ToastController) {
 
     this.creationMouvementForm = new FormGroup({
       commentaire: new FormControl('', Validators.compose([
@@ -70,28 +62,12 @@ export class CreationDepensePage {
 
   popupPayePar() {
     this.presentToast("Pas encore implementé");
-  }
+  };
   popupPartage() {
     this.presentToast("Pas encore implementé");
-  }
+  };
 
-  takePhoto() {
-    this.options.sourceType = this.camera.PictureSourceType.CAMERA;
-    this.camera.getPicture(this.options).then((imageData) => {
-      this.imageDataCamera = "data:image/png;base64," + imageData;
-    }, (err) => {
-      this.constante.traiteErreur(err, this);
-    });
-  }
 
-  chooseGallery() {
-    this.options.sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
-    this.camera.getPicture(this.options).then((imageData) => {
-      this.imageDataCamera = "data:image/png;base64,"+imageData;
-    }, (err) => {
-      this.constante.traiteErreur(err,this);
-    });
-  }
 
   saveMouvement(){
     this.encours=true;
@@ -107,7 +83,7 @@ export class CreationDepensePage {
       // Nouvelle photo en envoyer
       this.imageUrl = this.createFileName();
       this.imageUrl+="=="+this.imageDataCamera;
-    }
+    };
 
     this.depense.urlPhoto = this.imageUrl;
     this.loading = this.loadingCtrl.create({
@@ -126,6 +102,7 @@ export class CreationDepensePage {
           participant.doit -= this.depense.montant - montant;
         }
       this.event.montantTotal+=this.depense.montant;
+      this.loading.dismissAll();
       this.nav.pop();
 
 
@@ -148,9 +125,25 @@ export class CreationDepensePage {
       this.imageUrl=data;
     });
     modal.present();
-  }
+  };
 
+  takePhoto() {
+    this.options.sourceType = this.camera.PictureSourceType.CAMERA;
+    this.camera.getPicture(this.options).then((imageData) => {
+      this.imageDataCamera = "data:image/png;base64," + imageData;
+    }, (err) => {
+      this.constante.traiteErreur(err, this);
+    });
+  };
 
+  chooseGallery() {
+    this.options.sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
+    this.camera.getPicture(this.options).then((imageData) => {
+      this.imageDataCamera = "data:image/png;base64,"+imageData;
+    }, (err) => {
+      this.constante.traiteErreur(err,this);
+    });
+  };
 
 
 
@@ -160,7 +153,7 @@ export class CreationDepensePage {
     let n = d.getTime();
     let newFileName =  "mouvement/"+this.constante.user.id+"_"+ n + ".png";
     return newFileName;
-  }
+  };
 
 
 
@@ -171,7 +164,7 @@ export class CreationDepensePage {
       position: 'top'
     });
     toast.present();
-  }
+  };
 
 
-}
+};

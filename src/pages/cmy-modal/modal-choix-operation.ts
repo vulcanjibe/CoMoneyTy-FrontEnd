@@ -35,7 +35,7 @@ export class ModalChoixOperation {
       this.loading.dismiss();
       this.constante.traiteErreur(errorResponse,this);
     });
-  }
+  };
   choose(operationAvecDepense: OperationAvecDepense) {
     // Sauvegarde du lien!!!
     if(operationAvecDepense.operation.montant>0)
@@ -59,10 +59,10 @@ export class ModalChoixOperation {
       return;
     }
     this.viewCtrl.dismiss(operationAvecDepense);
-  }
+  };
   dismiss() {
     this.viewCtrl.dismiss();
-  }
+  };
 
   filtreOperation(ev) {
     console.log('Filtre');
@@ -76,5 +76,5 @@ export class ModalChoixOperation {
     } else {
       this.tableauOperations = this.tableauOperationsInitial;
     }
-  }
-}
+  };
+};

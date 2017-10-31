@@ -4,7 +4,13 @@ liste-depense {
 		@include header-styles(color($colors, header-alt, base), color($colors, header-alt, contrast));
 
 	}
-
+  ion-badge.etat {
+    position: absolute;
+    transform: rotate(-45deg);
+    z-index: 100;
+    right: -34px;
+    top: 20px;
+  }
   ion-chip.toto {
     font-size: xx-small;
     padding-right: 2px;

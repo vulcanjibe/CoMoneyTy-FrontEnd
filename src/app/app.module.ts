@@ -37,8 +37,7 @@ import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Camera } from '@ionic-native/camera';
-import { File } from '@ionic-native/file';
-import { FilePath } from '@ionic-native/file-path';
+
 
 // Functionalities
 
@@ -51,7 +50,7 @@ import { GoogleLoginService } from '../pages/google-login/google-login.service';
 import { RestangularModule } from 'ngx-restangular';
 import {DetailOperation} from "../pages/cmy-detail-operation/cmy-detail-operation";
 import {ModalChoixOperation} from "../pages/cmy-modal/modal-choix-operation";
-import { Transfer } from '@ionic-native/transfer';
+
 import { SMS } from '@ionic-native/sms';
 import {GestionAmi} from "../pages/cmy-gestion-ami/cmy-gestion-ami";
 import {InvitationAmi} from "../pages/cmy-invitation-ami/cmy-invitation-ami";
@@ -65,6 +64,10 @@ import {ListeOrdre} from "../pages/cmy-liste-ordre/cmy-liste-ordre";
 import {PaiementOrdre} from "../pages/cmy-paiement-ordre/cmy-paiement-ordre";
 import {DetailOrdre} from "../pages/cmy-detail-ordre/cmy-detail-ordre";
 import {PayPal} from "@ionic-native/paypal";
+import {PrivacyPolicyPage} from "../pages/privacy-policy/privacy-policy";
+import {ListeUser} from "../pages/cmy-page-test/cmy-liste-user";
+import {ListeHistorique} from "../pages/cmy-liste-historique/cmy-liste-historique";
+import {AppVersion} from "@ionic-native/app-version";
 
 // Function for setting the default restangular configuration
 
@@ -88,6 +91,7 @@ export function RestangularConfigFactory (RestangularProvider) {
   declarations: [
     MyApp,
     DetailEventPage,
+    PrivacyPolicyPage,
     BilanEvent,
     GestionProfile,
     CreationDepensePage,
@@ -100,12 +104,14 @@ export function RestangularConfigFactory (RestangularProvider) {
     ListeMessage,
     AjoutParticipantPage,
     ModalPhoto,
+    ListeUser,
     ModalChoixEvent,
     PaiementOrdre,
     DetailOrdre,
     DetailMessage,
     ModalChoixOperation,
     CreationEventPage,
+    ListeHistorique,
     ListeEvent,
     ListeOperation,
     LoginPage,
@@ -131,7 +137,9 @@ export function RestangularConfigFactory (RestangularProvider) {
   entryComponents: [
     MyApp,
     GestionProfile,
+    ListeUser,
     PageTest,
+    PrivacyPolicyPage,
     ListeMessage,
     ListeOrdre,
     PaiementOrdre,
@@ -139,6 +147,7 @@ export function RestangularConfigFactory (RestangularProvider) {
     BilanEvent,
     DetailMessage,
     ListeEvent,
+    ListeHistorique,
     DetailOperation,
     ListeDepense,
     GestionAmi,
@@ -162,14 +171,12 @@ export function RestangularConfigFactory (RestangularProvider) {
   providers: [
     SMS,
     Constante,
+    AppVersion,
     FacebookLoginService,
     GoogleLoginService,
     Camera,
     Contacts,
-    File,
     PayPal,
-    FilePath,
-    Transfer,
 	  SplashScreen,
 	  StatusBar,
     NativeStorage,

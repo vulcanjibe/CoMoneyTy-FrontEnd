@@ -13,10 +13,11 @@
   <div class="user-image-content">
     <ion-row no-padding class="user-image-row">
       <ion-col no-padding width-40>
-        <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(user.urlAvatar)' alt="aca va la img" title="IMAGE!"></preload-image>
+        <preload-image *ngIf="imageDataCamera==null" class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(user.urlAvatar)' alt="aca va la img" title="IMAGE!"></preload-image>
+        <img [src]="imageDataCamera" *ngIf="imageDataCamera" />
       </ion-col>
     </ion-row>
-    <h3 class="image-action">Changer la photo de profil</h3>
+    <h3 class="image-action" (tap)="changePhoto()">Changer la photo de profil</h3>
   </div>
 
   <form [formGroup]="settingsForm" class="settings-form">

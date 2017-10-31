@@ -7,6 +7,7 @@ import {Restangular} from 'ngx-restangular';
 import { User,Constante} from '../cmy-model/cmy.model'
 import { ListeEvent } from '../cmy-liste-event/cmy-liste-event';
 import { Facebook } from '@ionic-native/facebook';
+import { AppVersion } from '@ionic-native/app-version';
 @Component({
   selector: 'walkthrough-page',
   templateUrl: 'walkthrough.html'
@@ -14,11 +15,24 @@ import { Facebook } from '@ionic-native/facebook';
 export class WalkthroughPage {
   FB_APP_ID: number = 826720427470540;
   lastSlide = false;
+  version1:string;
+  version2:string;
   userDev : User;
   @ViewChild('slider') slider: Slides;
 
-  constructor(public nav: NavController, private restangular: Restangular,public constante: Constante,public fb: Facebook) {
+  constructor(private appVersion: AppVersion,public nav: NavController, private restangular: Restangular,public constante: Constante,public fb: Facebook) {
     this.fb.browserInit(this.FB_APP_ID, "v2.8");
+    this.appVersion.getVersionCode().then(rep=> {
+      this.version1=rep;
+    },error => {
+      this.version1="--";
+      console.log(error);
+    });
+    this.appVersion.getVersionNumber().then(rep=> {
+      this.version1=rep;
+    },error => {
+      this.version2="--";
+    });
   }
 
   skipIntro() {

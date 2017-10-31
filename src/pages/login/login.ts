@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
+import {NavController, LoadingController, ToastController} from 'ionic-angular';
 import {Validators, FormGroup, FormControl} from '@angular/forms';
 
 import  {ListeEvent} from "../cmy-liste-event/cmy-liste-event";
@@ -11,6 +11,7 @@ import { GoogleLoginService } from '../google-login/google-login.service';
 
 import {Restangular} from 'ngx-restangular';
 import { User,Constante} from '../cmy-model/cmy.model'
+import {PrivacyPolicyPage} from "../privacy-policy/privacy-policy";
 
 @Component({
   selector: 'login-page',
@@ -30,14 +31,14 @@ export class LoginPage {
     public googleLoginService: GoogleLoginService,
     public loadingCtrl: LoadingController,
     private restangular: Restangular,
-    public constante: Constante
+    public constante: Constante,
+    private toastCtrl:ToastController
   ) {
     this.main_page = { component: ListeEvent };
     this.user = new User();
     this.login = new FormGroup({
-      email: new FormControl('Herve', Validators.compose([
-        Validators.required])),
-      password: new FormControl('CoMoneyTy', Validators.required)
+      email: new FormControl('', Validators.compose([Validators.required,Validators.minLength(3)])),
+      password: new FormControl('', Validators.compose([Validators.required,Validators.minLength(5)]))
     });
   }
 
@@ -87,7 +88,7 @@ export class LoginPage {
         env.constante.user=resp.user;
         env.nav.setRoot(env.main_page.component);
       }, errorResponse => {
-        this.constante.traiteErreur(errorResponse,this);
+          this.constante.traiteErreur(errorResponse,this);
       });
 
     }, function(error){
@@ -152,4 +153,7 @@ export class LoginPage {
     this.nav.push(ForgotPasswordPage);
   }
 
+  showPrivacy() {
+    this.nav.push(PrivacyPolicyPage);
+  }
 }

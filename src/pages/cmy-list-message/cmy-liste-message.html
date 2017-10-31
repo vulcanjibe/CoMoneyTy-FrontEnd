@@ -9,14 +9,16 @@
 
 <ion-content class="notifications-content">
   <ion-item-group>
-    <ion-item-divider class="notifications-divider">Today</ion-item-divider>
-    <ion-item [ngClass]="{'row-opaque' : message.dejaLu}" (tap)="traite(message)" class="notification-item" *ngFor="let message of messages">
-      <ion-avatar item-left>
-        <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(message.emetteur.urlAvatar)'></preload-image>
-      </ion-avatar>
-      <h2 class="item-title">{{message.emetteur.nom}} {{message.emetteur.prenom}}</h2>
-      <p class="item-description">{{message.titre}}</p>
-      <ion-note class="item-time" item-right>{{message.date}}</ion-note>
-    </ion-item>
+    <div *ngFor="let tab of tableauMessages">
+      <ion-item-divider class="notifications-divider">{{tab.titre}}</ion-item-divider>
+        <ion-item [ngClass]="{'row-opaque' : message.dejaLu}" (tap)="traite(message)" (press)="trash(message)" class="notification-item" *ngFor="let message of tab.tableau">
+          <ion-avatar item-left>
+            <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(message.emetteur.urlAvatar)'></preload-image>
+          </ion-avatar>
+          <h2 class="item-title">{{message.emetteur.nom}} {{message.emetteur.prenom}}</h2>
+          <p class="item-description">{{message.titre}}<ion-icon name="warning"  style="color : red;" *ngIf="message.messageCache!=null && !message.actionRealise"></ion-icon></p>
+          <ion-note class="item-time" item-right>{{message.date}}</ion-note>
+        </ion-item>
+    </div>
   </ion-item-group>
 </ion-content>

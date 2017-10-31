@@ -4,13 +4,22 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Mes Events</ion-title>
-    <p style="color:white" no-padding no-margin>({{ depenseTotale.toFixed(2) }} € dépensés)</p>
+    <p style="color:white" no-padding no-margin>({{ depenseTotale.toFixed(2) }} € dus)</p>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="list-mini-content">
-  <ion-searchbar (ionInput)="filtreEvent($event)"></ion-searchbar>
-  <div class="list-mini">
+  <div #cover id="cover" [ngClass]="{'invisible':!visible}" (tap)="blockEvent()" ion-fixed></div>
+  <menu-circular #menu class="circular-menu" [ngClass]="{'invisible':!visible}" ion-fixed></menu-circular>
+  <ion-toolbar >
+    <ion-searchbar (ionInput)="filtreEvent($event.target.value)">></ion-searchbar>
+    <ion-buttons right>
+      <button color="primary" ion-button icon-only (click)='filtreType()'>
+        <ion-icon name="funnel"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+ <div class="list-mini">
     <ion-list>
       <button class="list-item" (press)="showMenu(event)"  (tap)="open(event)" ion-item *ngFor="let event of events">
         <ion-row align-items-center no-padding class="content-row one-line">
@@ -19,13 +28,13 @@
             <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(event.urlPhoto)'></preload-image>
           </ion-col>
           <ion-badge class="etat" *ngIf="event.etat=='En cours de solde'" color="danger">
-            Clôture
-          </ion-badge>
-          <ion-badge class="etat" *ngIf="event.etat=='Fermé'" color="primary">
-            Fermé
+            En Clôture
           </ion-badge>
           <ion-badge class="etat" *ngIf="event.etat=='Annulé'" color="primary">
             Annulé
+          </ion-badge>
+          <ion-badge class="etat" *ngIf="event.etat=='Clos'" color="secondary">
+            Clos!
           </ion-badge>
           <ion-col no-padding col-8 class="item-content">
             <h3 class="item-title"> {{event.libelle}}</h3>
@@ -33,14 +42,14 @@
             <p class="item-description"> Coût total : {{event.montantTotal.toFixed(2)}} €</p>
             <p class="item-description"> Montant Dépensé : {{event.montantDepense.toFixed(2)}} €</p>
           </ion-col>
-          <ion-col no-padding col-1 class="item-icon">
-            <ion-icon name="warning"  style="  color : red;  font-size: 8px;" *ngIf="event.montantDu>0"></ion-icon>
+          <ion-col no-padding col-1 >
+            <ion-icon name="warning"  style="color : red;" *ngIf="event.montantDu>0"></ion-icon>
           </ion-col>
         </ion-row>
       </button>
     </ion-list>
   </div>
-  <menu-circular #menu></menu-circular>
+  <ion-row style="height: 150px"></ion-row>
   <ion-fab right bottom>
     <button (tap)="createNewEvent()" ion-fab color="danger"><ion-icon name="add"></ion-icon></button>
   </ion-fab>

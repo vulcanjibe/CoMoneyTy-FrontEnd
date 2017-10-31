@@ -32,7 +32,7 @@
         <ion-datetime formControlName="date" displayFormat="DD/MM/YYYY" pickerFormat="DD-MM-YYYY"></ion-datetime>
       </ion-item>
       <button ion-button block large  type="button"  class="upload-image-button" >
-        <ion-icon name="camera" (tap)="takePhoto()"></ion-icon><ion-icon name="folder" (tap)="choosePhoto()"></ion-icon><ion-icon name="folder" (tap)="chooseGallery()"></ion-icon>
+        <ion-icon name="camera" (tap)="takePhoto()"></ion-icon><ion-icon name="folder" (tap)="choosePhoto()"></ion-icon><ion-icon name="images" (tap)="chooseGallery()"></ion-icon>
         <img [src]="imageDataCamera" *ngIf="imageDataCamera" />
         <img [src]="constante.getUrlImage(imageUrl)" *ngIf="imageUrl" />
         <h3 class="button-title">Prenez une photo</h3>

@@ -41,12 +41,25 @@ export class Constante {
     return this.BASE_URL_IMAGE+"/"+url;
   }
 
+  public presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
   traiteErreur(error,component:any) {
     console.log("ERREUR=>",error);
     if(component.loading!=null)
       component.loading.dismissAll();
+    let msg = "Une erreur technique est survenue!!!";
+    if(error.data && error.data.message) {
+      msg = error.data.message;
+    }
+
     let toast = this.toastCtrl.create({
-      message: "Une erreur technique est survenue!!!",
+      message: msg,
       duration: 3000,
       position: 'top'
     });
@@ -71,6 +84,7 @@ export class UserAvecDepense {
   user:User;
   aPaye:number;
   doit:number;
+  roles:Array<string>;
   constructor( user1:User) {
     this.user=user1;
     this.aPaye=0;
@@ -91,6 +105,7 @@ export class Event {
   libelle: string;
   etat:string;
   date: string;
+  roles:Array<string>;
   montantTotal: number;
   montantDu: number;
   montantDepense: number;
@@ -101,10 +116,10 @@ export class LienEventUser {
   id:string;
   userId:string;
   eventId:string;
+  roles:Array<String>;
   constructor(id1:string,id2:string) {
     this.userId=id1;
     this.eventId=id2;
-
   }
 }
 
@@ -132,7 +147,7 @@ export class Depense {
   typeRepartition:string;
   urlPhoto:string;
   date:string;
-  idOperation;string;
+  idOperation:string;
   constructor(idPay:string,idEv:string) {
     this.idPayeur=idPay;
     this.idEvent=idEv
@@ -158,6 +173,7 @@ export class Operation {
 
 export class OperationAvecDepense {
   operation:Operation;
+  urlPhoto:string;
   depense:Depense;
 }
 export class Contact {
@@ -184,18 +200,31 @@ export class Message {
   titre: string;
   emetteur: User;
   destinataire: User;
-  messageCache: string;
+  messageCache: any;
   date: Date;
   dejaLu:boolean;
+  actionRealise:boolean;
 }
 
 export class TableauOperation {
   titre: string;
   tableau:Array<OperationAvecDepense>;
 }
+export class TableauMessage {
+  titre: string;
+  tableau:Array<Message>;
+}
 
 export class Ordre {
   mouvement:Mouvement;
   emetteur:User;
   event:Event;
+}
+
+export class Historique {
+  idEvent:string;
+  user:User;
+  timestamp:Date;
+  action:string;
+  objet:any;
 }

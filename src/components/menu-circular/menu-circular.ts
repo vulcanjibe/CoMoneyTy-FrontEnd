@@ -10,27 +10,25 @@ import {Constante} from "../../pages/cmy-model/cmy.model";
 export class MenuCircular {
   buttons:Array<Button>;
   objet:any;
-  parent:Component;
-  open:boolean = false;
+  parent:any;
+  openMenu:boolean = false;
   visible:boolean = false;
   photo:string;
-  @ViewChild('cover') cover:ElementRef;
+
   constructor(private constante:Constante) {
     this.buttons=new Array();
-
-
   }
   close() {
     this.visible=false;
-    this.cover.nativeElement.style.display="none";
-    this.open = false;
+  //  this.parent.cover.nativeElement.style.display="none";
+    this.openMenu = false;
+    this.parent.visible=false;
   }
   action(button:Button)
   {
     console.log("Go sur "+button.sousMenu.action);
-    if(button.sousMenu.libelle=="Quitter")
-      this.close();
-    button.sousMenu.action(this.objet,this.parent);
+    let fonction = button.sousMenu.action;
+    fonction.call(this.parent,this.objet);
   }
   config(sousmenus:Array<SousMenu>) {
     for(let sousmenu of sousmenus)
@@ -38,9 +36,7 @@ export class MenuCircular {
       let button = new Button(sousmenu);
       this.buttons.push(button);
     }
-    let action=this.close;
-    let button = new Button(new SousMenu("Quitter",action,"close"));
-    this.buttons.push(button);
+
     let i=0;
     let l= this.buttons.length;
     for(let button of this.buttons) {
@@ -52,21 +48,21 @@ export class MenuCircular {
   show(parent:Component,obj:any,urlPhoto:string) {
     this.parent=parent;
     this.visible=true;
-    this.cover.nativeElement.style.display="block";
+ //   this.parent.cover.nativeElement.style.display="block";
     this.objet=obj;
     this.photo=urlPhoto;
-    this.open = false;
+    this.openMenu = false;
   }
   hide() {
     this.visible=false;
   }
   toggle() {
-    this.open = !this.open;
+    this.openMenu = !this.openMenu;
   }
 
   blockEvent() {
     console.log("Il faut bloquer!!!");
-    this.cover.nativeElement.style.display="none";
+//    this.parent.cover.nativeElement.style.display="none";
     this.hide();
   }
 }

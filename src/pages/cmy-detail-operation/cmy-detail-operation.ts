@@ -41,7 +41,7 @@ export class DetailOperation {
 
   ionViewWillLeave() {
     this.dejaLance.encours=false;
-  }
+  };
 
   supprimeLien()
   {
@@ -82,5 +82,5 @@ export class DetailOperation {
       ]
     });
     alert.present();
-  }
+  };
 }

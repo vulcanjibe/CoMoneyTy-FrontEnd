@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, LoadingController } from 'ionic-angular';
+import {NavController, ModalController, LoadingController, ToastController, AlertController} from 'ionic-angular';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 
 
@@ -10,6 +10,8 @@ import {User} from "../cmy-model/cmy.model";
 import { Constante } from '../cmy-model/cmy.model';
 import {Restangular} from 'ngx-restangular';
 import {createElementCssSelector} from "@angular/compiler";
+import {Camera, CameraOptions} from "@ionic-native/camera";
+import {ModalPhoto} from "../cmy-modal/modal-photo";
 
 @Component({
   selector: 'gestion-profile',
@@ -22,11 +24,22 @@ export class GestionProfile {
   rootPage: any = WalkthroughPage;
   loading: any;
   user: User;
-
+  imageDataCamera: string = null;
+  options: CameraOptions = {
+    quality: 80,
+    sourceType:  this.camera.PictureSourceType.CAMERA,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    encodingType: this.camera.EncodingType.PNG,
+    saveToPhotoAlbum: false,
+    correctOrientation: true,
+    targetWidth: 200,
+    targetHeight: 200
+  };
   constructor(
     public nav: NavController,
     public modal: ModalController,
-    public loadingCtrl: LoadingController,public constante:Constante,private restangular: Restangular
+    private camera: Camera,
+    public loadingCtrl: LoadingController,  public toastCtrl: ToastController,public alertController:AlertController,public constante:Constante,private restangular: Restangular
   ) {
     this.loading = this.loadingCtrl.create();
     this.user = this.constante.user;
@@ -45,12 +58,76 @@ export class GestionProfile {
 
 
   }
+  private createFileName() {
+    let d = new Date();
+    let n = d.getTime();
+    let newFileName =  "user/"+this.constante.user.id+"_"+ n + ".png";
+    return newFileName;
+  }
+
+  changePhoto() {
+    const alert = this.alertController.create({
+      title: 'Modifier votre photo',
+      message: "Voulez-vous :",
+      buttons: [
+        {
+          text: 'Prendre une photo',
+          role: 'cancel',
+          handler: () => {
+            this.takePhoto().then((imageData) => {
+              this.imageDataCamera = "data:image/png;base64," + imageData;
+              let nomFichier = this.createFileName();
+              this.user.urlAvatar=nomFichier+"=="+this.imageDataCamera;
+              // Envoi de la photo
+
+            }, (err) => {
+              this.constante.traiteErreur(err, this);
+            });
+
+          }
+        },
+        {
+          text: 'Choisir dans votre galerie',
+          handler: () => {
+            this.chooseGallery().then((imageData) => {
+              this.imageDataCamera = "data:image/png;base64," + imageData;
+              let nomFichier = this.createFileName();
+              this.user.urlAvatar=nomFichier+"=="+this.imageDataCamera;
+
+            }, (err) => {
+              this.constante.traiteErreur(err, this);
+            });
+          }
+        },
+        {
+          text: 'Ne rien faire',
+          handler: () => {
+
+          }
+        }
+      ]
+    });
+
+    alert.present();
+  };
+
+
+
+  takePhoto() {
+    this.options.sourceType = this.camera.PictureSourceType.CAMERA;
+    return this.camera.getPicture(this.options);
+  };
+
+  chooseGallery() {
+    this.options.sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
+    return this.camera.getPicture(this.options);
+  };
 
   logout() {
     // navigate to the new page if it is not the current page
     this.constante.user=new User();
     this.nav.setRoot(this.rootPage);
-  }
+  };
 
   save() {
     this.loading.present();
@@ -75,6 +152,6 @@ export class GestionProfile {
     },err=> {
       this.constante.traiteErreur(err,this);
     });
-  }
+  };
 
 }

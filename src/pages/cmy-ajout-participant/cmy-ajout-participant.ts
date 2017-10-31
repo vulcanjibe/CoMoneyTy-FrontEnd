@@ -14,6 +14,7 @@ import {Restangular} from 'ngx-restangular';
 
 export class AjoutParticipantPage {
   relations: Array<ParticipantPresent>;
+  relationsSave: Array<boolean>;
   loading: any;
   event: Event;
   encours:boolean = false;
@@ -40,12 +41,16 @@ export class AjoutParticipantPage {
         let relationPresent = new ParticipantPresent(relation,trouve);
         this.relations.push(relationPresent);
       }
+      this.relationsSave = new Array();
+      for(let relation of this.relations) {
+        this.relationsSave.push(relation.present);
+      }
       this.loading.dismiss();
     },errorResponse => {
       this.constante.traiteErreur(errorResponse,this);
     });
 
-  }
+  };
   close() {
     this.loading = this.loadingCtrl.create();
     this.loading.present();
@@ -91,6 +96,11 @@ export class AjoutParticipantPage {
         this.nav.pop();
       },err=>{
         this.encours=false;
+        let cpt=0;
+        for(let present of this.relationsSave) {
+          this.relations[cpt].present=present;
+          cpt++;
+        }
         this.constante.traiteErreur(err,this);
       });
     } else {
@@ -98,15 +108,16 @@ export class AjoutParticipantPage {
       this.nav.pop();
     }
 
-  }
+  };
 
   toogle(relation:ParticipantPresent)
   {
     relation.present=!relation.present;
-  }
+  };
 
 
-}
+};
+
 class ParticipantPresent {
   participant: User;
   present: boolean;

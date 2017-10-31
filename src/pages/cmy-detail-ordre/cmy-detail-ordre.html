@@ -43,5 +43,10 @@
     </ion-row>
 
   </ion-grid>
-
+  <ion-badge *ngIf="ordre.mouvement.etat=='Réalisé'" color="secondary">
+   Payé!
+  </ion-badge>
+  <ion-badge *ngIf="ordre.mouvement.etat=='Transmis'" color="danger">
+    En attente de règlement!
+  </ion-badge>
 </ion-content>

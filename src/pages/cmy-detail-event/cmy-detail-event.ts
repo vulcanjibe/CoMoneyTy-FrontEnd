@@ -44,13 +44,29 @@ export class DetailEventPage {
   }
 
   addNewParticipant() {
-    console.log("Creation Event!");
+
+    if(this.event.etat!="Ouvert")
+    {
+      this.presentToast("L'event n'est plus ouvert... Impossible de modifier les participants!");
+      return;
+    };
+    if(this.event.roles.indexOf("Createur")<0)
+    {
+      this.constante.presentToast("Seul le créateur peut modifier les participants!");
+      return;
+    };
    this.nav.push(AjoutParticipantPage,{theEvent:this.event,participantsEvent: this.participants}).then(end=>{
 
    });
 
   }
   rechercheOperation() {
+    if(this.event.etat!="Ouvert")
+    {
+      this.presentToast("L'event n'est plus ouvert... Impossible d'ajouter des dépenses!");
+      return;
+    }
+
     let modal = this.modalController.create(ModalChoixOperation,{'theEvent':this.event});
     modal.onDidDismiss(operationAvecDepense => {
       if(operationAvecDepense==null)
@@ -88,6 +104,12 @@ export class DetailEventPage {
     modal.present();
   };
   ajouteDepense() {
+    if(this.event.etat!="Ouvert")
+    {
+      this.presentToast("L'event n'est plus ouvert... Impossible d'ajouter des dépenses!");
+      return;
+    }
+
     this.nav.push(CreationDepensePage,{theEvent:this.event,theParticipants:this.participants});
   };
   private presentToast(text) {
@@ -97,7 +119,7 @@ export class DetailEventPage {
       position: 'top'
     });
     toast.present();
-  }
+  };
 
   donneArgent(participant:UserAvecDepense) {
     const alert = this.alertCtrl.create({
@@ -154,7 +176,7 @@ export class DetailEventPage {
       ]
     });
     alert.present();
-  }
+  };
 
 
   sms(participant) {
@@ -191,9 +213,27 @@ export class DetailEventPage {
 
   showDepense() {
     this.nav.push(ListeDepense,{theEvent:this.event, theParticipants:this.participants});
-  }
+  };
 
   bilan() {
     this.nav.push(BilanEvent,{theEvent:this.event, theParticipants:this.participants});
-  }
+  };
+
+  toggleRole(participant:UserAvecDepense) {
+    if(this.event.roles.indexOf("Createur")<0)
+    {
+      this.constante.presentToast("Seul le créateur peut modifier les participants!");
+      return;
+    };
+    // Bascule du role createur
+    this.loading = this.loadingCtrl.create();
+    this.loading.present();
+    this.restangular.one("event/"+this.event.id+"/"+participant.user.id+"/toggleRole").get().subscribe( lien => {
+     // console.log(lien);
+      participant.roles=lien.roles;
+      this.loading.dismissAll();
+    },err=> {
+      this.constante.traiteErreur(err,this);
+    });
+  };
 }

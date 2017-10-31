@@ -24,7 +24,7 @@ export class GestionAmi {
     public loadingCtrl: LoadingController,private toastCtrl:ToastController,private modalController:ModalController,private restangular: Restangular,public params: NavParams) {
     this.loading = this.loadingCtrl.create();
     this.action={'encours':false};
-  }
+  };
 
   ionViewDidLoad() {
     this.loading.present();
@@ -42,12 +42,12 @@ export class GestionAmi {
     },errorResponse => {
       this.constante.traiteErreur(errorResponse,this);
     });
-  }
+  };
 
 
   ajouteInvitation() {
     this.nav.push(InvitationAmi,{'theInvitations':this.invitations});
-  }
+  };
 
   open(ami:User)
   {
@@ -58,7 +58,7 @@ export class GestionAmi {
     //
 
     this.action.encours=false;
-  }
+  };
 
   affecte(ami:User)
   {
@@ -94,7 +94,7 @@ export class GestionAmi {
 
     });
     modal.present();
-  }
+  };
   filtreAmi(ev) {
     console.log('Filtre');
     let val = ev.target.value;
@@ -107,5 +107,5 @@ export class GestionAmi {
     } else {
       this.amis = this.amisInitial;
     }
-  }
+  };
 }

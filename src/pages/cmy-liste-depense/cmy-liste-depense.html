@@ -18,7 +18,7 @@
             <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(depense.user.urlAvatar)'></preload-image>
           </ion-col>
           <ion-col col-6 class="item-content">
-            <h3 class="item-title"> Dépense : {{depense.depense.commentaire}}</h3>
+            <h3 class="item-title" text-wrap> Dépense : {{depense.depense.commentaire}}</h3>
             <p class="item-description"> Date : {{depense.depense.date}}</p>
             <p class="item-description"> Montant : {{depense.depense.montant.toFixed(2)}} €</p>
             <p class="item-description"> Payé par : {{depense.user.prenom}}</p>
@@ -40,13 +40,26 @@
           <!-- You can limit the rows of the description by using the class one-line. If you remove it, all the content from the row will be shown -->
           <ion-col no-padding col-3 class="item-avatar">
             <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(paiement.emetteur.urlAvatar)'></preload-image>
+            <ion-badge *ngIf="paiement.mouvement.etat=='Transmis'" class="etat" color="danger">
+              En attente
+            </ion-badge>
+            <ion-badge *ngIf="paiement.mouvement.etat!='Transmis'" class="etat" color="secondary">
+              Payé
+            </ion-badge>
           </ion-col>
-          <ion-col col-6 class="item-content">
-            <h3 class="item-title"> Paiement : {{paiement.mouvement.commentaire}}</h3>
+          <ion-col *ngIf="paiement.mouvement.etat=='Transmis'" col-6 class="item-content" >
+            <h3 class="item-title" text-wrap> {{paiement.mouvement.commentaire}}</h3>
             <p class="item-description"> Date : {{paiement.mouvement.date}}</p>
             <p class="item-description"> Montant : {{paiement.mouvement.montant.toFixed(2)}} €</p>
-            <p class="item-description"> Payé par {{paiement.emetteur.prenom}} à {{paiement.destinataire.prenom}}</p>
+            <p class="item-description" text-wrap> Demandé par {{paiement.destinataire.prenom}} à {{paiement.emetteur.prenom}}</p>
           </ion-col>
+          <ion-col *ngIf="paiement.mouvement.etat!='Transmis'" col-6 class="item-content">
+            <h3 class="item-title" text-wrap> {{paiement.mouvement.commentaire}}</h3>
+            <p class="item-description"> Date : {{paiement.mouvement.date}}</p>
+            <p class="item-description"> Montant : {{paiement.mouvement.montant.toFixed(2)}} €</p>
+            <p class="item-description" text-wrap> Payé par {{paiement.emetteur.prenom}} à {{paiement.destinataire.prenom}}</p>
+          </ion-col>
+
           <ion-col no-padding col-3 class="item-avatar">
             <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(paiement.destinataire.urlAvatar)'></preload-image>
           </ion-col>

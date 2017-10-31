@@ -35,14 +35,13 @@ export class ListeOrdre {
     },errorResponse => {
       this.constante.traiteErreur(errorResponse,this);
     });
-  }
+  };
 
   detail(ordre:Ordre) {
     this.nav.push(DetailOrdre,{theOrdre:ordre});
-  }
+  };
+
   traite(ordre:Ordre) {
-
-
     if(ordre.mouvement.etat=="Réalisé") {
       let toast = this.toastCtrl.create({
         message: "Le paiement a déjà été réalisé!",
@@ -53,7 +52,6 @@ export class ListeOrdre {
       return;
     }
     this.nav.push(PaiementOrdre,{theOrdre:ordre});
-
-  }
+  };
 
 }

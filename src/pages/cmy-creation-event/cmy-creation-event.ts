@@ -5,9 +5,6 @@ import 'rxjs/Rx';
 import { Platform } from 'ionic-angular';
 import { Event,Constante } from '../cmy-model/cmy.model';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { FilePath } from '@ionic-native/file-path';
-import { File } from '@ionic-native/file';
-import { Transfer, TransferObject } from '@ionic-native/transfer';
 import {ModalPhoto} from '../cmy-modal/modal-photo'
 import {Restangular} from 'ngx-restangular';
 declare var cordova: any;
@@ -27,7 +24,7 @@ export class CreationEventPage {
   imageDataCamera: string = null;
 
   options: CameraOptions = {
-    quality: 100,
+    quality: 80,
     sourceType:  this.camera.PictureSourceType.CAMERA,
     destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.PNG,
@@ -67,7 +64,7 @@ export class CreationEventPage {
     let n = d.getTime();
     let newFileName =  "event/"+this.constante.user.id+"_"+ n + ".png";
     return newFileName;
-  }
+  };
 
   saveEvent(){
     this.event.libelle = this.creationEventForm.get('titre').value;
@@ -94,6 +91,7 @@ export class CreationEventPage {
     eventRest.save().toPromise().then(resp => {
       this.loading.dismissAll();
       this.events.push(resp);
+      this.loading.dismissAll();
       this.nav.pop();
     }, errorResponse => {
       this.constante.traiteErreur(errorResponse,this);
@@ -139,7 +137,7 @@ export class CreationEventPage {
     alert.present().then(() => {
       this.categories_checkbox_open = true;
     });
-  }
+  };
   choosePhoto(){
 
     let modal = this.modalCtrl.create(ModalPhoto);
@@ -148,7 +146,7 @@ export class CreationEventPage {
       this.imageUrl=data;
     });
     modal.present();
-  }
+  };
 
   takePhoto() {
     this.options.sourceType = this.camera.PictureSourceType.CAMERA;
@@ -157,7 +155,7 @@ export class CreationEventPage {
     }, (err) => {
       this.constante.traiteErreur(err, this);
     });
-  }
+  };
 
     chooseGallery() {
       this.options.sourceType=this.camera.PictureSourceType.PHOTOLIBRARY;
@@ -166,7 +164,7 @@ export class CreationEventPage {
       }, (err) => {
         this.constante.traiteErreur(err,this);
       });
-  }
+  };
 
 
 
@@ -179,7 +177,7 @@ export class CreationEventPage {
       position: 'top'
     });
     toast.present();
-  }
+  };
 
 
 }

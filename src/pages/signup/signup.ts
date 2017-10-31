@@ -31,10 +31,12 @@ export class SignupPage {
     this.main_page = { component: ListeEvent };
 
     this.signup = new FormGroup({
-      email: new FormControl('', Validators.required),
-      nomprenom: new FormControl('', Validators.required),
-      password: new FormControl('test', Validators.required),
-      confirm_password: new FormControl('test', Validators.required)
+      email: new FormControl('', Validators.compose([Validators.required,Validators.minLength(5),Validators.pattern("[a-z0-9.-_]+@[a-z.]+")])),
+      phone: new FormControl('', Validators.compose([Validators.required,Validators.minLength(10),Validators.pattern("^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$")])),
+      nom: new FormControl('', Validators.compose([Validators.required,Validators.minLength(5)])),
+      prenom: new FormControl('', Validators.compose([Validators.required,Validators.minLength(3)])),
+      password: new FormControl('', Validators.compose([Validators.required,Validators.minLength(5)])),
+      confirm_password: new FormControl('', Validators.compose([Validators.required,Validators.minLength(5)])),
     });
   }
   private presentToast(text) {
@@ -51,9 +53,9 @@ export class SignupPage {
     user.email = this.signup.get('email').value;
     user.password = this.signup.get("password").value;
 
-    let nomprenom = this.signup.get("nomprenom").value;
-    user.nom = nomprenom.split(" ")[0];
-    user.prenom = nomprenom.split(" ")[1];
+
+    user.nom = this.signup.get('nom').value;
+    user.prenom = this.signup.get('prenom').value;
     let passconf = this.signup.get("confirm_password").value;
     if(passconf!=user.password)
     {

@@ -10,7 +10,8 @@ import {ListeMessage} from "../pages/cmy-list-message/cmy-liste-message";
 import {GestionProfile} from "../pages/cmy-gestion-profile/cmy-gestion-profile";
 import {PageTest} from "../pages/cmy-page-test/cmy-page-test";
 import {ListeOrdre} from "../pages/cmy-liste-ordre/cmy-liste-ordre";
-
+import {Restangular} from 'ngx-restangular';
+import {Constante} from "../pages/cmy-model/cmy.model";
 @Component({
   selector: 'app-root',
   templateUrl: 'app.html'
@@ -23,7 +24,7 @@ export class MyApp {
   rootPage: any = WalkthroughPage;
   // rootPage: any = TabsNavigationPage;
 
-
+  nbMessage:number=0;
   pages: Array<{title: string, icon: string, component: any}>;
   pushPages: Array<{title: string, icon: string, component: any}>;
 
@@ -32,7 +33,7 @@ export class MyApp {
     public menu: MenuController,
     public app: App,
     public splashScreen: SplashScreen,
-    public statusBar: StatusBar
+    public statusBar: StatusBar,private restangular: Restangular,private constante:Constante
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -47,13 +48,30 @@ export class MyApp {
       { title: 'Operation', icon: 'swap', component: ListeOperation },
       { title: 'Ordres', icon: 'cash', component: ListeOrdre },
       { title: 'Message', icon: 'mail', component: ListeMessage },
-      { title: 'Amis', icon: 'people', component: GestionAmi }
+      { title: 'Amis', icon: 'people', component: GestionAmi },
+      { title: 'Dev Only!', icon: 'bug', component: PageTest }
     ];
 
     this.pushPages = [
-      { title: 'Profile', icon: 'settings', component: GestionProfile },
-      { title: 'Dev Only!', icon: 'bug', component: PageTest }
+      { title: 'Profile', icon: 'settings', component: GestionProfile }
+
     ];
+
+    // Lancement de la messagerie
+    let that = this;
+    setInterval(() => {
+      that.refreshMessagerie();
+    }, 60000);
+  }
+
+
+  public refreshMessagerie() {
+    ///console.log("Salut mec!");
+  this.restangular.one('user/'+this.constante.user.id+'/nbMessagesNonLu').get().subscribe(rep => {
+    this.nbMessage  = rep.message.split("=")[1];
+    },errorResponse => {
+      this.constante.traiteErreur(errorResponse,this);
+    });
   }
 
   openPage(page) {
