@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Equilibrage</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="list-mini-content">
+  <ion-item-group>
+    <ion-item class="notification-item" *ngFor="let mouvement of mouvements">
+      <ion-avatar item-left>
+        <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(mouvement.userSource.urlAvatar)'></preload-image>
+      </ion-avatar>
+      <ion-avatar item-right>
+        <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(mouvement.userCible.urlAvatar)'></preload-image>
+      </ion-avatar>
+      <h2 class="item-title" text-wrap>{{mouvement.userSource.prenom}} doit {{mouvement.mouvement.montant}} € à {{mouvement.userCible.prenom}}</h2>
+    </ion-item>
+  </ion-item-group>
+
+  <section>
+    <button ion-button block class="form-action-button create-post-button" (tap)="EnvoyerSms()" type="button">Relancer vos amis!</button>
+  </section>
+  <section>
+    <button ion-button block class="form-action-button create-post-button" (tap)="solderEvent()" type="button" [disabled]="event.etat!='Ouvert'">Solder l'event!</button>
+  </section>
+</ion-content>

@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Ordre à traiter</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="notifications-content">
+  <ion-item-group>
+    <ion-item-divider class="notifications-divider">Today</ion-item-divider>
+    <ion-item [ngClass]="{'row-opaque' : ordre.mouvement.etat!='Transmis'}" (tap)="detail(ordre)" (press)="traite(ordre)" class="notification-item" *ngFor="let ordre of ordres">
+      <ion-avatar item-left>
+        <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(ordre.emetteur.urlAvatar)'></preload-image>
+      </ion-avatar>
+      <h2 class="item-title" text-wrap>Règlement pour {{ordre.event.libelle}} du {{ordre.event.date}}</h2>
+      <p class="item-description">{{ordre.mouvement.montant}}€ à payer à {{ordre.emetteur.nom}} {{ordre.emetteur.prenom}}</p>
+      <ion-note class="item-time" item-right>{{ordre.mouvement.date}}</ion-note>
+    </ion-item>
+  </ion-item-group>
+</ion-content>

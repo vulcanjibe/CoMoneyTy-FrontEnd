@@ -63,13 +63,15 @@ export class GoogleLoginService {
         'webClientId': this.webClientId, // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
         'offline': true
       })
-      .then(function (user:GoogleUserModel) {
+      .then(function (user) {
         console.log(user);
-        let google_user ={
+        let google_user:GoogleUserModel ={
           userId: user.userId,
           email:user.email,
-          name: user.name,
-          image: user.image
+          name: user.displayName,
+          image: user.imageUrl,
+          friends: null,
+          photos: null
         };
         env.nativeStorage.setItem('google_user',
           google_user).then(rep=> {

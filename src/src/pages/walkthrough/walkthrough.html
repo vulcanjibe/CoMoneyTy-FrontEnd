@@ -1,0 +1,73 @@
+<ion-header class="walkthrough-header">
+  <ion-toolbar>
+    <ion-buttons start>
+      <button ion-button class="skip-button" (tap)="skipDevIntro()" [hidden]="lastSlide">Dev!</button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button class="skip-button" (tap)="skipIntro()" [hidden]="lastSlide">Skip</button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="walkthrough-content">
+  <ion-slides #slider (ionSlideDidChange)="onSlideChanged()" pager="true">
+    <ion-slide class="slide-1">
+      <ion-row class="intro-image-row">
+        <ion-col center width-64 no-padding>
+          <preload-image [ratio]="{w:1, h:1}" src="./assets/images/LogoCoMoneyTy.png" alt="app logo" title="CoMoneyTy"></preload-image>
+        </ion-col>
+      </ion-row>
+      <h2 class="main-title">Bienvenue!</h2>
+      <p class="intro-text">
+        L'argent facile au quotidien avec <b>CoMoneyTy</b>
+      </p>
+
+    </ion-slide>
+    <ion-slide class="slide-2">
+      <ion-row class="intro-image-row">
+        <ion-col center width-64 no-padding>
+          <preload-image [ratio]="{w:1, h:1}" src="./assets/images/slide-2-img.png" alt="slide 2 img" title="CoMoneyTy"></preload-image>
+        </ion-col>
+      </ion-row>
+      <h2 class="main-title">C'est facile!</h2>
+      <p class="intro-text">
+        Ne perdez plus votre temps
+      </p>
+      <p class="intro-text">
+        A vous demander qui vous doit de l'argent,
+      </p>
+      <p class="intro-text">
+        ou qui vous ne doit!!!
+      </p>
+    </ion-slide>
+    <ion-slide class="slide-3">
+      <ion-row class="intro-image-row">
+        <ion-col center width-64 no-padding>
+          <preload-image [ratio]="{w:1, h:1}" src="./assets/images/slide-3-img.png" alt="slide 3 img" title="ion2FullApp"></preload-image>
+        </ion-col>
+      </ion-row>
+      <h2 class="main-title">C'est parti!</h2>
+      <p class="intro-text">
+        Facilitez vous la vie au quotidien,
+      </p>
+      <p class="intro-text">
+        vous gérez votre argent d'un click!
+      </p>
+    </ion-slide>
+    <ion-slide class="slide-4">
+      <ion-row class="intro-image-row">
+        <ion-col center width-64 no-padding>
+          <preload-image [ratio]="{w:1, h:1}" src="./assets/images/slide-4-img.png" alt="slide 4 img" title="ion2FullApp"></preload-image>
+        </ion-col>
+      </ion-row>
+      <h2 class="main-title">Restez connecter!</h2>
+      <p class="intro-text">
+        Connectez-vous sur CoMoneyTy
+      </p>
+      <div class="button-bar">
+        <button ion-button primary (tap)="goToLogin()">Log in</button>
+        <button ion-button primary (tap)="goToSignup()">Sign up</button>
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

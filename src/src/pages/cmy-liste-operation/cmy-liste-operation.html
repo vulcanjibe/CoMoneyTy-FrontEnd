@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Mes opérations</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content class="notifications-content">
+  <ion-searchbar (ionInput)="filtreOperation($event)"></ion-searchbar>
+  <ion-item-group>
+    <div *ngFor="let tab of tableauOperations">
+      <ion-item-divider class="notifications-divider">{{tab.titre}}</ion-item-divider>
+      <ion-item  (tap)="detail(operationAvecDepense)" (press)="transfert(operationAvecDepense)" [ngClass]="{ 'AvecDepense':operationAvecDepense.depense!=null}" ion-item *ngFor="let operationAvecDepense of tab.tableau">
+         <div style="display:flex">
+           <div style="flex:1" text-wrap>{{operationAvecDepense.operation.date.substring(0,5)}} {{operationAvecDepense.operation.description}}</div>
+           <div style="width: 30px;margin-right: 10px;" *ngIf="operationAvecDepense.operation.urlPhotoEmetteur"><preload-image style="border-radius: 50%" class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(operationAvecDepense.operation.urlPhotoEmetteur)'></preload-image></div>
+           <div [ngClass]="{'negatif':operationAvecDepense.operation.montant<0,'positif':operationAvecDepense.operation.montant>=0}">{{operationAvecDepense.operation.montant.toFixed(2)}} €</div>
+         </div>
+      </ion-item>
+    </div>
+  </ion-item-group>
+</ion-content>
