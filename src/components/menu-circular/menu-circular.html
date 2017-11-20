@@ -3,8 +3,8 @@
   <div  [ngClass]="{'circleClose':!openMenu,'circleOpen':openMenu}">
     <ion-fab *ngFor="let button of buttons" class="petitMenu"  [ngStyle]="button.getStyle()">
       <button (tap)="action(button)" ion-fab color="primary">
-        <ion-icon [name]="button.sousMenu.icon"></ion-icon>
         <div class="sousMenuLabel">{{button.sousMenu.libelle}}</div>
+        <ion-icon [name]="button.sousMenu.icon"></ion-icon>
       </button>
     </ion-fab>
   </div>

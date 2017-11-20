@@ -10,7 +10,7 @@
 <ion-content class="list-mini-content">
   <ion-searchbar (ionInput)="filtreAmi($event)"></ion-searchbar>
   <ion-item-divider class="notifications-divider">Les invitations</ion-item-divider>
-  <div class="list-mini" *ngIf="invitation!=null && invitations.length>0">
+  <div class="list-mini" *ngIf="invitations!=null && invitations.length>0">
     <ion-list>
       <button class="list-item"  ion-item *ngFor="let invitation of invitations">
         <ion-row align-items-center no-padding class="content-row one-line">
@@ -22,15 +22,15 @@
             <h3 class="item-title"> {{invitation.contact.displayName}}</h3>
             <p class="item-description"> Envoyée le {{invitation.date}}</p>
           </ion-col>
-          <ion-col no-padding col-3 justify-content-end class="item-content">
-            <h3 class="item-title"> {{invitation.etatReponse}}</h3>
+          <ion-col no-padding col-3 justify-content-end  class="item-content">
+            <h3 class="item-title" text-wrap> {{invitation.etatReponse}}</h3>
           </ion-col>
         </ion-row>
       </button>
 
     </ion-list>
   </div>
-  <div class="list-mini" *ngIf="invitation==null || invitations.length==0">
+  <div class="list-mini" *ngIf="invitations==null || invitations.length==0">
     <ion-row align-items-center no-padding class="content-row one-line">
       <h3 class="item-title"> Aucune invitation en cours</h3>
     </ion-row>

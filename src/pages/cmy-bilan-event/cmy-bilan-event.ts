@@ -64,7 +64,7 @@ export class BilanEvent {
   solderEvent() {
     if(this.event.roles.indexOf("Createur")<0)
     {
-      this.constante.presentToast("Seul le créateur peut modifier les participants!");
+      this.constante.presentToast("Seul le créateur peut solder l'event!");
       return;
     };
     this.loading = this.loadingCtrl.create({

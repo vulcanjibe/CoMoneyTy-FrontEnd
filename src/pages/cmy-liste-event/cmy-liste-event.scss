@@ -40,7 +40,7 @@ liste-event {
 
 		.list-mini
 		{
-			@include layout-list-styles($theme-color-2, $white-d);
+			@include layout-list-styles($theme-color-2, $black-b);
 
 			ion-list {
 				.list-item

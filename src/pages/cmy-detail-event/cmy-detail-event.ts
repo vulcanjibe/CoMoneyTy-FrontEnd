@@ -96,6 +96,10 @@ export class DetailEventPage {
           }
         this.event.montantTotal+=depense.montant;
         this.event.montantDepense+=depense.montant;
+        for(let participant of this.participants) {
+          if (participant.user.id == this.constante.user.id)
+            this.event.montantDu = participant.doit;
+        }
         this.constante.touchEvent(this.event);
       }, errorResponse => {
         this.constante.traiteErreur(errorResponse,this);

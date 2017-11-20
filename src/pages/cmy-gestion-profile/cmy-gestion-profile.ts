@@ -12,7 +12,7 @@ import {Restangular} from 'ngx-restangular';
 import {createElementCssSelector} from "@angular/compiler";
 import {Camera, CameraOptions} from "@ionic-native/camera";
 import {ModalPhoto} from "../cmy-modal/modal-photo";
-
+import CryptoJS from 'crypto-js';
 @Component({
   selector: 'gestion-profile',
   templateUrl: 'cmy-gestion-profile.html',
@@ -25,13 +25,13 @@ export class GestionProfile {
   loading: any;
   user: User;
   imageDataCamera: string = null;
+  private CryptoJS: any;
   options: CameraOptions = {
     quality: 80,
     sourceType:  this.camera.PictureSourceType.CAMERA,
     destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.PNG,
     saveToPhotoAlbum: false,
-    correctOrientation: true,
     targetWidth: 200,
     targetHeight: 200
   };
@@ -44,14 +44,22 @@ export class GestionProfile {
     this.loading = this.loadingCtrl.create();
     this.user = this.constante.user;
     this.settingsForm = new FormGroup({
-      nom: new FormControl(this.user.nom+" "+this.user.prenom, Validators.required),
-      password: new FormControl(this.user.password, Validators.required),
-      email: new FormControl(this.user.email, Validators.required),
-      phone: new FormControl(this.user.phone, Validators.required),
+      email: new FormControl(this.user.email, Validators.compose([Validators.required,Validators.minLength(5),Validators.pattern("[a-z0-9.-_]+@[a-z.]+")])),
+      phone: new FormControl(this.user.phone, Validators.compose([Validators.required,Validators.minLength(10),Validators.pattern("^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$")])),
+      nom: new FormControl(this.user.nom, Validators.compose([Validators.required,Validators.minLength(5)])),
+      prenom: new FormControl(this.user.prenom, Validators.compose([Validators.required,Validators.minLength(3)])),
+      password: new FormControl('', Validators.compose([Validators.required,Validators.minLength(5)])),
+      confirm_password: new FormControl('', Validators.compose([Validators.required,Validators.minLength(5)])),
       iban: new FormControl(this.user.iban, Validators.required),
       currency: new FormControl("euro"),
-      notifications: new FormControl(true)
+      notifications: new FormControl(true),
+      toogleCodeSecu: new FormControl(true),
+      codecourt : new FormControl(this.user.codecourt, Validators.compose([Validators.required,Validators.minLength(4),Validators.required,Validators.maxLength(4),Validators.pattern("^[0-9]{4}$")])),
     });
+
+    if(this.user.codecourt==null || this.user.codecourt.length==0) {
+      this.settingsForm.get("toogleCodeSecu").setValue(false);
+    }
   }
 
   ionViewDidLoad() {
@@ -133,21 +141,34 @@ export class GestionProfile {
     this.loading.present();
     let user = this.restangular.copy(this.user);
     user.route = "user";
-    let str = this.settingsForm.get("nom").value;
-    if(str.indexOf(" ")>0) {
-      user.nom = str.split(" ")[0];
-      user.prenom = str.split(" ")[1];
-    } else {
-      user.nom = str;
-      user.prenom="";
-    }
     user.password=this.settingsForm.get("password").value;
+    let passconf = this.settingsForm.get("confirm_password").value;
+    if(passconf!=user.password)
+    {
+      this.constante.presentToast("Les mots de passe sont différents!");
+      this.settingsForm.get("confirm_password").markAsDirty();
+      return;
+    }
     user.email=this.settingsForm.get("email").value;
     user.phone=this.settingsForm.get("phone").value;
     user.iban=this.settingsForm.get("iban").value;
-
+    user.nom = this.settingsForm.get("nom").value;
+    user.prenom = this.settingsForm.get("prenom").value;
+    user.codecourt = this.settingsForm.get("codecourt").value;
+    if(!this.settingsForm.get("toogleCodeSecu").value) {
+      user.codecourt="";
+    }
     user.save().toPromise().then(resp => {
       this.constante.user=resp;
+      if(resp.codecourt==null || resp.codecourt.length==0) {
+        localStorage.removeItem("codecourt");
+      } else {
+        let derivedKey = CryptoJS.PBKDF2(resp.codecourt, "AlwaysTheSameSalt", {
+          keySize: 512 / 32,
+          iterations: 5
+        }).toString();
+        localStorage.setItem("codecourt", derivedKey);
+      }
       this.loading.dismissAll();
     },err=> {
       this.constante.traiteErreur(err,this);

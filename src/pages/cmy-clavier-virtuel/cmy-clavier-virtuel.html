@@ -1,0 +1,27 @@
+<div class="page-wrap">
+  <section padding>
+  <ion-label style="text-align:center">Entrez votre code secret : {{codeSaisieEtoile}}</ion-label>
+  <div class="keypad">
+    <span (tap)="saisie(1)" >1</span>
+    <span (tap)="saisie(2)">2</span>
+    <span (tap)="saisie(3)">3</span>
+    <br>
+    <span (tap)="saisie(4)">4</span>
+    <span (tap)="saisie(5)">5</span>
+    <span (tap)="saisie(6)">6</span>
+    <br>
+    <span (tap)="saisie(7)">7</span>
+    <span (tap)="saisie(8)">8</span>
+    <span (tap)="saisie(9)">9</span>
+    <br>
+    <span class="star">*</span>
+    <span (tap)="saisie(0)">0</span>
+    <span class="hash">#</span>
+    <br>
+  </div>
+  </section>
+  <section padding>
+    <button padding ion-button block class="form-action-button create-post-button" (tap)="connexionClassique()">Connexion classique</button>
+  </section>
+
+</div>

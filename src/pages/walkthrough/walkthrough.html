@@ -1,8 +1,5 @@
 <ion-header class="walkthrough-header">
   <ion-toolbar>
-    <ion-buttons start>
-      <button ion-button class="skip-button" (tap)="skipDevIntro()" [hidden]="lastSlide">Dev!</button>
-    </ion-buttons>
     <ion-buttons end>
       <button ion-button class="skip-button" (tap)="skipIntro()" [hidden]="lastSlide">Skip</button>
     </ion-buttons>
@@ -18,10 +15,8 @@
         </ion-col>
       </ion-row>
 
-      <h2 class="main-title">Bienvenue!</h2>
-      <p class="intro-text">
-        Version : {{version1}} - {{version2}}
-      </p>
+      <h2 class="main-title" (press)="skipDevIntro()">Bienvenue!</h2>
+
       <p class="intro-text">
         L'argent facile au quotidien avec <b>CoMoneyTy</b>
       </p>

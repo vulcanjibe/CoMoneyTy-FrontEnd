@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Mon Tableau de bord</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="home">
+
+
+  <section>
+    <ion-item >
+      <div text-wrap (tap)="goToProfile()" class="drop-shadow">
+        <p>Mon Profil :</p><br>
+        <ion-badge  item-end [color]="profilColor">{{profil}}</ion-badge>
+      </div>
+      <div text-wrap (tap)="goToEvent()" class="drop-shadow">
+        <p>Event en cours : </p>
+        <ion-badge  item-end>{{nbEvent}}</ion-badge>
+      </div>
+    </ion-item>
+    <ion-item >
+      <div text-wrap class="drop-shadow">
+        <p>Je dois à mes amis : </p>
+        <ion-badge color="danger" item-end>{{montantQueJeDois}} €</ion-badge>
+      </div>
+      <div text-wrap class="drop-shadow">
+        <p>Mes amis me doivent : </p>
+        <ion-badge color="danger" item-end>{{montantQuonMeDoit}} €</ion-badge>
+      </div>
+    </ion-item>
+
+    <ion-item >
+      <div text-wrap (tap)="goToMessage()" class="drop-shadow">
+        <p>Messages à traiter : </p>
+        <ion-badge item-end>{{nbMessageATraiter}}</ion-badge>
+      </div>
+      <div text-wrap (tap)="goToAmis()"  class="drop-shadow">
+        <p>Mes amis : </p><br>
+        <ion-badge color="danger" item-end>{{nbAmis}}</ion-badge>
+      </div>
+    </ion-item>
+
+  </section>
+
+
+</ion-content>

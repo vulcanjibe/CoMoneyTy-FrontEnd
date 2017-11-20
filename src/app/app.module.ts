@@ -41,11 +41,10 @@ import { Camera } from '@ionic-native/camera';
 
 // Functionalities
 
-import { FacebookLoginPage } from '../pages/facebook-login/facebook-login';
-import { GoogleLoginPage } from '../pages/google-login/google-login';
 
-import { FacebookLoginService } from '../pages/facebook-login/facebook-login.service';
-import { GoogleLoginService } from '../pages/google-login/google-login.service';
+
+import { FacebookLoginService } from '../pages/login/facebook-login.service';
+import { GoogleLoginService } from '../pages/login/google-login.service';
 
 import { RestangularModule } from 'ngx-restangular';
 import {DetailOperation} from "../pages/cmy-detail-operation/cmy-detail-operation";
@@ -68,6 +67,10 @@ import {PrivacyPolicyPage} from "../pages/privacy-policy/privacy-policy";
 import {ListeUser} from "../pages/cmy-page-test/cmy-liste-user";
 import {ListeHistorique} from "../pages/cmy-liste-historique/cmy-liste-historique";
 import {AppVersion} from "@ionic-native/app-version";
+import {Home} from "../pages/cmy-home/cmy-home";
+import {ClavierVirtuel} from "../pages/cmy-clavier-virtuel/cmy-clavier-virtuel";
+import {Badge} from "@ionic-native/badge";
+
 
 // Function for setting the default restangular configuration
 
@@ -90,6 +93,8 @@ export function RestangularConfigFactory (RestangularProvider) {
 @NgModule({
   declarations: [
     MyApp,
+    Home,
+    ClavierVirtuel,
     DetailEventPage,
     PrivacyPolicyPage,
     BilanEvent,
@@ -118,8 +123,6 @@ export function RestangularConfigFactory (RestangularProvider) {
     SignupPage,
     ForgotPasswordPage,
     WalkthroughPage,
-    FacebookLoginPage,
-    GoogleLoginPage,
     PreloadImage,
     MenuCircular,
     BackgroundImage,
@@ -136,6 +139,8 @@ export function RestangularConfigFactory (RestangularProvider) {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    Home,
+    ClavierVirtuel,
     GestionProfile,
     ListeUser,
     PageTest,
@@ -164,27 +169,26 @@ export function RestangularConfigFactory (RestangularProvider) {
     LoginPage,
     WalkthroughPage,
     ForgotPasswordPage,
-    SignupPage,
-    FacebookLoginPage,
-    GoogleLoginPage,
+    SignupPage
   ],
   providers: [
     SMS,
     Constante,
     AppVersion,
+    Badge,
     FacebookLoginService,
     GoogleLoginService,
     Camera,
     Contacts,
     PayPal,
-	  SplashScreen,
-	  StatusBar,
+    SplashScreen,
+    StatusBar,
     NativeStorage,
     InAppBrowser,
     Facebook,
     GooglePlus,
     Keyboard
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

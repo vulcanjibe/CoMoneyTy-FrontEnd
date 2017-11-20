@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 
 import 'rxjs/Rx';
 
-import {Camera, CameraOptions} from '@ionic-native/camera';
 
 import {Restangular} from 'ngx-restangular';
-import {LoadingController, NavController, ToastController} from "ionic-angular";
-import {Constante} from "../cmy-model/cmy.model";
-import {eraseStyles} from "@angular/animations/browser/src/util";
+import {Events, LoadingController, NavController, ToastController} from "ionic-angular";
+import {Constante, User} from "../cmy-model/cmy.model";
 import {ListeUser} from "./cmy-liste-user";
+import {AppVersion} from "@ionic-native/app-version";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'cmy-page-test',
@@ -23,12 +23,33 @@ export class PageTest {
   tpsReponseServeur:number;
   etatDatabase:String;
   tpsReponseCouchbase:number;
+  etatPerformance:String;
+  colorPerformance:String;
+  tpsReponseTraitement:number;
+  version1:string;
+  version2:string;
+  user:User;
+  settingsForm: FormGroup;
+  constructor(private angularEvents:Events,private appVersion: AppVersion,public nav: NavController,public constante:Constante, public loadingCtrl: LoadingController,private restangular:Restangular,private toastCtrl:ToastController) {
+    this.user = this.constante.user;
+    this.settingsForm = new FormGroup({
+      adresseIP: new FormControl('')
+    });
+  };
 
-  constructor(public nav: NavController,public constante:Constante, public loadingCtrl: LoadingController,private restangular:Restangular,private toastCtrl:ToastController) {
-
+  ionViewDidLoad() {
+    this.getVersion();
+  };
+  ping() {
+    let ip = this.settingsForm.get("adresseIP").value;
+    let ipList = [{query: ip, timeout: 10,retry: 5,version:'v4'}];
   }
   resetData() {
     this.loading = this.loadingCtrl.create();
+
+    this.tpsReponseTraitement=0;
+    this.tpsReponseCouchbase=0;
+    this.tpsReponseServeur=0;
     this.loading.present();
     this.restangular.one("utilitaire/initialisation").get().toPromise().then(rep=>{
       this.loading.dismissAll();
@@ -43,7 +64,19 @@ export class PageTest {
       this.constante.traiteErreur(error,this);
     })
   };
-
+  getVersion() {
+    this.appVersion.getVersionCode().then(rep=> {
+      this.version1=rep;
+    },error => {
+      this.version1="--";
+      // console.log(error);
+    });
+    this.appVersion.getVersionNumber().then(rep=> {
+      this.version2=rep;
+    },error => {
+      this.version2="--";
+    });
+  }
   checkInfra() {
     this.loading = this.loadingCtrl.create();
     this.loading.present();
@@ -53,15 +86,16 @@ export class PageTest {
     this.colorDatabase="danger";
     let dateAppel:Date = new Date();
 
-    this.restangular.one("utilitaire/checkServeur").get().toPromise().then(rep=>{
+    this.restangular.one("utilitaire/checkReseau").get().toPromise().then(rep=>{
       this.loading.dismissAll();
       this.etatServeur="thumbs-up";
       this.colorServeur="secondary";
-      let timeFin = rep.message.split(":")[1];
-      this.tpsReponseServeur = timeFin - dateAppel.getTime();
+      let timeFinServeur = rep.message.split(":")[1];
+      this.tpsReponseServeur = new Date().getTime() - dateAppel.getTime();
       console.log("Appel : "+dateAppel.getTime());
     },error=>{
       this.etatServeur="thumbs-down";
+      this.colorServeur="danger";
       this.constante.traiteErreur(error,this);
     });
     this.restangular.one("utilitaire/checkDatabase").get().toPromise().then(rep=>{
@@ -74,6 +108,23 @@ export class PageTest {
       console.log("Appel : "+dateAppel.getTime());
     },error=>{
       this.etatDatabase="thumbs-down";
+      this.colorDatabase="danger";
+      this.constante.traiteErreur(error,this);
+    });
+    this.restangular.one("utilitaire/checkPerformance").get().toPromise().then(rep=>{
+      this.loading.dismissAll();
+      this.etatPerformance="thumbs-up";
+      this.colorPerformance="secondary";
+      let timeFin = rep.stop;
+      let timeDebut = rep.start;
+      this.tpsReponseTraitement = timeFin - timeDebut;
+      if(this.tpsReponseTraitement>1000) {
+        this.etatPerformance="thumbs-down";
+        this.colorPerformance="danger";
+      }
+    },error=>{
+      this.etatPerformance="thumbs-down";
+      this.colorPerformance="danger";
       this.constante.traiteErreur(error,this);
     });
 
@@ -105,5 +156,9 @@ export class PageTest {
 
   swapUser() {
     this.nav.push(ListeUser);
+    this.angularEvents.subscribe("swapUser",resp=>{
+      console.log("SWAP TO : "+resp);
+      this.user = resp;
+    });
   };
 }

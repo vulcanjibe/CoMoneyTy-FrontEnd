@@ -17,7 +17,7 @@ export class Constante {
   }
   touchEvent(newEvent:Event)
   {
-    this.event = newEvent;
+    this.event=newEvent;
     this.eventChange.next(newEvent);
   }
   login(newUser:User)
@@ -49,6 +49,15 @@ export class Constante {
     });
     toast.present();
   }
+
+  public presentToastAvecPosition(text,position:string) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: position
+    });
+    toast.present();
+  }
   traiteErreur(error,component:any) {
     console.log("ERREUR=>",error);
     if(component.loading!=null)
@@ -56,6 +65,8 @@ export class Constante {
     let msg = "Une erreur technique est survenue!!!";
     if(error.data && error.data.message) {
       msg = error.data.message;
+    } else {
+      msg+=" : "+error;
     }
 
     let toast = this.toastCtrl.create({
@@ -78,6 +89,7 @@ export class User {
    phone: string;
    urlAvatar: string;
    iban:string;
+   codecourt:string;
 }
 
 export class UserAvecDepense {

@@ -19,7 +19,7 @@
       <ion-note class="item-time" item-right>{{message.date}}</ion-note>
     </ion-item>
   </ion-item-group>
-  <section *ngIf="message.messageCache" padding>
+  <section *ngIf="message.messageCache && !message.actionRealise" padding>
     <button ion-button block class="form-action-button create-post-button" padding (tap)="traite()" >Traiter le message</button>
   </section>
 </ion-content>

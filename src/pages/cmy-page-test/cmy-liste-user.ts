@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 import {Camera, CameraOptions} from '@ionic-native/camera';
 
 import {Restangular} from 'ngx-restangular';
-import {LoadingController, NavController, ToastController} from "ionic-angular";
+import {Events, LoadingController, NavController, ToastController} from "ionic-angular";
 import {Constante, User} from "../cmy-model/cmy.model";
 import {eraseStyles} from "@angular/animations/browser/src/util";
 
@@ -17,7 +17,7 @@ import {eraseStyles} from "@angular/animations/browser/src/util";
 export class ListeUser {
   loading: any;
   users:Array<User>;
-  constructor(public nav: NavController,public constante:Constante, public loadingCtrl: LoadingController,private restangular:Restangular,private toastCtrl:ToastController) {
+  constructor(private angularEvents:Events,public nav: NavController,public constante:Constante, public loadingCtrl: LoadingController,private restangular:Restangular,private toastCtrl:ToastController) {
 
   }
   ionViewDidLoad() {
@@ -36,7 +36,8 @@ export class ListeUser {
       localStorage.setItem('id_token', resp.id);
       localStorage.setItem('user', JSON.stringify(resp.user));
       this.constante.user=resp.user;
-      this.constante.presentToast("Nouvel utilisateur : "+user.prenom);
+      this.constante.presentToastAvecPosition("Nouvel utilisateur : "+user.prenom,"bottom");
+      this.angularEvents.publish("swapUser",resp.user);
       this.nav.pop();
     }, errorResponse => {
       console.log("Error with status code", errorResponse.status);

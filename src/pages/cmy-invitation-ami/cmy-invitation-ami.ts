@@ -145,7 +145,7 @@ export class InvitationAmi {
           intent: ''
         }
       }
-      let message = this.constante.user.prenom + " t'invite sur CoMoneyTy. Click sur le lien ci-dessous pour obtenir l'app : https://lc.cx/puiU";
+      let message = this.constante.user.prenom + " t'invite sur CoMoneyTy. Click sur le lien ci-dessous pour obtenir l'app : https://lc.cx/f3Sz";
       this.smsProvider.send(contact.phoneNumber, message, options).then(rep => {
         let toast = this.toastCtrl.create({
           message: "Demande transmise!",

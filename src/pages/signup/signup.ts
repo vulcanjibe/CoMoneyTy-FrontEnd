@@ -4,9 +4,14 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 
 import  {ListeEvent} from "../cmy-liste-event/cmy-liste-event";
 import {Restangular} from 'ngx-restangular';
-import { FacebookLoginService } from '../facebook-login/facebook-login.service';
-import { GoogleLoginService } from '../google-login/google-login.service';
+import { FacebookLoginService } from '../login/facebook-login.service';
+import { GoogleLoginService } from '../login/google-login.service';
 import {User,Constante} from "../cmy-model/cmy.model";
+import {factoryOrValue} from "rxjs/operator/multicast";
+import {FacebookUserModel} from "../cmy-model/facebook-user.model";
+import {GoogleUserModel} from "../cmy-model/google-user.model";
+import {Home} from "../cmy-home/cmy-home";
+import {PrivacyPolicyPage} from "../privacy-policy/privacy-policy";
 
 @Component({
   selector: 'signup-page',
@@ -28,7 +33,7 @@ export class SignupPage {
     public loadingCtrl: LoadingController,
     public constante: Constante
   ) {
-    this.main_page = { component: ListeEvent };
+    this.main_page = { component: Home };
 
     this.signup = new FormGroup({
       email: new FormControl('', Validators.compose([Validators.required,Validators.minLength(5),Validators.pattern("[a-z0-9.-_]+@[a-z.]+")])),
@@ -53,7 +58,7 @@ export class SignupPage {
     user.email = this.signup.get('email').value;
     user.password = this.signup.get("password").value;
 
-
+    user.phone = this.signup.get("phone").value;
     user.nom = this.signup.get('nom').value;
     user.prenom = this.signup.get('prenom').value;
     let passconf = this.signup.get("confirm_password").value;
@@ -93,60 +98,69 @@ export class SignupPage {
     let env = this;
 
     this.facebookLoginService.getFacebookUser()
-      .then(function(data) {
+      .then(function(data:FacebookUserModel) {
         // user is previously logged with FB and we have his data we will let him access the app
         // data : name, image,userID
-        let user:User = new User();
-        user.id=data.userId;
-        user.email=data.mail;
-        if(data.name.indexOf(" ")!=-1) {
-          user.nom = data.name.split(" ")[0];
-          user.prenom = data.name.split(" ")[1];
-        } else {
-          user.nom = data.name;
-          user.prenom="--";
-        }
-        user.urlAvatar=data.image;
-        // Connexion réel à l'application
-        env.restangular.one("user").post("login-facebook",this.user).subscribe(resp => {
-          localStorage.setItem('id_token', resp.id);
-          localStorage.setItem('user', JSON.stringify(resp.user));
-          env.constante.user=resp.user;
-          env.nav.setRoot(env.main_page.component);
-        }, errorResponse => {
-          this.constante.traiteErreur(errorResponse,this);
-        });
+        env.signup_social_fb(data);
 
       }, function(error){
         //we don't have the user data so we will ask him to log in
         env.facebookLoginService.doFacebookLogin()
-          .then(function(data){
+          .then(function(data:FacebookUserModel){
             env.loading.dismiss();
-            let user:User = new User();
-            user.id=data.userId;
-            user.email=data.email;
-            user.urlAvatar=data.image;
-            if(data.name.indexOf(" ")!=-1) {
-              user.nom = data.name.split(" ")[0];
-              user.prenom = data.name.split(" ")[1];
-            } else {
-              user.nom = data.name;
-              user.prenom="--";
-            }
-            env.restangular.one("user").post("login-facebook",user).subscribe(resp => {
-              localStorage.setItem('id_token', resp.id);
-              localStorage.setItem('user', JSON.stringify(resp.user));
-              env.constante.user=resp.user;
-              env.nav.setRoot(env.main_page.component);
-            }, errorResponse => {
-              this.constante.traiteErreur(errorResponse,this);
-            });
-
+            env.signup_social_fb(data);
           }, function(err){
             this.constante.traiteErreur(err,this);
           });
       });
   }
+
+  signup_social_fb(data:FacebookUserModel ){
+    let user:User = new User();
+    user.id=data.userId;
+    user.email=data.email;
+    if(data.name.indexOf(" ")!=-1) {
+      user.nom = data.name.split(" ")[0];
+      user.prenom = data.name.split(" ")[1];
+    } else {
+      user.nom = data.name;
+      user.prenom="--";
+    }
+    user.urlAvatar=data.image;
+    // Connexion réel à l'application
+    this.restangular.one("user").post("signup-facebook",user).subscribe(resp => {
+      localStorage.setItem('id_token', resp.id);
+      localStorage.setItem('user', JSON.stringify(resp.user));
+      this.constante.login(resp.user);
+      this.nav.setRoot(this.main_page.component);
+    }, errorResponse => {
+      this.constante.traiteErreur(errorResponse,this);
+    });
+  }
+
+  signup_social_google(data:GoogleUserModel ){
+    let user:User = new User();
+    user.id=data.userId;
+    user.email=data.email;
+    if(data.name.indexOf(" ")!=-1) {
+      user.nom = data.name.split(" ")[0];
+      user.prenom = data.name.split(" ")[1];
+    } else {
+      user.nom = data.name;
+      user.prenom="--";
+    }
+    user.urlAvatar=data.image;
+    // Connexion réel à l'application
+    this.restangular.one("user").post("signup-google",user).subscribe(resp => {
+      localStorage.setItem('id_token', resp.id);
+      localStorage.setItem('user', JSON.stringify(resp.user));
+      this.constante.login(resp.user);
+      this.nav.setRoot(this.main_page.component);
+    }, errorResponse => {
+      this.constante.traiteErreur(errorResponse,this);
+    });
+  }
+
 
   doGoogleSignup() {
     this.loading = this.loadingCtrl.create();
@@ -155,29 +169,29 @@ export class SignupPage {
     let env = this;
 
     this.googleLoginService.trySilentLogin()
-    .then(function(data) {
+    .then(function(data:GoogleUserModel) {
        // user is previously logged with Google and we have his data we will let him access the app
-      env.nav.setRoot(env.main_page.component);
+      env.signup_social_google(data);
     }, function(error){
       //we don't have the user data so we will ask him to log in
       env.googleLoginService.doGoogleLogin()
-      .then(function(res){
+      .then(function(res:GoogleUserModel){
         env.loading.dismiss();
-        env.nav.setRoot(env.main_page.component);
+        env.signup_social_google(res);
       }, function(err){
-        this.constante.traiteErreur(err,this);
+        env.constante.traiteErreur(err,env);
         env.loading.dismiss();
       });
     });
   }
 
   showTermsModal() {
-    let modal = this.modal.create(ListeEvent);
+    let modal = this.modal.create(PrivacyPolicyPage);
     modal.present();
   }
 
   showPrivacyModal() {
-    let modal = this.modal.create(ListeEvent);
+    let modal = this.modal.create(PrivacyPolicyPage);
     modal.present();
   }
 

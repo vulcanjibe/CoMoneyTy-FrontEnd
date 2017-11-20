@@ -6,13 +6,16 @@ import  {ListeEvent} from "../cmy-liste-event/cmy-liste-event";
 import { SignupPage } from '../signup/signup';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password';
 
-import { FacebookLoginService } from '../facebook-login/facebook-login.service';
-import { GoogleLoginService } from '../google-login/google-login.service';
+import { FacebookLoginService } from './facebook-login.service';
+import { GoogleLoginService } from './google-login.service';
 
 import {Restangular} from 'ngx-restangular';
 import { User,Constante} from '../cmy-model/cmy.model'
 import {PrivacyPolicyPage} from "../privacy-policy/privacy-policy";
-
+import {FacebookUserModel} from "../cmy-model/facebook-user.model";
+import {GoogleUserModel} from "../cmy-model/google-user.model";
+import {Home} from "../cmy-home/cmy-home";
+import CryptoJS from 'crypto-js';
 @Component({
   selector: 'login-page',
   templateUrl: 'login.html',
@@ -23,7 +26,7 @@ export class LoginPage {
   login: FormGroup;
   main_page: { component: any };
   loading: any;
-
+  private CryptoJS: any;
 
   constructor(
     public nav: NavController,
@@ -34,7 +37,7 @@ export class LoginPage {
     public constante: Constante,
     private toastCtrl:ToastController
   ) {
-    this.main_page = { component: ListeEvent };
+    this.main_page = { component: Home };
     this.user = new User();
     this.login = new FormGroup({
       email: new FormControl('', Validators.compose([Validators.required,Validators.minLength(3)])),
@@ -51,6 +54,13 @@ export class LoginPage {
     this.restangular.one("user").post("login",this.user).subscribe(resp => {
       localStorage.setItem('id_token', resp.id);
       localStorage.setItem('user', JSON.stringify(resp.user));
+      if(resp.user.codecourt!=null && resp.user.codecourt.length>0) {
+        let derivedKey = CryptoJS.PBKDF2(resp.user.codecourt, "AlwaysTheSameSalt", {
+          keySize: 512 / 32,
+          iterations: 5
+        }).toString();
+        localStorage.setItem("codecourt", derivedKey);
+      }
       this.constante.login(resp.user);
       this.nav.setRoot(this.main_page.component);
     }, errorResponse => {
@@ -70,10 +80,29 @@ export class LoginPage {
     .then(function(data) {
        // user is previously logged with FB and we have his data we will let him access the app
       // data : name, image,userID
+      env.loggue_fb(data);
+
+    }, function(error) {
+      //we don't have the user data so we will ask him to log in
+      env.facebookLoginService.doFacebookLogin()
+        .then(function (data) {
+          env.loading.dismiss();
+          env.loggue_fb(data);
+        }, function(err){
+          env.constante.traiteErreur(err,env);
+          env.facebookLoginService.doFacebookLogout().then(response=>{
+            console.log("cookie facebook effacé")
+          },error => {
+
+          });
+        });
+    });
+  };
+
+   loggue_fb(data:FacebookUserModel) {
       let user:User = new User();
       user.id=data.userId;
       user.email=data.email;
-      user.urlAvatar=data.image;
       if(data.name.indexOf(" ")!=-1) {
         user.nom = data.name.split(" ")[0];
         user.prenom = data.name.split(" ")[1];
@@ -81,45 +110,53 @@ export class LoginPage {
         user.nom = data.name;
         user.prenom="--";
       }
-      // Connexion réel à l'application
-      env.restangular.one("user").post("login-facebook",user).subscribe(resp => {
+      user.urlAvatar=data.image;
+      this.restangular.one("user").post("login-facebook",user).subscribe(resp => {
         localStorage.setItem('id_token', resp.id);
         localStorage.setItem('user', JSON.stringify(resp.user));
-        env.constante.user=resp.user;
-        env.nav.setRoot(env.main_page.component);
-      }, errorResponse => {
-          this.constante.traiteErreur(errorResponse,this);
-      });
-
-    }, function(error){
-      //we don't have the user data so we will ask him to log in
-      env.facebookLoginService.doFacebookLogin()
-      .then(function(data){
-        env.loading.dismiss();
-        let user:User = new User();
-        user.id=data.userId;
-        user.email=data.email;
-        if(data.name.indexOf(" ")!=-1) {
-          user.nom = data.name.split(" ")[0];
-          user.prenom = data.name.split(" ")[1];
-        } else {
-          user.nom = data.name;
-          user.prenom="--";
+        if(resp.user.codecourt!=null && resp.user.codecourt.length>0) {
+          let derivedKey = CryptoJS.PBKDF2(resp.user.codecourt, "AlwaysTheSameSalt", {
+            keySize: 512 / 32,
+            iterations: 5
+          }).toString();
+          localStorage.setItem("codecourt", derivedKey);
         }
-        user.urlAvatar=data.image;
-        env.restangular.one("user").post("login-facebook",user).subscribe(resp => {
-          localStorage.setItem('id_token', resp.id);
-          localStorage.setItem('user', JSON.stringify(resp.user));
-          env.constante.user=resp.user;
-          env.nav.setRoot(env.main_page.component);
-        }, errorResponse => {
-          this.constante.traiteErreur(errorResponse,this);
-        });
-
-      }, function(err){
-        this.constante.traiteErreur(err,this);
+        this.constante.user=resp.user;
+        this.constante.login(resp.user);
+        this.nav.setRoot(this.main_page.component);
+      }, errorResponse => {
+        this.constante.traiteErreur(errorResponse,this);
       });
+
+    }
+  loggue_google(data:GoogleUserModel) {
+    let user:User = new User();
+    user.id=data.userId;
+    user.email=data.email;
+    if(data.name.indexOf(" ")!=-1) {
+      user.nom = data.name.split(" ")[0];
+      user.prenom = data.name.split(" ")[1];
+    } else {
+      user.nom = data.name;
+      user.prenom="--";
+    }
+    user.urlAvatar=data.image;
+    this.restangular.one("user").post("login-google",user).subscribe(resp => {
+      localStorage.setItem('id_token', resp.id);
+      localStorage.setItem('user', JSON.stringify(resp.user));
+      if(resp.user.codecourt!=null && resp.user.codecourt.length>0) {
+        let derivedKey = CryptoJS.PBKDF2(resp.user.codecourt, "AlwaysTheSameSalt", {
+          keySize: 512 / 32,
+          iterations: 5
+        }).toString();
+        localStorage.setItem("codecourt", derivedKey);
+      }
+      this.constante.user=resp.user;
+      this.nav.setRoot(this.main_page.component);
+    }, errorResponse => {
+      this.constante.traiteErreur(errorResponse,this);
     });
+
   }
 
   doGoogleLogin() {
@@ -129,17 +166,17 @@ export class LoginPage {
     let env = this;
 
     this.googleLoginService.trySilentLogin()
-    .then(function(data) {
+    .then(function(data:GoogleUserModel) {
        // user is previously logged with Google and we have his data we will let him access the app
-      env.nav.setRoot(env.main_page.component);
+      env.loggue_google(data);
     }, function(error){
       //we don't have the user data so we will ask him to log in
       env.googleLoginService.doGoogleLogin()
-      .then(function(res){
+      .then(function(res:GoogleUserModel){
         env.loading.dismiss();
-        env.nav.setRoot(env.main_page.component);
+        env.loggue_google(res);
       }, function(err){
-        this.constante.traiteErreur(err,this);
+        env.constante.traiteErreur(err,env);
       });
     });
   }

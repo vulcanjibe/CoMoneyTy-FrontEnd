@@ -29,7 +29,6 @@ export class CreationEventPage {
     destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.PNG,
     saveToPhotoAlbum: false,
-    correctOrientation: true,
     targetWidth: 200,
     targetHeight: 200
   };

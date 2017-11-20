@@ -9,6 +9,7 @@ import {CreationEventPage} from '../cmy-creation-event/cmy-creation-event';
 import {Restangular} from 'ngx-restangular';
 import {MenuCircular,SousMenu} from "../../components/menu-circular/menu-circular";
 import {ListeHistorique} from "../cmy-liste-historique/cmy-liste-historique";
+import {GestionProfile} from "../cmy-gestion-profile/cmy-gestion-profile";
 @Component({
   selector: 'liste-event',
   templateUrl: 'cmy-liste-event.html',
@@ -30,9 +31,9 @@ export class ListeEvent {
     this.filtreEtat = new Array();
     this.filtreEtat.push("Ouvert");
     this.filtreEtat.push("En cours de solde");
-    this.constante.eventChange.subscribe(event => {
+    this.constante.eventChange.subscribe(newEvent => {
       console.log("TouchEvent!");
-      this.calculResume();
+      this.calculResume(newEvent);
     });
   };
 
@@ -81,12 +82,17 @@ export class ListeEvent {
     });
   };
 
-  calculResume() {
+  calculResume(newEvent:Event) {
     this.depenseTotale = 0;
     if(this.events==null)
       return;
     for(let event of this.events)
     {
+      if(newEvent!=null && newEvent.id==event.id) {
+        event.montantDu = newEvent.montantDu;
+        event.montantDepense = newEvent.montantDepense;
+        event.montantTotal = newEvent.montantTotal;
+      }
       if(event.montantDu>0)
         this.depenseTotale+=event.montantDu;
     }
@@ -99,9 +105,35 @@ export class ListeEvent {
     this.restangular.all('user/'+this.constante.user.id+'/events').getList().subscribe(events => {
       this.events = events;
       this.eventsComplet = events;
-      this.calculResume();
+      this.calculResume(null);
       this.filtreEvent("");
       this.loading.dismiss();
+
+      if(this.constante.user.phone==null || this.constante.user.phone.length<5) {
+        if (events.log() == 0) {
+          const alert = this.alertController.create({
+            title: 'Votre profil est incomplet (Téléphone!)',
+            message: "Voulez-vous accéder directement à votre profil pour le compléter?",
+            buttons: [
+              {
+                text: 'Oui',
+                role: 'cancel',
+                handler: () => {
+                  this.nav.push(GestionProfile);
+                }
+              },
+              {
+                text: 'Non',
+                handler: () => {
+
+                }
+              }
+
+            ]
+          });
+          alert.present();
+        }
+      };
     },errorResponse => {
       this.constante.traiteErreur(errorResponse,this);
     });
@@ -241,7 +273,7 @@ export class ListeEvent {
         bool2 = this.filtreEtat.indexOf(item.etat) > -1;
       return bool1 && bool2;
     });
-    this.calculResume();
+    this.calculResume(null);
   };
 
   blockEvent() {

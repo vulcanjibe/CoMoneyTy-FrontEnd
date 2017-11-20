@@ -29,7 +29,6 @@ export class CreationDepensePage {
     destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.PNG,
     saveToPhotoAlbum: false,
-    correctOrientation: true,
     targetWidth: 200,
     targetHeight: 200
   };
@@ -102,6 +101,13 @@ export class CreationDepensePage {
           participant.doit -= this.depense.montant - montant;
         }
       this.event.montantTotal+=this.depense.montant;
+      this.event.montantDepense+=this.depense.montant;
+      for(let participant of this.participants) {
+        if (participant.user.id == this.constante.user.id)
+          this.event.montantDu = participant.doit;
+      }
+
+      this.constante.touchEvent(this.event);
       this.loading.dismissAll();
       this.nav.pop();
 
