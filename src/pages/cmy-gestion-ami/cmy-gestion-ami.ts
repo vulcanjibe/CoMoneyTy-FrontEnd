@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
-import {NavController, LoadingController, NavParams, ModalController, ToastController} from 'ionic-angular';
-import 'rxjs/Rx';
-
-import {Constante, Invitation, LienEventUser, User} from '../cmy-model/cmy.model';
+import {Component, ViewChild} from '@angular/core';
+import {LoadingController, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {Constante, Invitation, LienEventUser, User, UserAvecDepense} from '../cmy-model/cmy.model';
 
 import {Restangular} from 'ngx-restangular';
 import {InvitationAmi} from "../cmy-invitation-ami/cmy-invitation-ami";
 import {ModalChoixEvent} from "../cmy-modal/modal-choix-event";
+import {MenuCircular, SousMenu} from "../../components/menu-circular/menu-circular";
+import {DetailAmi} from "../cmy-detail-ami/cmy-detail-ami";
+
+//import 'rxjs/Rx';
 @Component({
   selector: 'gestion-ami',
   templateUrl: 'cmy-gestion-ami.html',
@@ -16,14 +18,16 @@ import {ModalChoixEvent} from "../cmy-modal/modal-choix-event";
 
 export class GestionAmi {
   invitations: Array<Invitation>;
-  amis:Array<User>;
-  amisInitial:Array<User>;
+  amis:Array<UserAvecDepense>;
+  amisInitial:Array<UserAvecDepense>;
   loading: any;
-  action:any;
+
+  visible:boolean = false;
+  @ViewChild('menu') menu:MenuCircular;
   constructor(public nav: NavController,public constante:Constante,
     public loadingCtrl: LoadingController,private toastCtrl:ToastController,private modalController:ModalController,private restangular: Restangular,public params: NavParams) {
     this.loading = this.loadingCtrl.create();
-    this.action={'encours':false};
+
   };
 
   ionViewDidLoad() {
@@ -35,13 +39,20 @@ export class GestionAmi {
     },errorResponse => {
       this.constante.traiteErreur(errorResponse,this);
     });
-    this.restangular.all('user/'+this.constante.user.id+'/relations').getList().subscribe(amis => {
+    this.restangular.all('user/'+this.constante.user.id+'/relationsAvecMontant').getList().subscribe(amis => {
       this.amis=amis;
       this.amisInitial=amis;
       this.loading.dismiss();
     },errorResponse => {
       this.constante.traiteErreur(errorResponse,this);
     });
+
+    let sousmenus:Array<SousMenu> = new Array();
+    sousmenus.push(new SousMenu("Affecter",this.affecte,"share-alt"));
+    sousmenus.push(new SousMenu("Message",this.message,"send"));
+    sousmenus.push(new SousMenu("Detail",this.open,"open"));
+    sousmenus.push(new SousMenu("Quitter",this.closeMenu,"close"));
+    this.menu.config(sousmenus);
   };
 
 
@@ -49,23 +60,20 @@ export class GestionAmi {
     this.nav.push(InvitationAmi,{'theInvitations':this.invitations});
   };
 
+  message(ami:User)  {
+    console.log("Message");
+  }
   open(ami:User)
   {
-    if(this.action.encours) {
-      return;
-    }
-    this.action={'encours':true};
-    //
 
-    this.action.encours=false;
+    this.closeMenu();
+    this.nav.push(DetailAmi,{'theAmi':ami});
   };
 
   affecte(ami:User)
   {
-    if(this.action.encours) {
-      return;
-    }
-    this.action={'encours':true};
+
+    this.closeMenu();
     let modal = this.modalController.create(ModalChoixEvent);
     modal.onDidDismiss(event => {
       if (event == null) {
@@ -80,10 +88,8 @@ export class GestionAmi {
       lien.route='lienEventUser';
       lien.save().toPromise().then(rep=>{
         this.loading.dismiss();
-        this.action.encours=false;
       },err=>{
         this.loading.dismiss();
-        this.action.encours=false;
         let toast = this.toastCtrl.create({
           message: "Le user est déjà affecté à cet event!",
           duration: 3000,
@@ -107,5 +113,23 @@ export class GestionAmi {
     } else {
       this.amis = this.amisInitial;
     }
+  };
+
+
+  showMenu(amiAvecDepense:UserAvecDepense) {
+    let ami:User=amiAvecDepense.user;
+    this.visible = true;
+    this.menu.show(this,ami,ami.urlAvatar);
+    this.menu.toggle();
+  };
+  closeMenu() {
+    this.visible = false;
+    this.menu.toggle();
+    this.menu.close();
+  };
+  blockEvent() {
+    console.log("Il faut bloquer!!!");
+//    this.parent.cover.nativeElement.style.display="none";
+    this.visible=false;
   };
 }

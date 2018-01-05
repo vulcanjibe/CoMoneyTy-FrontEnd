@@ -1,5 +1,5 @@
 // Common list styles can be found in "./common.styles/layouts/lists"
-cmy-detail-event {
+detail-event-page {
 	ion-header {
 		@include header-styles(color($colors, header-alt, base), color($colors, header-alt, contrast));
 	}

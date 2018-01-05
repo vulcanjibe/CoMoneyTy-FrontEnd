@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
-import {NavController, LoadingController, NavParams, Platform, ToastController} from 'ionic-angular';
-import 'rxjs/Rx';
-
-import {Constante, Invitation, Contact, User} from '../cmy-model/cmy.model';
+import {Component} from '@angular/core';
+import {LoadingController, NavController, NavParams, Platform, ToastController} from 'ionic-angular';
+import {Constante, Contact, Invitation, User} from '../cmy-model/cmy.model';
 
 
 import {Restangular} from 'ngx-restangular';
-import {ContactFindOptions, Contacts, IContactProperties} from "@ionic-native/contacts";
+import {ContactFindOptions, Contacts} from "@ionic-native/contacts";
 import {SMS} from "@ionic-native/sms";
+
+//import 'rxjs/Rx';
 @Component({
   selector: 'invitation-ami',
   templateUrl: 'cmy-invitation-ami.html',

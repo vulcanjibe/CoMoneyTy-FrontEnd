@@ -1,6 +1,5 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {Constante} from "../../pages/cmy-model/cmy.model";
-
 
 
 @Component({
@@ -16,7 +15,7 @@ export class MenuCircular {
   photo:string;
 
   constructor(private constante:Constante) {
-    this.buttons=new Array();
+    this.buttons=[];
   }
   close() {
     this.visible=false;

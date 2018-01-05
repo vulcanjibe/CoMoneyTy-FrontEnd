@@ -1,12 +1,9 @@
-import { Component } from '@angular/core';
-import {NavController, NavParams,LoadingController,AlertController} from 'ionic-angular';
-
-import 'rxjs/Rx';
-
-import {Constante, Event,Depense, Operation, TypeOperation,OperationAvecDepense} from "../cmy-model/cmy.model";
-
-import {ModalChoixEvent} from '../cmy-modal/modal-choix-event';
+import {Component} from '@angular/core';
+import {AlertController, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {Constante, Event, OperationAvecDepense} from "../cmy-model/cmy.model";
 import {Restangular} from 'ngx-restangular';
+
+//import 'rxjs/Rx';
 @Component({
   selector: 'detail-operation',
   templateUrl: 'cmy-detail-operation.html',
@@ -16,11 +13,9 @@ export class DetailOperation {
   operationAvecDepense:OperationAvecDepense;
   event:Event;
   loading: any;
-  dejaLance:any;
   constructor(public nav: NavController,public constante:Constante,
     public navParams: NavParams, public loadingCtrl: LoadingController,private alertController:AlertController,private restangular: Restangular ) {
     this.operationAvecDepense = this.navParams.get("theOperation");
-    this.dejaLance = this.navParams.get("action");
     this.loading = this.loadingCtrl.create();
   }
 
@@ -39,9 +34,6 @@ export class DetailOperation {
     }
   }
 
-  ionViewWillLeave() {
-    this.dejaLance.encours=false;
-  };
 
   supprimeLien()
   {

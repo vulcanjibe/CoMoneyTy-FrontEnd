@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
-import {  LoadingController ,ViewController} from 'ionic-angular';
+import {LoadingController, ViewController} from 'ionic-angular';
 
-import {  Constante} from '../cmy-model/cmy.model';
+import {Constante} from '../cmy-model/cmy.model';
 import {Restangular} from 'ngx-restangular';
+
 @Component({
   templateUrl: 'modal-choix-event.html'
 })

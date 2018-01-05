@@ -1,16 +1,25 @@
-import { Component } from '@angular/core';
-import {NavController, LoadingController, ToastController,ModalController, NavParams,AlertController } from 'ionic-angular';
-
-import 'rxjs/Rx';
-
+import {Component} from '@angular/core';
 import {
-  Constante, Depense, Event, OperationAvecDepense, UserAvecDepense, User,
-  Mouvement
+  AlertController,
+  LoadingController,
+  ModalController,
+  NavController,
+  NavParams,
+  ToastController
+} from 'ionic-angular';
+import {
+  Constante,
+  Depense,
+  Event,
+  Mouvement,
+  OperationAvecDepense,
+  User,
+  UserAvecDepense
 } from "../cmy-model/cmy.model";
-
-import  {DetailOperation} from "../cmy-detail-operation/cmy-detail-operation";
-import {ModalChoixEvent} from '../cmy-modal/modal-choix-event';
 import {Restangular} from 'ngx-restangular';
+import {ListeDocument} from "../cmy-liste-document/cmy-liste-document";
+
+//import 'rxjs/Rx';
 @Component({
   selector: 'liste-depense',
   templateUrl: 'cmy-liste-depense.html',
@@ -86,17 +95,8 @@ export class ListeDepense {
       this.constante.traiteErreur(errorResponse,this);
     });
   };
-  detailDepense(operation:OperationAvecDepense) {
-    if(operation.depense.idPayeur!=this.constante.user.id)
-    {
-      let toast = this.toastCtrl.create({
-        message: 'Vous ne pouvez pas modifier cette dépense',
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-      return;
-    }
+  detailDepense(operation:DepenseAvecUser) {
+
     const alert = this.alertController.create({
       title: 'Modifier cette dépense',
       message: "Voulez-vous :",
@@ -105,6 +105,16 @@ export class ListeDepense {
           text: 'Supprimer cette dépense',
           role: 'cancel',
           handler: () => {
+            if(operation.depense.idPayeur!=this.constante.user.id)
+            {
+              let toast = this.toastCtrl.create({
+                message: 'Vous ne pouvez pas modifier cette dépense',
+                duration: 3000,
+                position: 'top'
+              });
+              toast.present();
+              return;
+            }
             this.loading = this.loadingCtrl.create({
               content: 'Suppression...',
             });
@@ -160,6 +170,22 @@ export class ListeDepense {
         }
       ]
     });
+    if(operation.depense.idOperation!=null) {
+      alert.addButton( {
+        text: 'Voir les documents',
+        handler: () => {
+          // Lecture de l'opération
+          this.restangular.one('operation/'+operation.depense.idOperation).get().subscribe(ope => {
+            let operationAvecDepense:OperationAvecDepense  = new OperationAvecDepense();
+            operationAvecDepense.operation=ope;
+            operationAvecDepense.depense=operation.depense;
+            this.nav.push(ListeDocument, {theOperation: operationAvecDepense});
+          },errorResponse => {
+            this.constante.traiteErreur(errorResponse,this);
+          });
+        }
+      });
+    };
     alert.present();
   };
 

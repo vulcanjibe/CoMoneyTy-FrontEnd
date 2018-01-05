@@ -1,13 +1,10 @@
-import { Component } from '@angular/core';
-
-import 'rxjs/Rx';
-
-import {Camera, CameraOptions} from '@ionic-native/camera';
+import {Component} from '@angular/core';
 
 import {Restangular} from 'ngx-restangular';
 import {Events, LoadingController, NavController, ToastController} from "ionic-angular";
 import {Constante, User} from "../cmy-model/cmy.model";
-import {eraseStyles} from "@angular/animations/browser/src/util";
+
+//import 'rxjs/Rx';
 
 @Component({
   selector: 'cmy-liste-user',

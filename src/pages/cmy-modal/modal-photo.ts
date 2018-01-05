@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
-import {  Platform, NavParams, ViewController } from 'ionic-angular';
+import {NavParams, Platform, ViewController} from 'ionic-angular';
 
-import {  Constante} from '../cmy-model/cmy.model';
+import {Constante} from '../cmy-model/cmy.model';
 
 @Component({
   templateUrl: 'modal-photo.html'

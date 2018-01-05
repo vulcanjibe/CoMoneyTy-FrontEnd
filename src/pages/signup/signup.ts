@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
-import { NavController, ModalController, LoadingController,ToastController } from 'ionic-angular';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import {Component} from '@angular/core';
+import {LoadingController, ModalController, NavController, ToastController} from 'ionic-angular';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
-import  {ListeEvent} from "../cmy-liste-event/cmy-liste-event";
+import {ListeEvent} from "../cmy-liste-event/cmy-liste-event";
 import {Restangular} from 'ngx-restangular';
-import { FacebookLoginService } from '../login/facebook-login.service';
-import { GoogleLoginService } from '../login/google-login.service';
-import {User,Constante} from "../cmy-model/cmy.model";
-import {factoryOrValue} from "rxjs/operator/multicast";
+import {FacebookLoginService} from '../login/facebook-login.service';
+import {GoogleLoginService} from '../login/google-login.service';
+import {Constante, User} from "../cmy-model/cmy.model";
+
 import {FacebookUserModel} from "../cmy-model/facebook-user.model";
 import {GoogleUserModel} from "../cmy-model/google-user.model";
 import {Home} from "../cmy-home/cmy-home";
@@ -110,7 +110,7 @@ export class SignupPage {
             env.loading.dismiss();
             env.signup_social_fb(data);
           }, function(err){
-            this.constante.traiteErreur(err,this);
+            this.constante.traiteErreur(err,env);
           });
       });
   }

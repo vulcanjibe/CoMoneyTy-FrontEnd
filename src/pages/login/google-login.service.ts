@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/toPromise';
-import { GooglePlus } from '@ionic-native/google-plus';
-import { NativeStorage } from '@ionic-native/native-storage';
+import {Injectable} from "@angular/core";
+import {Http} from '@angular/http';
+
+import {GooglePlus} from '@ionic-native/google-plus';
+import {NativeStorage} from '@ionic-native/native-storage';
 import {GoogleUserModel} from "../cmy-model/google-user.model";
 
 

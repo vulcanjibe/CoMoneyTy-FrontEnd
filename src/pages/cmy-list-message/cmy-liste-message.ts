@@ -1,15 +1,10 @@
-import { Component } from '@angular/core';
-import {NavController, LoadingController, AlertController} from 'ionic-angular';
-
-import 'rxjs/Rx';
-
-
-import {Invitation, Message, Ordre, TableauMessage} from "../cmy-model/cmy.model";
+import {Component} from '@angular/core';
+import {AlertController, LoadingController, NavController} from 'ionic-angular';
+import {Constante, Message, TableauMessage} from "../cmy-model/cmy.model";
 import {Restangular} from 'ngx-restangular';
-import {  Constante} from '../cmy-model/cmy.model';
 import {DetailMessage} from "../cmy-detail-message/cmy-detail-message";
-import {PaiementOrdre} from "../cmy-paiement-ordre/cmy-paiement-ordre";
-import {DetailOrdre} from "../cmy-detail-ordre/cmy-detail-ordre";
+
+//import 'rxjs/Rx';
 
 @Component({
   selector: 'liste-message',
@@ -21,7 +16,7 @@ export class ListeMessage {
 
   constructor(
     public constante:Constante,
-    public loadingCtrl: LoadingController,private alertCtrl:AlertController,private nav:NavController,private restangular: Restangular,private alertController:AlertController
+    public loadingCtrl: LoadingController,private alertCtrl:AlertController,private nav:NavController,private restangular: Restangular
   ) {
     this.loading = this.loadingCtrl.create();
   }

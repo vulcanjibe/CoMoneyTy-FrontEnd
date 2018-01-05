@@ -8,6 +8,8 @@
 </ion-header>
 
 <ion-content class="list-mini-content">
+  <div #cover id="cover" [ngClass]="{'invisible':!visible}" (tap)="blockEvent()" ion-fixed></div>
+  <menu-circular #menu class="circular-menu" [ngClass]="{'invisible':!visible}" ion-fixed></menu-circular>
   <ion-searchbar (ionInput)="filtreAmi($event)"></ion-searchbar>
   <ion-item-divider class="notifications-divider">Les invitations</ion-item-divider>
   <div class="list-mini" *ngIf="invitations!=null && invitations.length>0">
@@ -38,18 +40,17 @@
   <ion-item-divider class="notifications-divider">Les amis</ion-item-divider>
   <div class="list-mini">
     <ion-list>
-      <button class="list-item"  (tap)="open(ami)" (press)="affecte(ami)"  ion-item *ngFor="let ami of amis">
+      <button class="list-item"  (tap)="showMenu(amiAvecDepense)"  ion-item *ngFor="let amiAvecDepense of amis">
         <ion-row align-items-center no-padding class="content-row one-line">
           <!-- You can limit the rows of the description by using the class one-line. If you remove it, all the content from the row will be shown -->
           <ion-col no-padding col-3 class="item-avatar">
-            <preload-image class="avatar-image rounded-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(ami.urlAvatar)'></preload-image>
+            <preload-image class="avatar-image rounded-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(amiAvecDepense.user.urlAvatar)'></preload-image>
           </ion-col>
           <ion-col  col-9 class="item-content" >
-            <h3 class="item-title"> {{ami.nom}} {{ami.prenom}}</h3>
-            <p  class="item-description">
-              <ion-icon style="font-size: 2.2em;margin-left: 15px;" name="call" (tap)="sms(participant)"></ion-icon>
-              <ion-icon style="font-size: 2.2em;margin-left: 15px;" name="send" (tap)="sms(participant)"></ion-icon>
-            </p>
+            <h3 class="item-title"> {{amiAvecDepense.user.nom}} {{amiAvecDepense.user.prenom}}</h3>
+            <p  class="item-description" *ngIf="amiAvecDepense.aPaye>0"> Je lui dois {{amiAvecDepense.aPaye}} €</p>
+            <p  class="item-description"  *ngIf="amiAvecDepense.doit>0"> Il me doit {{amiAvecDepense.doit}} €</p>
+            <p  class="item-description"  *ngIf="amiAvecDepense.doit<0.1 && amiAvecDepense.aPaye<0.1"> On est quitte</p>
           </ion-col>
         </ion-row>
       </button>

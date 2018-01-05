@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {NavController, LoadingController, ToastController,ModalController, NavParams,AlertController } from 'ionic-angular';
 
-import 'rxjs/Rx';
+//import 'rxjs/Rx';
 
 import {Constante, Depense, Event, OperationAvecDepense,UserAvecDepense,User} from "../cmy-model/cmy.model";
 

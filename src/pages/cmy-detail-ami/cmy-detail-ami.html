@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle >
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title> {{ ami.prenom}} {{ ami.nom}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="list-mini-content">
+  <div class="list-mini">
+    <ion-list>
+      <button class="list-item" (press)="showMenu(event)"  (tap)="open(event)" ion-item *ngFor="let event of events">
+        <ion-row align-items-center no-padding class="content-row one-line">
+          <!-- You can limit the rows of the description by using the class one-line. If you remove it, all the content from the row will be shown -->
+          <ion-col no-padding col-3 class="item-avatar">
+            <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(event.urlPhoto)'></preload-image>
+          </ion-col>
+          <ion-badge class="etat" *ngIf="event.etat=='En cours de solde'" color="danger">
+            En Clôture
+          </ion-badge>
+          <ion-badge class="etat" *ngIf="event.etat=='Annulé'" color="primary">
+            Annulé
+          </ion-badge>
+          <ion-badge class="etat" *ngIf="event.etat=='Clos'" color="secondary">
+            Clos!
+          </ion-badge>
+          <ion-col no-padding col-8 class="item-content">
+            <h3 class="item-title"> {{event.libelle}}</h3>
+            <p class="item-description"> Date : {{event.date}}</p>
+            <p class="item-description" *ngIf="event.montantDu>0"> Je dois {{event.montantDu.toFixed(2)}} € à {{ami.prenom}}</p>
+            <p class="item-description" *ngIf="event.montantDepense>0"> {{ami.prenom}} me doit {{event.montantDepense.toFixed(2)}} €</p>
+            <p class="item-description" *ngIf="event.montantDepense<0.1 && event.montantDu<0.1"> On ne se doit rien</p>
+          </ion-col>
+          <ion-col no-padding col-1 >
+            <ion-icon name="warning"  style="color : red;" *ngIf="event.montantDu>0"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </button>
+    </ion-list>
+  </div>
+</ion-content>
+
+
+

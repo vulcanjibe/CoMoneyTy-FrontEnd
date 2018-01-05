@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
-import {LoadingController, ViewController, NavParams, ToastController} from 'ionic-angular';
+import {LoadingController, NavParams, ToastController, ViewController} from 'ionic-angular';
 
-import {Constante, Operation, OperationAvecDepense, TableauOperation} from '../cmy-model/cmy.model';
+import {Constante, OperationAvecDepense, TableauOperation} from '../cmy-model/cmy.model';
 import {Restangular} from 'ngx-restangular';
+
 @Component({
   selector: 'modal-choix-operation',
   templateUrl: 'modal-choix-operation.html'

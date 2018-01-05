@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
-import {NavController, LoadingController, ToastController,ModalController, NavParams,AlertController } from 'ionic-angular';
-
-import 'rxjs/Rx';
-
+import {Component} from '@angular/core';
 import {
-  Constante, Depense, Event, OperationAvecDepense, UserAvecDepense, User,
-  Mouvement, Message
-} from "../cmy-model/cmy.model";
+  AlertController,
+  LoadingController,
+  ModalController,
+  NavController,
+  NavParams,
+  ToastController
+} from 'ionic-angular';
 
-import  {DetailOperation} from "../cmy-detail-operation/cmy-detail-operation";
-import {ModalChoixEvent} from '../cmy-modal/modal-choix-event';
+import {Constante, Event, Message, Mouvement, User, UserAvecDepense} from "../cmy-model/cmy.model";
 import {Restangular} from 'ngx-restangular';
 import {SMS} from "@ionic-native/sms";
+
 @Component({
   selector: 'bilan-event',
   templateUrl: 'cmy-bilan-event.html',

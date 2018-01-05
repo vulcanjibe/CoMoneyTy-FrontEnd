@@ -1,13 +1,9 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {NavController, LoadingController, AlertController, NavParams} from 'ionic-angular';
-
-import 'rxjs/Rx';
-
-import {Event, Constante, Historique} from '../cmy-model/cmy.model';
-import {DetailEventPage} from '../cmy-detail-event/cmy-detail-event';
-import {CreationEventPage} from '../cmy-creation-event/cmy-creation-event';
+import {Component} from '@angular/core';
+import {AlertController, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {Constante, Event, Historique} from '../cmy-model/cmy.model';
 import {Restangular} from 'ngx-restangular';
-import {MenuCircular,SousMenu} from "../../components/menu-circular/menu-circular";
+
+//import 'rxjs/Rx';
 @Component({
   selector: 'liste-historique',
   templateUrl: 'cmy-liste-historique.html',

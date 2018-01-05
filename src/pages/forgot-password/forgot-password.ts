@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {LoadingController, NavController, ToastController} from 'ionic-angular';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Restangular} from 'ngx-restangular';
-import  {ListeEvent} from "../cmy-liste-event/cmy-liste-event";
 import {SMS} from "@ionic-native/sms";
 import {Constante} from "../cmy-model/cmy.model";
 import {LoginPage} from "../login/login";

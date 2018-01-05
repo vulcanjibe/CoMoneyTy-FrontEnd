@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {NavController, LoadingController, AlertController} from 'ionic-angular';
-import 'rxjs/Rx';
-import {  Constante} from '../cmy-model/cmy.model';
+import {LoadingController, NavController} from 'ionic-angular';
+
+import {Constante} from '../cmy-model/cmy.model';
 
 import {Restangular} from 'ngx-restangular';
 
@@ -9,6 +9,7 @@ import {Home} from "../cmy-home/cmy-home";
 import {WalkthroughPage} from "../walkthrough/walkthrough";
 
 import CryptoJS from 'crypto-js';
+
 @Component({
   selector: 'clavier-virtuel',
   templateUrl: 'cmy-clavier-virtuel.html',
@@ -21,7 +22,7 @@ export class ClavierVirtuel {
   nbEssai:number;
   private CryptoJS: any;
   constructor(public nav: NavController,public constante:Constante,
-    public loadingCtrl: LoadingController,public alertCtrl: AlertController,private restangular: Restangular,private alertController:AlertController) {
+    public loadingCtrl: LoadingController,private restangular: Restangular) {
 
   };
 

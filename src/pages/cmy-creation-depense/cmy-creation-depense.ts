@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { NavController, LoadingController,AlertController,ModalController,NavParams,ToastController } from 'ionic-angular';
-import {Validators, FormGroup, FormControl} from '@angular/forms';
-import 'rxjs/Rx';
-import { Platform } from 'ionic-angular';
-import { Event,User,UserAvecDepense,Constante,Depense } from '../cmy-model/cmy.model';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import {Component} from '@angular/core';
+//import 'rxjs/Rx';
+import {LoadingController, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Constante, Depense, Event, User, UserAvecDepense} from '../cmy-model/cmy.model';
+import {Camera, CameraOptions} from '@ionic-native/camera';
 import {ModalPhoto} from '../cmy-modal/modal-photo'
 import {Restangular} from 'ngx-restangular';
+
 declare var cordova: any;
 @Component({
   selector: 'creation-depense-page',

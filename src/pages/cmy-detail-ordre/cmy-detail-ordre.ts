@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
-import {NavController, NavParams,LoadingController} from 'ionic-angular';
-
-import 'rxjs/Rx';
-
-import {Constante,  Ordre} from "../cmy-model/cmy.model";
+import {Component} from '@angular/core';
+import {LoadingController, NavController, NavParams} from 'ionic-angular';
+import {Constante, Ordre} from "../cmy-model/cmy.model";
 
 import {Restangular} from 'ngx-restangular';
+
+//import 'rxjs/Rx';
 @Component({
   selector: 'detail-ordre',
   templateUrl: 'cmy-detail-ordre.html',

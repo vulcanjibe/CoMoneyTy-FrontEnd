@@ -1,15 +1,11 @@
-import { Component } from '@angular/core';
-import {NavController, LoadingController, ToastController } from 'ionic-angular';
-
-import 'rxjs/Rx';
-
-
-import {Message, Mouvement, Ordre} from "../cmy-model/cmy.model";
+import {Component} from '@angular/core';
+import {LoadingController, NavController, ToastController} from 'ionic-angular';
+import {Constante, Ordre} from "../cmy-model/cmy.model";
 import {Restangular} from 'ngx-restangular';
-import {  Constante} from '../cmy-model/cmy.model';
-import {DetailMessage} from "../cmy-detail-message/cmy-detail-message";
 import {DetailOrdre} from "../cmy-detail-ordre/cmy-detail-ordre";
 import {PaiementOrdre} from "../cmy-paiement-ordre/cmy-paiement-ordre";
+
+//import 'rxjs/Rx';
 
 @Component({
   selector: 'liste-ordre',

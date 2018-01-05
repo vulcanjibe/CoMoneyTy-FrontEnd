@@ -1,19 +1,22 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
-  NavController, LoadingController, NavParams, ModalController, AlertController,
+  AlertController,
+  LoadingController,
+  ModalController,
+  NavController,
+  NavParams,
   ToastController
 } from 'ionic-angular';
-import { SMS} from '@ionic-native/sms';
-
-import 'rxjs/Rx';
-
-import {Event, UserAvecDepense, Constante, Depense, Mouvement} from '../cmy-model/cmy.model';
-import { AjoutParticipantPage } from '../cmy-ajout-participant/cmy-ajout-participant'
+import {SMS} from '@ionic-native/sms';
+import {Constante, Depense, Event, Mouvement, UserAvecDepense} from '../cmy-model/cmy.model';
+import {AjoutParticipantPage} from '../cmy-ajout-participant/cmy-ajout-participant'
 import {Restangular} from 'ngx-restangular';
 import {CreationDepensePage} from "../cmy-creation-depense/cmy-creation-depense";
 import {ModalChoixOperation} from "../cmy-modal/modal-choix-operation";
 import {ListeDepense} from "../cmy-liste-depense/cmy-liste-depense";
 import {BilanEvent} from "../cmy-bilan-event/cmy-bilan-event";
+
+//import 'rxjs/Rx';
 @Component({
   selector: 'detail-event-page',
   templateUrl: 'cmy-detail-event.html',

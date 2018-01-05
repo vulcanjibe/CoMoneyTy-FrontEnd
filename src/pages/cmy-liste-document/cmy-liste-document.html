@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Documents de l'opération</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="list-mini-content">
+  <ion-item-group>
+      <ion-item  (tap)="show(document)" class="notification-item" ion-item *ngFor="let document of documents">
+        <ion-avatar item-left>
+          <preload-image *ngIf="document.type=='Photo'" class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage(document.url)'></preload-image>
+          <preload-image *ngIf="document.type!='Photo'" class="user-image" [ratio]="{w:1, h:1}" [src]='constante.getUrlImage("divers/Attach-icon.png")'></preload-image>
+        </ion-avatar>
+        <h2 class="item-title">{{document.date}} - {{document.type}}</h2>
+        <p class="item-description" text-wrap>{{document.description}}</p>
+      </ion-item>
+  </ion-item-group>
+  <ion-fab right bottom>
+    <button (tap)="addNewDocument()" ion-fab color="danger"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>
+
+

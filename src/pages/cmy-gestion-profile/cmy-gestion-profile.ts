@@ -1,18 +1,15 @@
-import { Component } from '@angular/core';
-import {NavController, ModalController, LoadingController, ToastController, AlertController} from 'ionic-angular';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
+import {Component} from '@angular/core';
+import {AlertController, LoadingController, ModalController, NavController, ToastController} from 'ionic-angular';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 
-import { WalkthroughPage } from '../walkthrough/walkthrough';
-
-import 'rxjs/Rx';
-import {User} from "../cmy-model/cmy.model";
-import { Constante } from '../cmy-model/cmy.model';
+import {WalkthroughPage} from '../walkthrough/walkthrough';
+//import 'rxjs/Rx';
+import {Constante, User} from "../cmy-model/cmy.model";
 import {Restangular} from 'ngx-restangular';
-import {createElementCssSelector} from "@angular/compiler";
 import {Camera, CameraOptions} from "@ionic-native/camera";
-import {ModalPhoto} from "../cmy-modal/modal-photo";
 import CryptoJS from 'crypto-js';
+
 @Component({
   selector: 'gestion-profile',
   templateUrl: 'cmy-gestion-profile.html',

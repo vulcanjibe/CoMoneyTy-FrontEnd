@@ -1,0 +1,38 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title> Bienvenue</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="home">
+
+
+  <section >
+    <ion-row >
+      <ion-col col-6><div text-wrap (tap)="goToCagnotte()" class="drop-shadow notdispo">
+        <p>Cagnotte</p><br>
+        <preload-image class="avatar-image" [ratio]="{w:1, h:1}" src="./assets/images/master/cagnotte.png"></preload-image>
+      </div></ion-col>
+      <ion-col col-6><div text-wrap (tap)="goToPartage()" class="drop-shadow ">
+        <p>Partage des dépenses</p>
+        <preload-image class="avatar-image" [ratio]="{w:1, h:1}" src="./assets/images/master/partage.png"></preload-image>
+        </div></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-6><div text-wrap (tap)="goToCommunaute()" class="drop-shadow notdispo">
+        <p>Communauté</p><br>
+        <preload-image class="avatar-image" [ratio]="{w:1, h:1}" src="./assets/images/master/communaute.png"></preload-image>
+        </div></ion-col>
+      <ion-col col-6><div text-wrap (tap)="goToDemo()" class="drop-shadow notdispo">
+        <p>Démo</p><br>
+        <preload-image class="avatar-image" [ratio]="{w:1, h:1}" src="./assets/images/master/communaute.png"></preload-image>
+        </div></ion-col>
+    </ion-row>
+    <ion-item>
+      <div text-wrap class="drop-shadow notdispo" style="width: 85%;">
+        <p>Mon accès MyBank </p>
+        <preload-image class="avatar-image" [ratio]="{w:402, h:125}" src="./assets/images/master/neo.png"></preload-image>
+      </div>
+    </ion-item>
+  </section>
+</ion-content>

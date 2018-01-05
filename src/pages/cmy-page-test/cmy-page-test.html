@@ -42,13 +42,7 @@
   <section padding>
     <button  padding ion-button block class="form-action-button create-post-button" type="button"   (tap)="alerteur()" (press)="swapUser()" >Swap User ({{user.prenom}})</button>
   </section>
-  <form [formGroup]="settingsForm" class="settings-form">
-    <section padding>
-      <ion-item>
-        <ion-label stacked>Adresse serveur :</ion-label>
-        <ion-input formControlName="adresseIP" placeholder="ip"></ion-input>
-      </ion-item>
-      <button  padding ion-button block class="form-action-button create-post-button" type="button"   (tap)="alerteur()" (press)="ping()" >Ping test</button>
-    </section>
-  </form>
+  <section padding>
+    <button  padding ion-button block class="form-action-button create-post-button" type="button"   (tap)="toogleRecuperationIndex()" (press)="showRecuperationIndex()" >Swap Indexes Manquants {{etatIndex}}</button>
+  </section>
 </ion-content>

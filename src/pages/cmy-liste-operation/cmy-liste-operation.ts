@@ -1,121 +1,122 @@
-import { Component } from '@angular/core';
-import {NavController, LoadingController, ToastController,ModalController } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {LoadingController, ModalController, NavController} from 'ionic-angular';
+import {Constante, Depense, OperationAvecDepense, TableauOperation} from "../cmy-model/cmy.model";
 
-import 'rxjs/Rx';
-
-import {
-  Constante, Depense, Operation, TypeOperation, OperationAvecDepense,
-  TableauOperation
-} from "../cmy-model/cmy.model";
-
-import  {DetailOperation} from "../cmy-detail-operation/cmy-detail-operation";
+import {DetailOperation} from "../cmy-detail-operation/cmy-detail-operation";
 import {ModalChoixEvent} from '../cmy-modal/modal-choix-event';
 import {Restangular} from 'ngx-restangular';
+import {MenuCircular, SousMenu} from "../../components/menu-circular/menu-circular";
+import {ListeDocument} from "../cmy-liste-document/cmy-liste-document";
+
+//import 'rxjs/Rx';
 @Component({
   selector: 'liste-operation',
   templateUrl: 'cmy-liste-operation.html',
-  providers:[Restangular]
+  providers: [Restangular]
 })
 export class ListeOperation {
-  tableauOperations:Array<TableauOperation>;
-  tableauOperationsInitial:Array<TableauOperation>;
+  tableauOperations: Array<TableauOperation>;
+  tableauOperationsInitial: Array<TableauOperation>;
   loading: any;
-  action:any;
-  numero:number;
-  peopleByCountry: any[] = [{'pays':'fr', 'people' : [ {'name':'totot'},{'name':'totot2'},{'name':'totot3'}]},{'pays':'gb', 'people' : [ {'name':'tototgg'},{'name':'tgogtgot2'},{'name':'tgggotot3'}]}]
-  constructor(public nav: NavController,public constante:Constante,
-    public loadingCtrl: LoadingController,private restangular: Restangular,   public toastCtrl: ToastController,private modalController :ModalController ) {
+  numero: number;
+  visible: boolean = false;
+  @ViewChild('menu') menu: MenuCircular;
+
+  constructor(public nav: NavController, public constante: Constante,
+              public loadingCtrl: LoadingController, private restangular: Restangular, private modalController: ModalController) {
     this.loading = this.loadingCtrl.create();
-    this.action={'encours':false};
-   }
+  }
+
   ionViewDidLoad() {
     this.loading.present();
-    this.restangular.all('user/'+this.constante.user.id+'/operations').getList().subscribe(operations => {
+    this.restangular.all('user/' + this.constante.user.id + '/operations').getList().subscribe(operations => {
       this.tableauOperations = operations;
       this.tableauOperationsInitial = operations;
       this.loading.dismiss();
-    },errorResponse => {
+    }, errorResponse => {
       this.loading.dismiss();
-      this.constante.traiteErreur(errorResponse,this);
+      this.constante.traiteErreur(errorResponse, this);
     });
 
-  };
-  detail(operation:OperationAvecDepense) {
-    console.log('tap...');
-    if(this.action.encours) {
-      return;
-    }
-    this.action={'encours':true};
-    console.log('tap ok');
-    this.nav.push(DetailOperation,{theOperation:operation,action:this.action});
+    let sousmenus: Array<SousMenu> = new Array();
+    sousmenus.push(new SousMenu("Affecter", this.transfert, "share-alt"));
+    sousmenus.push(new SousMenu("Detail", this.detail, "open"));
+    sousmenus.push(new SousMenu("Document", this.ajoutDocument, "clipboard"));
+    sousmenus.push(new SousMenu("Quitter", this.closeMenu, "close"));
+    this.menu.config(sousmenus);
   };
 
+  detail(operation: OperationAvecDepense) {
+    this.closeMenu();
+    this.nav.push(DetailOperation, {theOperation: operation});
+  };
 
-  transfert(operationAvecDepense:OperationAvecDepense) {
-    console.log("press...");
-    if(this.action.encours) {
-      return;
-    }
-    this.action={'encours':true};
-    console.log("press ok");
+  ajoutDocument(operation: OperationAvecDepense) {
+    this.closeMenu();
+    this.nav.push(ListeDocument, {theOperation: operation});
+  };
 
-    if(operationAvecDepense.depense!=null)
-    {
-      let toast = this.toastCtrl.create({
-        message: "Opération déjà utilisée!",
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
+
+  transfert(operationAvecDepense: OperationAvecDepense) {
+    this.closeMenu();
+
+    if (operationAvecDepense.depense != null) {
+      this.constante.presentToast("Opération déjà utilisée!");
       console.log("return transfert");
-      this.action.encours=false;
       return;
     }
-    if(operationAvecDepense.operation.montant>0)
-    {
-      let toast = this.toastCtrl.create({
-        message: "Merci de sélectionner un débit uniquement!",
-        duration: 3000,
-        position: 'top'
+    if (operationAvecDepense.operation.montant > 0) {
+      this.constante.presentToast("Merci de sélectionner un débit uniquement!");
+      return;
+    }
+    let operation = operationAvecDepense.operation;
+    let modal = this.modalController.create(ModalChoixEvent);
+    modal.onDidDismiss(event => {
+      if (event == null) {
+        return;
+      }
+      this.loading = this.loadingCtrl.create({
+        content: 'Enregistrement...',
       });
-      toast.present();
-      console.log("return transfert");
-      this.action.encours=false;
-      return;
-    }
-        let operation = operationAvecDepense.operation;
-        let modal = this.modalController.create(ModalChoixEvent);
-        modal.onDidDismiss(event => {
-          if(event==null) {
-            this.action.encours=false;
-            return;
-          }
-          this.loading = this.loadingCtrl.create({
-            content: 'Enregistrement...',
-          });
-          this.loading.present();
+      this.loading.present();
 
-          let depense = new Depense(this.constante.user.id,event.id);
-          depense.idOperation=operation.id;
-          depense.montant=-operation.montant;
-          depense.commentaire=operation.description;
-          depense.date=operation.date;
-          this.restangular.one("depense").post("save",depense).subscribe(resp => {
-            // Ajout à la liste
-            this.loading.dismissAll();
-            console.log("dépense sauvée");
-            this.action.encours=false;
-            depense.id=resp.id;
-            operationAvecDepense.depense=depense;
+      let depense = new Depense(this.constante.user.id, event.id);
+      depense.idOperation = operation.id;
+      depense.montant = -operation.montant;
+      depense.commentaire = operation.description;
+      depense.date = operation.date;
+      this.restangular.one("depense").post("save", depense).subscribe(resp => {
+        // Ajout à la liste
+        this.loading.dismissAll();
+        console.log("dépense sauvée");
+        depense.id = resp.id;
+        operationAvecDepense.depense = depense;
 
-          }, errorResponse => {
-            this.constante.traiteErreur(errorResponse,this);
-            this.action.encours=false;
-          });
+      }, errorResponse => {
+        this.constante.traiteErreur(errorResponse, this);
+      });
 
-        });
-        modal.present();
+    });
+    modal.present();
 
+  };
+
+  closeMenu() {
+    this.visible = false;
+    this.menu.toggle();
+    this.menu.close();
+  };
+
+  blockEvent() {
+    console.log("Il faut bloquer!!!");
+//    this.parent.cover.nativeElement.style.display="none";
+    this.visible = false;
+  };
+
+  showMenu(operationAvecDepense: OperationAvecDepense) {
+    this.visible = true;
+    this.menu.show(this, operationAvecDepense, "divers/operation.png");
+    this.menu.toggle();
   };
 
   filtreOperation(ev) {

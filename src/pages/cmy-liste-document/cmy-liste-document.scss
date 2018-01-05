@@ -1,0 +1,72 @@
+// Common list styles can be found in "./common.styles/layouts/lists"
+liste-document {
+	ion-header {
+		@include header-styles(color($colors, header-alt, base), color($colors, header-alt, contrast));
+	}
+  .circular-menu {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    //background-color:red;
+    //position: fixed;
+  //  display:none;
+    z-index: 900;
+  }
+
+  .invisible {
+    display:none;
+  }
+  #cover {
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index:899;
+  //  display: none;
+  }
+
+  ion-badge.etat {
+    position: absolute;
+    transform: rotate(-45deg);
+    z-index: 100;
+    right: 34px;
+  }
+
+	.list-mini-content
+	{
+		background-color: color($colors, background, base);
+
+		.list-mini
+		{
+			@include layout-list-styles($theme-color-2, $white-d);
+
+			ion-list {
+				.list-item
+				{
+					.content-row
+					{
+						.item-title{
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+						}
+
+						&.one-line
+						{
+							@include align-items(center);
+
+							.item-description
+							{
+								overflow: hidden;
+								text-overflow: ellipsis;
+								white-space: nowrap;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

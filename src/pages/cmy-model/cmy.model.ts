@@ -1,7 +1,6 @@
-
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {ToastController} from "ionic-angular";
 import {Injectable} from "@angular/core";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class Constante {
@@ -180,6 +179,7 @@ export class Operation {
   typeOperation:TypeOperation;
   urlPhotoEmetteur:string;
   urlPhotoDestinataire:string;
+  presenceDocument:boolean;
 }
 
 
@@ -239,4 +239,12 @@ export class Historique {
   timestamp:Date;
   action:string;
   objet:any;
+}
+
+export class Document {
+  type:string;
+  url:string;
+  description:string;
+  date:Date;
+  idOperation:string;
 }

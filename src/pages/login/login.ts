@@ -1,21 +1,20 @@
-import { Component } from '@angular/core';
-import {NavController, LoadingController, ToastController} from 'ionic-angular';
-import {Validators, FormGroup, FormControl} from '@angular/forms';
+import {Component} from '@angular/core';
+import {LoadingController, NavController} from 'ionic-angular';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {SignupPage} from '../signup/signup';
+import {ForgotPasswordPage} from '../forgot-password/forgot-password';
 
-import  {ListeEvent} from "../cmy-liste-event/cmy-liste-event";
-import { SignupPage } from '../signup/signup';
-import { ForgotPasswordPage } from '../forgot-password/forgot-password';
-
-import { FacebookLoginService } from './facebook-login.service';
-import { GoogleLoginService } from './google-login.service';
+import {FacebookLoginService} from './facebook-login.service';
+import {GoogleLoginService} from './google-login.service';
 
 import {Restangular} from 'ngx-restangular';
-import { User,Constante} from '../cmy-model/cmy.model'
+import {Constante, User} from '../cmy-model/cmy.model'
 import {PrivacyPolicyPage} from "../privacy-policy/privacy-policy";
 import {FacebookUserModel} from "../cmy-model/facebook-user.model";
 import {GoogleUserModel} from "../cmy-model/google-user.model";
-import {Home} from "../cmy-home/cmy-home";
 import CryptoJS from 'crypto-js';
+import {MasterHome} from "../master/master-home";
+
 @Component({
   selector: 'login-page',
   templateUrl: 'login.html',
@@ -34,10 +33,10 @@ export class LoginPage {
     public googleLoginService: GoogleLoginService,
     public loadingCtrl: LoadingController,
     private restangular: Restangular,
-    public constante: Constante,
-    private toastCtrl:ToastController
+    public constante: Constante
+
   ) {
-    this.main_page = { component: Home };
+    this.main_page = { component: MasterHome };
     this.user = new User();
     this.login = new FormGroup({
       email: new FormControl('', Validators.compose([Validators.required,Validators.minLength(3)])),

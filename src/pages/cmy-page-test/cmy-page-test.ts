@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-
-import 'rxjs/Rx';
+import {Component} from '@angular/core';
 
 
 import {Restangular} from 'ngx-restangular';
@@ -8,7 +6,9 @@ import {Events, LoadingController, NavController, ToastController} from "ionic-a
 import {Constante, User} from "../cmy-model/cmy.model";
 import {ListeUser} from "./cmy-liste-user";
 import {AppVersion} from "@ionic-native/app-version";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FileTransfer} from '@ionic-native/file-transfer';
+import {File} from '@ionic-native/file';
+import {FileChooser} from '@ionic-native/file-chooser';
 
 @Component({
   selector: 'cmy-page-test',
@@ -29,21 +29,23 @@ export class PageTest {
   version1:string;
   version2:string;
   user:User;
-  settingsForm: FormGroup;
-  constructor(private angularEvents:Events,private appVersion: AppVersion,public nav: NavController,public constante:Constante, public loadingCtrl: LoadingController,private restangular:Restangular,private toastCtrl:ToastController) {
+  etatIndex:string="";
+  constructor(private fileChooser: FileChooser,private transfer: FileTransfer, private file: File,private angularEvents:Events,private appVersion: AppVersion,public nav: NavController,public constante:Constante, public loadingCtrl: LoadingController,private restangular:Restangular,private toastCtrl:ToastController) {
     this.user = this.constante.user;
-    this.settingsForm = new FormGroup({
-      adresseIP: new FormControl('')
-    });
   };
 
   ionViewDidLoad() {
     this.getVersion();
+    this.restangular.one("utilitaire/rechercheIndexManquant").get().toPromise().then(rep => {
+      let msg: string = "Recherche Index ";
+      msg += rep.message;
+      this.etatIndex=rep.message;
+    }, error => {
+      this.constante.traiteErreur(error, this);
+    });
   };
-  ping() {
-    let ip = this.settingsForm.get("adresseIP").value;
-    let ipList = [{query: ip, timeout: 10,retry: 5,version:'v4'}];
-  }
+
+
   resetData() {
     this.loading = this.loadingCtrl.create();
 
@@ -161,4 +163,36 @@ export class PageTest {
       this.user = resp;
     });
   };
+
+  toogleRecuperationIndex() {
+    this.loading = this.loadingCtrl.create();
+    this.loading.present();
+    this.restangular.one("utilitaire/toggleRechercheIndexManquant").get().toPromise().then(rep => {
+      this.loading.dismissAll();
+      let msg: string = "Recherche Index ";
+      msg += rep.message;
+      this.etatIndex=rep.message;
+      let toast = this.toastCtrl.create({
+        message: msg,
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+      return;
+    }, error => {
+      this.constante.traiteErreur(error, this);
+    });
+  };
+
+    showRecuperationIndex() {
+      this.loading = this.loadingCtrl.create();
+      this.loading.present();
+      this.restangular.one("utilitaire/indexManquant").get().toPromise().then(rep=>{
+        this.loading.dismissAll();
+        console.log(rep);
+        return;
+      },error=>{
+        this.constante.traiteErreur(error,this);
+      });
+    };
 }

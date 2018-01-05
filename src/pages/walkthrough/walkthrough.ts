@@ -1,13 +1,13 @@
-import { Component, ViewChild } from '@angular/core';
-import { NavController, Slides } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {NavController, Slides} from 'ionic-angular';
 
-import { LoginPage } from '../login/login';
-import { SignupPage } from '../signup/signup';
+import {LoginPage} from '../login/login';
+import {SignupPage} from '../signup/signup';
 import {Restangular} from 'ngx-restangular';
-import { User,Constante} from '../cmy-model/cmy.model'
-import { ListeEvent } from '../cmy-liste-event/cmy-liste-event';
+import {Constante, User} from '../cmy-model/cmy.model'
+import {ListeEvent} from '../cmy-liste-event/cmy-liste-event';
 
-import { AppVersion } from '@ionic-native/app-version';
+
 @Component({
   selector: 'walkthrough-page',
   templateUrl: 'walkthrough.html'

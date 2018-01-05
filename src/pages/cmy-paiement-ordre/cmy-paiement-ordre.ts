@@ -1,16 +1,10 @@
-import { Component } from '@angular/core';
-import {NavController, NavParams, LoadingController, AlertController, ToastController} from 'ionic-angular';
-
-import 'rxjs/Rx';
-
-import {
-  Constante, Event, Depense, Operation, TypeOperation, OperationAvecDepense, Ordre,
-  Message
-} from "../cmy-model/cmy.model";
-
-import {ModalChoixEvent} from '../cmy-modal/modal-choix-event';
+import {Component} from '@angular/core';
+import {AlertController, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {Constante, Message, Ordre} from "../cmy-model/cmy.model";
 import {Restangular} from 'ngx-restangular';
 import {PayPal, PayPalConfiguration, PayPalPayment} from "@ionic-native/paypal";
+
+//import 'rxjs/Rx';
 @Component({
   selector: 'paiement-ordre',
   templateUrl: 'cmy-paiement-ordre.html',

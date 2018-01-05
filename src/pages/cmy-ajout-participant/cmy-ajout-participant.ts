@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { NavController, LoadingController,NavParams } from 'ionic-angular';
-import 'rxjs/Rx';
+import {Component} from '@angular/core';
+import {LoadingController, NavController, NavParams} from 'ionic-angular';
 
-import {Event, Constante, User, LienEventUser, UserAvecDepense} from '../cmy-model/cmy.model';
+
+import {Constante, Event, LienEventUser, User, UserAvecDepense} from '../cmy-model/cmy.model';
 
 import {Restangular} from 'ngx-restangular';
+
 @Component({
   selector: 'ajout-participant-page',
   templateUrl: 'cmy-ajout-participant.html',

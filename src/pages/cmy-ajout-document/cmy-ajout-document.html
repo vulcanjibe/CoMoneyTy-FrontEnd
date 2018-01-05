@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Ajout document</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="forms-examples-content">
+  <div  class="forms-wrapper">
+    <div  class="post-example-view">
+      <form class="sample-form post-form" [formGroup]="creationDocumentForm" (ngSubmit)="saveDocument()">
+        <section class="form-section">
+          <ion-item>
+            <ion-input type="text" placeholder="Description" formControlName="commentaire"></ion-input>
+          </ion-item>
+          <button ion-button block large  type="button"  class="upload-image-button" >
+            <ion-icon name="folder" (tap)="chooseDocument()"></ion-icon>
+            <h3 class="button-title" *ngIf="documentName!=null">Doc : {{documentName}}</h3>
+            <h3 class="button-title" *ngIf="documentName==null">Choisissez un document</h3>
+          </button>
+          <button ion-button block large  type="button"  class="upload-image-button" >
+            <ion-icon name="camera" (tap)="takePhoto()"></ion-icon><ion-icon name="images" (tap)="chooseGallery()"></ion-icon>
+            <img [src]="imageDataCamera" *ngIf="imageDataCamera" />
+            <img [src]="constante.getUrlImage(imageUrl)" *ngIf="imageUrl" />
+            <h3 class="button-title">Prenez une photo</h3>
+          </button>
+        </section>
+
+        <section class="form-section">
+          <button ion-button block class="form-action-button create-post-button" type="submit" [disabled]="!creationDocumentForm.valid">Enregistrer!</button>
+        </section>
+      </form>
+    </div>
+  </div>
+
+</ion-content>
+
+

@@ -1,10 +1,9 @@
-import { Injectable } from "@angular/core";
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/toPromise';
-import { Facebook } from '@ionic-native/facebook';
-import { NativeStorage } from '@ionic-native/native-storage';
-import {FacebookUserModel} from "../cmy-model/facebook-user.model";
+import {Injectable} from "@angular/core";
+import {Http} from '@angular/http';
 
+import {Facebook} from '@ionic-native/facebook';
+import {NativeStorage} from '@ionic-native/native-storage';
+import {FacebookUserModel} from "../cmy-model/facebook-user.model";
 
 
 @Injectable()

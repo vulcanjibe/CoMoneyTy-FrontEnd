@@ -1,14 +1,13 @@
-import { Component } from '@angular/core';
-import {NavController, NavParams,LoadingController,AlertController} from 'ionic-angular';
-
-import 'rxjs/Rx';
-
+import {Component} from '@angular/core';
+import {AlertController, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {Constante, Invitation, Message, Ordre} from "../cmy-model/cmy.model";
 
 
 import {Restangular} from 'ngx-restangular';
 import {PaiementOrdre} from "../cmy-paiement-ordre/cmy-paiement-ordre";
 import {DetailOrdre} from "../cmy-detail-ordre/cmy-detail-ordre";
+
+//import 'rxjs/Rx';
 @Component({
   selector: 'detail-message',
   templateUrl: 'cmy-detail-message.html',
