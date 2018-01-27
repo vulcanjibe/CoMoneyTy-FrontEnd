@@ -72,6 +72,7 @@ import {File} from "@ionic-native/file";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {FileOpener} from "@ionic-native/file-opener";
 import {FilePath} from "@ionic-native/file-path";
+import {EventService} from "../pages/cmy-page-test/event.service";
 
 
 // Functionalities
@@ -190,6 +191,7 @@ export function RestangularConfigFactory (RestangularProvider) {
     Constante,
     AppVersion,
     Badge,
+    EventService,
     FacebookLoginService,
     GoogleLoginService,
     Camera,

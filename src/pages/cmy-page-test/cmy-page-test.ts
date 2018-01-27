@@ -9,6 +9,8 @@ import {AppVersion} from "@ionic-native/app-version";
 import {FileTransfer} from '@ionic-native/file-transfer';
 import {File} from '@ionic-native/file';
 import {FileChooser} from '@ionic-native/file-chooser';
+import {EventService} from "./event.service";
+import {error} from "util";
 
 @Component({
   selector: 'cmy-page-test',
@@ -30,7 +32,7 @@ export class PageTest {
   version2:string;
   user:User;
   etatIndex:string="";
-  constructor(private fileChooser: FileChooser,private transfer: FileTransfer, private file: File,private angularEvents:Events,private appVersion: AppVersion,public nav: NavController,public constante:Constante, public loadingCtrl: LoadingController,private restangular:Restangular,private toastCtrl:ToastController) {
+  constructor(private eventService: EventService ,private fileChooser: FileChooser,private transfer: FileTransfer, private file: File,private angularEvents:Events,private appVersion: AppVersion,public nav: NavController,public constante:Constante, public loadingCtrl: LoadingController,private restangular:Restangular,private toastCtrl:ToastController) {
     this.user = this.constante.user;
   };
 
@@ -195,4 +197,19 @@ export class PageTest {
         this.constante.traiteErreur(error,this);
       });
     };
+
+  testService() {
+    this.loading = this.loadingCtrl.create();
+    this.loading.present();
+    let user:User = this.constante.user;
+    let _env = this;
+    this.eventService.getEvents(user)
+      .then(function(events) {
+        _env.loading.dismissAll();
+        console.log(events);
+      }, function(error) {
+        _env.loading.dismissAll();
+        console.log(error);
+      });
+  };
 }
